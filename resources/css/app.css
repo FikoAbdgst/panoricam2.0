@@ -1,0 +1,72 @@
+@import 'tailwindcss';
+@source "../views";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+
+/* Add these styles to your CSS or within style tags */
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+
+    /* Stack elements vertically on mobile */
+    .md\:flex {
+        flex-direction: column;
+    }
+
+    .md\:w-3\/5,
+    .md\:w-2\/5 {
+        width: 100%;
+    }
+
+    /* Adjust frame preview on mobile */
+    #camera-container {
+        order: 1;
+        /* Display camera first on mobile */
+    }
+
+    /* Make the frame preview shorter on mobile */
+    .md\:w-2\/5 .relative.w-full.flex-grow {
+        height: 350px;
+        position: relative;
+    }
+
+    /* Improve spacing for control buttons on small screens */
+    .flex.justify-center.space-x-6 {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Make preview photos scroll horizontally on small screens */
+    #preview-photos {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 8px;
+    }
+}
+
+/* Ensure frame preview has proper height on desktop */
+@media (min-width: 769px) {
+    .relative.w-full.flex-grow {
+        min-height: 500px;
+        /* Set minimum height for the frame on desktop */
+    }
+}
+
+/* Fix for the finish button that was previously hidden */
+#finish-btn.hidden {
+    display: none;
+}
+
+#finish-btn:not(.hidden) {
+    display: flex;
+}
