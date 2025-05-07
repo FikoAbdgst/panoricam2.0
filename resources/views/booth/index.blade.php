@@ -53,7 +53,7 @@
     .main-box {
       width: 90%;
       max-width: 1200px;
-      background: url(img/logo6.png) center center/cover no-repeat;
+      background: url("bg.png") center center/cover no-repeat;
       padding: 40px;
       margin-top: 5px;
       border-radius: 20px;
@@ -194,7 +194,7 @@
 <body>
   <header>
     <div class="logo">
-      <img src='img/logo4.png' alt="Logo" style="height: 50px;">
+      <img src="logo4.png" alt="Logo" style="height: 50px;">
     </div>
     <nav>
       <a href="#">home</a>
