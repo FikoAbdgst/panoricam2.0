@@ -199,28 +199,28 @@
             object-fit: contain;
         }
 
-        .buttons {
-            margin-top: 25px;
+        .controls {
+            margin-top: 20px;
             display: flex;
-            flex-wrap: wrap;
             gap: 12px;
+            flex-wrap: wrap;
             justify-content: center;
         }
 
-        button:not(.retake-button) {
+        button:not(.retake-button):not(.modal-close) {
             background-color: #f5d0dc;
             color: #000;
             border: none;
             padding: 15px 30px;
             font-size: 16px;
-            font-family: 'Roboto Condensed', sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        button:not(.retake-button):hover {
+        button:not(.retake-button):not(.modal-close):hover {
             background-color: #dd6a91;
             transform: scale(1.05);
         }
@@ -233,19 +233,19 @@
         }
 
         select {
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 14px 12px;
+            border-radius: 10px;
             background-color: #f5d0dc;
-            border: 1px solid #ccc;
+            border: none;
             font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
+        select:hover {
+            background-color: #dd6a91;
         }
 
         canvas {
@@ -304,6 +304,112 @@
 
         .fun-text span:nth-child(12) {
             color: #F48FB1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.4s;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #000;
+        }
+
+        .preview-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .preview-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .preview-photostrip {
+            width: 300px;
+            height: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .share-button {
+            background-color: #4267B2 !important;
+            color: white !important;
+        }
+
+        .download-button {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+
+        .reset-button {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+        /* For the finish button that will show only when 3 photos are taken */
+        #finishButton {
+            display: none;
+            background-color: #28a745;
+            color: white;
         }
     </style>
 </head>
@@ -364,9 +470,6 @@
 
         <div class="controls">
             <button id="captureButton">📷 Take Photo</button>
-            <button id="resetButton">🔁 Reset All</button>
-            <button id="downloadButton">⬇ Download</button>
-
             <select id="filterSelect">
                 <option value="none">No Filter</option>
                 <option value="grayscale(100%)">Grayscale</option>
@@ -374,6 +477,27 @@
                 <option value="contrast(150%)">High Contrast</option>
                 <option value="brightness(120%)">Bright</option>
             </select>
+            <button id="finishButton">✅ Selesai</button>
+        </div>
+    </div>
+
+    <!-- Modal for photostrip preview -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="preview-title">Preview Photo Strip</h2>
+
+            <div class="preview-container">
+                <div class="preview-photostrip" id="modalPhotostrip">
+                    <!-- Photostrip will be cloned here by JS -->
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="modalResetButton" class="reset-button">🔁 Reset All</button>
+                <button id="modalDownloadButton" class="download-button">⬇ Download</button>
+                <button id="modalShareButton" class="share-button">📤 Share</button>
+            </div>
         </div>
     </div>
 
@@ -384,8 +508,7 @@
         const photo2 = document.getElementById('photo2');
         const photo3 = document.getElementById('photo3');
         const captureButton = document.getElementById('captureButton');
-        const resetButton = document.getElementById('resetButton');
-        const downloadButton = document.getElementById('downloadButton');
+        const finishButton = document.getElementById('finishButton');
         const filterSelect = document.getElementById('filterSelect');
         const timerDisplay = document.getElementById('timer');
         const countdownOverlay = document.getElementById('countdown-overlay');
@@ -393,11 +516,20 @@
         const ctx = canvas.getContext('2d');
         const retakeButtons = document.querySelectorAll('.retake-button');
 
+        // Modal elements
+        const modal = document.getElementById('previewModal');
+        const modalClose = document.querySelector('.modal-close');
+        const modalPhotostrip = document.getElementById('modalPhotostrip');
+        const modalResetButton = document.getElementById('modalResetButton');
+        const modalDownloadButton = document.getElementById('modalDownloadButton');
+        const modalShareButton = document.getElementById('modalShareButton');
+
         let currentPhotoIndex = null;
         const photos = [photo1, photo2, photo3];
         let countdown = 3;
         let timer;
         let capturing = false; // flag to prevent multiple clicks
+        let photoStripImage = null; // to store the photostrip image for sharing
 
         // Access webcam
         navigator.mediaDevices.getUserMedia({
@@ -408,6 +540,8 @@
             })
             .catch(err => {
                 console.error("Error accessing webcam: " + err);
+                alert(
+                "Failed to access webcam. Please make sure your camera is connected and permissions are granted.");
             });
 
         // Apply filter
@@ -434,12 +568,29 @@
             // Change button text back
             captureButton.textContent = "📷 Take Photo";
             capturing = false;
+
+            // Check if all photos are taken
+            checkAllPhotosTaken();
+        }
+
+        // Check if all photos are taken and show finish button
+        function checkAllPhotosTaken() {
+            let allTaken = true;
+            for (let i = 0; i < photos.length; i++) {
+                if (!photos[i].src || photos[i].src === window.location.href || photos[i].src.length < 10) {
+                    allTaken = false;
+                    break;
+                }
+            }
+
+            // Show or hide the finish button based on whether all photos are taken
+            finishButton.style.display = allTaken ? 'block' : 'none';
         }
 
         // Find next empty photo slot
         function findNextEmptySlot() {
             for (let i = 0; i < photos.length; i++) {
-                if (!photos[i].src || photos[i].src === window.location.href) {
+                if (!photos[i].src || photos[i].src === window.location.href || photos[i].src.length < 10) {
                     return i;
                 }
             }
@@ -476,23 +627,73 @@
             photos.forEach(photo => photo.src = "");
             timerDisplay.textContent = "";
             captureButton.textContent = "📷 Take Photo";
+            finishButton.style.display = 'none';
 
             // Reset retake buttons state
             retakeButtons.forEach(button => {
                 button.setAttribute('data-has-photo', 'false');
             });
+
+            // Close modal if open
+            modal.style.display = 'none';
         }
 
         // Download photo strip
-        downloadButton.addEventListener('click', () => {
+        function downloadPhotoStrip() {
             html2canvas(document.querySelector('.photostrip')).then(canvas => {
-                const dataUrl = canvas.toDataURL();
+                photoStripImage = canvas.toDataURL();
                 const a = document.createElement('a');
-                a.href = dataUrl;
+                a.href = photoStripImage;
                 a.download = 'photo-strip.png';
                 a.click();
             });
-        });
+        }
+
+        // Share photo strip
+        function sharePhotoStrip() {
+            if (navigator.share && photoStripImage) {
+                // Get the blob from the data URL
+                fetch(photoStripImage)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], 'photo-strip.png', {
+                            type: 'image/png'
+                        });
+                        navigator.share({
+                                title: 'My Photo Strip',
+                                text: 'Check out my photo strip!',
+                                files: [file]
+                            })
+                            .then(() => console.log('Shared successfully'))
+                            .catch(err => {
+                                console.error('Error sharing:', err);
+                                alert('Sharing failed. Try downloading instead.');
+                            });
+                    });
+            } else {
+                alert('Web Share API not supported in your browser or no image available. Please download instead.');
+            }
+        }
+
+        // Open modal with photostrip preview
+        function openPreviewModal() {
+            // Create a preview of the photostrip in the modal
+            html2canvas(document.querySelector('.photostrip')).then(canvas => {
+                photoStripImage = canvas.toDataURL();
+
+                // Clear previous content
+                modalPhotostrip.innerHTML = '';
+
+                // Create an image element with the photostrip
+                const img = document.createElement('img');
+                img.src = photoStripImage;
+                img.style.width = '100%';
+                modalPhotostrip.appendChild(img);
+
+                // Show the modal
+                modal.style.display = 'flex';
+            });
+        }
 
         // Start capture process when capture button is clicked
         captureButton.addEventListener('click', () => {
@@ -502,12 +703,29 @@
             if (nextEmptySlot !== null) {
                 startCountdown(nextEmptySlot);
             } else {
-                alert("All photo slots are filled. Please retake a photo or reset all photos.");
+                alert("All photo slots are filled. Please retake a photo or finish your session.");
             }
         });
 
-        // Reset photos when reset button is clicked
-        resetButton.addEventListener('click', resetPhotos);
+        // Open modal when finish button is clicked
+        finishButton.addEventListener('click', openPreviewModal);
+
+        // Modal close button
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Modal buttons event listeners
+        modalResetButton.addEventListener('click', resetPhotos);
+        modalDownloadButton.addEventListener('click', downloadPhotoStrip);
+        modalShareButton.addEventListener('click', sharePhotoStrip);
 
         // Initialize retake buttons state
         updateRetakeButtonsState();
@@ -527,6 +745,9 @@
                     button.setAttribute('data-has-photo', 'false');
                 }
             });
+
+            // Also check if all photos are taken
+            checkAllPhotosTaken();
         }
 
         // Add event listeners for retake buttons
@@ -535,6 +756,9 @@
                 const index = parseInt(this.getAttribute('data-index'));
                 photos[index].src = "";
                 this.setAttribute('data-has-photo', 'false');
+
+                // Check if all photos are still taken
+                checkAllPhotosTaken();
             });
         });
     </script>
