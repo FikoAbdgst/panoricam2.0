@@ -51,6 +51,7 @@ class FrameController extends Controller
             'slug' => 'nullable|string|max:255|unique:frames,slug',
             'category_id' => 'required|exists:categories,id',
             'frame_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' => 'required|in:free,paid', // Add status validation
         ]);
 
         DB::beginTransaction();
@@ -67,6 +68,7 @@ class FrameController extends Controller
                 'slug' => $request->slug ?? Str::slug($request->name),
                 'category_id' => $request->category_id,
                 'image_path' => $imagePath,
+                'status' => $request->status, // Add status field
             ]);
 
             DB::commit();
@@ -78,6 +80,7 @@ class FrameController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
+
 
     public function show(Frame $frame)
     {
@@ -109,6 +112,7 @@ class FrameController extends Controller
             'slug' => 'nullable|string|max:255|unique:frames,slug,' . $frame->id,
             'category_id' => 'required|exists:categories,id',
             'frame_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' => 'required|in:free,paid', // Add status validation
         ]);
 
         DB::beginTransaction();
@@ -118,6 +122,7 @@ class FrameController extends Controller
                 'name' => $request->name,
                 'slug' => $request->slug ?? Str::slug($request->name),
                 'category_id' => $request->category_id,
+                'status' => $request->status, // Add status field
             ];
 
             // Update image if provided
@@ -189,22 +194,22 @@ class FrameController extends Controller
         if (!file_exists($defaultPath)) {
             // Create default template with basic frame
             $defaultContent = <<<HTML
-{{-- Frame Template: Default --}}
-<div class="default-frame absolute inset-0 pointer-events-none">
-    {{-- Border frame --}}
-    <div class="absolute inset-0 border-8 border-white rounded-lg shadow-inner"></div>
-    
-    {{-- Optional decorative elements --}}
-    <div class="absolute top-0 left-0 w-full h-8 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50"></div>
-    <div class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-r from-purple-500 to-blue-500 opacity-50"></div>
-    
-    {{-- Frame corner decorations --}}
-    <div class="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-blue-500 rounded-tl-lg"></div>
-    <div class="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-blue-500 rounded-tr-lg"></div>
-    <div class="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-blue-500 rounded-bl-lg"></div>
-    <div class="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-blue-500 rounded-br-lg"></div>
-</div>
-HTML;
+            {{-- Frame Template: Default --}}
+            <div class="default-frame absolute inset-0 pointer-events-none">
+                {{-- Border frame --}}
+                <div class="absolute inset-0 border-8 border-white rounded-lg shadow-inner"></div>
+                
+                {{-- Optional decorative elements --}}
+                <div class="absolute top-0 left-0 w-full h-8 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50"></div>
+                <div class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-r from-purple-500 to-blue-500 opacity-50"></div>
+                
+                {{-- Frame corner decorations --}}
+                <div class="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-blue-500 rounded-tl-lg"></div>
+                <div class="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-blue-500 rounded-tr-lg"></div>
+                <div class="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-blue-500 rounded-bl-lg"></div>
+                <div class="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-blue-500 rounded-br-lg"></div>
+            </div>
+            HTML;
             file_put_contents($defaultPath, $defaultContent);
         }
 

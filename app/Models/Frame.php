@@ -14,7 +14,21 @@ class Frame extends Model
         'slug',
         'category_id',
         'image_path',
+        'status', // Added status field
     ];
+
+    // Define constants for status
+    const STATUS_FREE = 'free';
+    const STATUS_PAID = 'paid';
+
+    // Get available status options
+    public static function getStatusOptions()
+    {
+        return [
+            self::STATUS_FREE => 'Gratis',
+            self::STATUS_PAID => 'Berbayar',
+        ];
+    }
 
     public function category()
     {
@@ -31,5 +45,16 @@ class Frame extends Model
         }
 
         return 'admin.frames.templates.default';
+    }
+
+    // Helper method to check if frame is free
+    public function isFree()
+    {
+        return $this->status === self::STATUS_FREE;
+    }
+    public function templateExists()
+    {
+        $templatePath = resource_path('views/admin/frames/templates/' . $this->slug . '.blade.php');
+        return file_exists($templatePath);
     }
 }

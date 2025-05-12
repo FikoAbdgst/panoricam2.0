@@ -34,6 +34,20 @@
                                             {{ $frame->slug }}</p>
                                         <p class="text-gray-600 mb-2"><span class="font-medium">Kategori:</span>
                                             {{ $frame->category ? $frame->category->name : 'Tidak ada kategori' }}</p>
+                                        <p class="text-gray-600 mb-2">
+                                            <span class="font-medium">Status:</span>
+                                            @if ($frame->status == 'free')
+                                                <span
+                                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                                    Gratis
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                    Berbayar
+                                                </span>
+                                            @endif
+                                        </p>
                                         <p class="text-gray-600 mb-2"><span class="font-medium">Dibuat:</span>
                                             {{ $frame->created_at->format('d M Y H:i') }}</p>
                                         <p class="text-gray-600 mb-2"><span class="font-medium">Terakhir diupdate:</span>
@@ -52,9 +66,9 @@
 
                                     <div>
                                         @if ($frame->image_path)
-                                            <p class="text-gray-600 mb-2 font-medium">Preview Frame:</p>
+                                            <p class="text-gray-600  mb-2 font-medium">Preview Frame:</p>
                                             <img src="{{ Storage::url($frame->image_path) }}" alt="{{ $frame->name }}"
-                                                class="max-w-full h-auto rounded-lg shadow-md">
+                                                class="max-w-1/4 h-auto rounded-lg shadow-md">
                                         @else
                                             <p class="text-gray-600 mb-2 font-medium">Tidak ada gambar frame</p>
                                         @endif

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Frame;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 
 class PhotoboothController extends Controller
 {
@@ -24,9 +25,12 @@ class PhotoboothController extends Controller
 
         // Check if the view exists
         if (!view()->exists($templatePath)) {
+            // Use default template and log a warning
+            Log::warning("Frame template not found: {$templatePath}. Using default template instead.");
             $templatePath = 'admin.frames.templates.default';
         }
 
+        // Pass frame data directly to the view instead of relying on @include
         return view('booth.index', compact('frame', 'templatePath'));
     }
 
@@ -39,40 +43,22 @@ class PhotoboothController extends Controller
             'final_image' => 'required|string',
         ]);
 
-        $savedPhotos = [];
-        $photos = $request->input('photos');
         $frameId = $request->input('frame_id');
         $finalImage = $request->input('final_image');
 
         // Get frame information
         $frame = Frame::find($frameId);
 
-        // Process each individual photo
-        foreach ($photos as $photoData) {
-            // Clean up base64 data to get raw image data
-            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photoData));
-
-            // Generate a unique filename
-            $filename = 'photos/' . uniqid() . '.jpg';
-
-            // Save to storage
-            Storage::disk('public')->put($filename, $imageData);
-
-            $savedPhotos[] = $filename;
-        }
-
-        // Save the final composite image that includes the frame template
-        $finalImageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $finalImage));
-        $finalImagePath = 'photos/final_' . uniqid() . '.jpg';
-        Storage::disk('public')->put($finalImagePath, $finalImageData);
-
-        // Return success with the stored image paths
+        // Return success with the base64 image data
         return response()->json([
             'success' => true,
-            'message' => 'Photos saved successfully',
-            'image_paths' => $savedPhotos,
-            'final_image_path' => $finalImagePath,
-            'download_url' => asset('storage/' . $finalImagePath)
+            'message' => 'Photo processed successfully',
+            'final_image' => $finalImage, // Mengembalikan data base64 langsung
+            'frame_info' => [
+                'id' => $frame->id,
+                'name' => $frame->name,
+                'slug' => $frame->slug,
+            ]
         ]);
     }
 

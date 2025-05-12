@@ -11,6 +11,12 @@ use App\Models\ImageFrame;
 // routes/web.php
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Add these routes to your routes/web.php file
+
+Route::get('/get-frame-template/{frame_id}', [HomeController::class, 'getFrameTemplate'])->name('getFrameTemplate');
+Route::post('/savePhoto', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');
+Route::post('/save-frame-photos', [HomeController::class, 'saveFramePhotos'])->name('saveFramePhotos');
+
 // Rute autentikasi admin
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login']);

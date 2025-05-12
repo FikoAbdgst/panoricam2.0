@@ -1,91 +1,8 @@
 @extends('layouts.app')
 
-@section('hero section')
+@section('hero_section')
     <div class="py-12 bg-white h-screen relative overflow-hidden">
         <div id="random-boxes" class="absolute inset-0 w-full h-full pointer-events-none"></div>
-
-        <div
-            class="photo-icons-left absolute left-0 inset-y-0 w-16 md:hidden lg:block lg:w-48 xl:w-64 overflow-hidden pointer-events-none z-10 hidden ">
-            <div class="absolute z-50 top-20 left-8 transform rotate-12 text-2xl lg:text-3xl xl:text-4xl">📷</div>
-            <div class="absolute z-50 top-48 left-24 transform -rotate-6 text-2xl lg:text-3xl xl:text-4xl">🖼️</div>
-            <div class="absolute z-50 top-28 left-48 transform -rotate-6 text-2xl lg:text-3xl xl:text-4xl">🎉</div>
-            <div class="absolute z-50 bottom-72 left-12 transform rotate-2 text-2xl lg:text-3xl xl:text-4xl">👑</div>
-            <div class="absolute z-50 bottom-32 left-38 transform rotate-10 text-2xl lg:text-3xl xl:text-4xl">🥸</div>
-            <div class="absolute z-50 bottom-80 left-54 transform rotate-10 text-2xl lg:text-3xl xl:text-4xl">🎭</div>
-
-
-            <div
-                class="absolute z-50 bottom-48 left-8 transform -rotate-4 text-2xl lg:text-3xl xl:text-4xl hidden lg:block">
-                🎬</div>
-            <div
-                class="absolute z-50 bottom-96 left-36 transform rotate-15 text-2xl lg:text-3xl xl:text-4xl hidden lg:block">
-                🎪</div>
-            <div class="absolute z-50 top-10 left-36 transform -rotate-10 text-2xl lg:text-3xl xl:text-4xl hidden lg:block">
-                ✨</div>
-            <div
-                class="absolute top-36 left-6 w-20 h-24 lg:w-16 lg:h-20 xl:w-24 xl:h-28 bg-white rounded shadow-md transform -rotate-6">
-                <div class="w-full h-4/5 bg-blue-200"></div>
-                <div class="w-full h-1/5 bg-white flex items-center justify-center">
-                    <span class="text-xs text-gray-500">Photobooth</span>
-                </div>
-            </div>
-
-
-
-            <div
-                class="absolute bottom-20 left-10 w-20 h-24 lg:w-16 lg:h-20 xl:w-28 xl:h-32 bg-white rounded shadow-md transform -rotate-4">
-                <div class="w-full h-4/5 bg-violet-300"></div>
-                <div class="w-full h-1/5 bg-white flex items-center justify-center">
-                    <span class="text-xs text-gray-500">Cool</span>
-                </div>
-            </div>
-
-            <div
-                class="absolute top-80 left-24 w-16 h-20 xl:w-24 xl:h-28 bg-white rounded shadow-md transform rotate-8 hidden lg:block">
-                <div class="w-full h-4/5 bg-pink-200"></div>
-                <div class="w-full h-1/5 bg-white flex items-center justify-center">
-                    <span class="text-xs text-gray-500">Memories</span>
-                </div>
-            </div>
-        </div>
-
-        <div
-            class="photo-props-right absolute right-0 inset-y-0 w-16 md:hidden lg:block lg:w-48 xl:w-64 overflow-hidden pointer-events-none z-10 hidden ">
-            <!-- Props statis -->
-            <div class="absolute z-50 top-24 left-0 text-4xl lg:text-3xl xl:text-5xl transform -rotate-12">✨</div>
-            <div class="absolute z-50 top-52 right-8 text-4xl lg:text-3xl xl:text-5xl transform rotate-6">👓</div>
-            <div class="absolute z-50 bottom-40 right-40 text-4xl lg:text-3xl xl:text-5xl transform -rotate-15">🎩</div>
-            <div class="absolute z-50 bottom-28 right-10 text-4xl lg:text-3xl xl:text-5xl transform -rotate-15">🐱</div>
-            <div class="absolute z-50 bottom-72 left-5 text-4xl lg:text-3xl xl:text-5xl transform rotate-20">🥸</div>
-            <div class="absolute z-50 top-32 right-28 text-4xl lg:text-3xl xl:text-5xl transform -rotate-8">👑</div>
-            <div class="absolute z-50 top-80 right-20 text-4xl lg:text-3xl xl:text-5xl transform rotate-12">🎪</div>
-
-            <div class="absolute z-50 bottom-64 right-10 text-3xl xl:text-4xl transform -rotate-6 hidden lg:block">🤖</div>
-
-            <div
-                class="absolute top-40 right-12 w-20 h-24 lg:w-16 lg:h-20 xl:w-24 xl:h-28 bg-white rounded shadow-md transform rotate-8">
-                <div class="w-full h-4/5 bg-green-200"></div>
-                <div class="w-full h-1/5 bg-white flex items-center justify-center">
-                    <span class="text-xs text-gray-500">Fun shots</span>
-                </div>
-            </div>
-
-            <div
-                class="absolute bottom-40 right-12 w-20 h-24 lg:w-16 lg:h-20 xl:w-24 xl:h-28 bg-white rounded shadow-md transform -rotate-10">
-                <div class="w-full h-4/5 bg-yellow-200"></div>
-                <div class="w-full h-1/5 bg-white flex items-center justify-center">
-                    <span class="text-xs text-gray-500">Chants!!</span>
-                </div>
-            </div>
-
-            <div
-                class="absolute top-72 right-24 w-16 h-20 xl:w-24 xl:h-28 bg-white rounded shadow-md transform -rotate-6 hidden lg:block">
-                <div class="w-full h-4/5 bg-teal-200"></div>
-                <div class="w-full h-1/5 bg-white flex items-center justify-center">
-                    <span class="text-xs text-gray-500">Smile</span>
-                </div>
-            </div>
-        </div>
 
         <div class="max-w-7xl h-full mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center relative z-20">
             <div class="text-center">
@@ -105,54 +22,156 @@
         </div>
     </div>
 
-
-    <style>
-        @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 0.2;
-            }
-
-            80% {
-                opacity: 0.2;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-
-        @media (min-width: 1024px) {
-
-            .photo-icons-left div,
-            .photo-props-right div {
-                font-size: 1.75rem;
-            }
-        }
-
-        @media (min-width: 1280px) {
-
-            .photo-icons-left div,
-            .photo-props-right div {
-                font-size: 2rem;
-            }
-        }
-
-        .photo-frame {
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 5px;
-            border-radius: 2px;
-        }
-    </style>
+    <script>
+        document.getElementById('scrollToContentBtn').addEventListener('click', function() {
+            const contentSection = document.querySelector('.content_section');
+            contentSection.scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    </script>
 @endsection
 
 
-@section('content section')
-    <div class="py-16 bg-gradient-to-b from-blue-50 via-indigo-50 to-white">
+{{-- home.blade.php --}}
+@section('content_section')
+    <style>
+        /* Preview Modal Styles */
+        #previewCountdownOverlay {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease, background-color 0.2s ease;
+            font-size: 3rem;
+            /* Ukuran teks lebih kecil agar lebih rapi */
+            color: white;
+            display: none;
+            /* Sembunyikan secara default */
+        }
+
+        #previewCountdownOverlay.show {
+            display: flex;
+            /* Tampilkan saat aktif */
+        }
+
+        /* Efek flash */
+        #previewCountdownOverlay.flash {
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: background-color 0.2s ease;
+        }
+
+        #previewCameraModal {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #previewVideo {
+            background-color: #000;
+        }
+
+        #previewFrameContainer {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #previewFrameImage {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Button styles */
+        #previewCaptureButton:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Animation for countdown */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #previewCountdownOverlay {
+            animation: pulse 1s infinite;
+        }
+
+        #previewFrameImage img,
+        #previewFrameImage svg,
+        #previewFrameImage>div {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* Photo slot styles specific to preview mode */
+        #previewFrameContainer .photo-slot {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #previewFrameContainer .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Custom styles for photo slots that need to be maintained */
+        .photo-slot-container {
+            position: absolute;
+            overflow: hidden;
+        }
+
+        .photo-slot {
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .photo-slot img[src]:not([src=""]) {
+            display: block;
+        }
+
+        /* Adding keyframes animation for modal */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <div class="py-16 bg-gradient-to-b from-blue-50 via-indigo-50 to-white content_section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold text-gray-900 inline-block relative">
@@ -169,7 +188,7 @@
             <div
                 class="mb-16 backdrop-blur-sm bg-white bg-opacity-80 rounded-2xl shadow-lg p-8 transform hover:shadow-xl transition-all duration-300">
                 <div class="flex flex-wrap gap-6 justify-center">
-                    <a href="{{ route('home') }}" class="group text-center">
+                    <a href="{{ route('home') }}" class="category-link group text-center">
                         <div
                             class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center
                               shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group-hover:bg-blue-50
@@ -181,7 +200,8 @@
                     </a>
 
                     @foreach ($categories as $category)
-                        <a href="{{ route('home', ['category' => $category->id]) }}" class="group text-center">
+                        <a href="{{ route('home', ['category' => $category->id]) }}"
+                            class="group text-center category-link">
                             <div
                                 class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center
                                   shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group-hover:bg-blue-50
@@ -225,7 +245,6 @@
                                         <span class="text-lg mr-2">{{ $frame->category->icon }}</span>
                                         <span class="text-sm text-gray-600">{{ $frame->category->name }}</span>
                                     </div>
-                                    <!-- Replace button with direct link to booth -->
                                     <a href="{{ route('booth', ['frame_id' => $frame->id]) }}"
                                         class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
                                         Gunakan Frame
@@ -242,7 +261,6 @@
                     </div>
                 @endif
             </div>
-
 
             <div class="mt-20 rounded-2xl overflow-hidden shadow-xl">
                 <div class="md:flex">
@@ -327,7 +345,559 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Preview Section -->
+    <div id="previewCameraModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-4xl mx-4 animate-[modalFadeIn_0.3s]">
+            <button class="modal-close absolute top-4 right-4 text-2xl text-gray-500 hover:text-black">&times;</button>
+
+            <h2 class="text-xl font-semibold mb-4 text-center">Frame Preview</h2>
+
+            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                <!-- Camera Preview (4:3) -->
+                <div class="w-full md:w-3/5">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden" style="aspect-ratio: 4/3;">
+                        <video id="previewVideo" autoplay muted class="w-full h-full object-cover scale-x-[-1]"></video>
+                        <div id="previewCountdownOverlay"
+                            class="absolute inset-0 flex items-center justify-center text-6xl font-bold text-white/90">
+                        </div>
+                    </div>
+
+                    <button id="previewCaptureButton"
+                        class="mt-4 w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors">
+                        📷 Start Session
+                    </button>
+                </div>
+
+                <div class="w-[190px] h-[450px] relative">
+                    <div id="previewFrameContainer"
+                        class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
+                        <div id="previewFrameImage" class="absolute inset-0 flex items-center justify-center bg-gray-100">
+                            <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scrolling functionality
+            document.getElementById('scrollToContentBtn')?.addEventListener('click', function() {
+                document.querySelector('.content_section').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+            // Category link handling
+            document.querySelectorAll('.category-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.href;
+                    const scrollPosition = window.scrollY;
+
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newContent = doc.querySelector('.content_section');
+
+                            if (newContent) {
+                                // Update content
+                                document.querySelector('.content_section').outerHTML =
+                                    newContent.outerHTML;
+                                // Update URL without reload
+                                window.history.pushState({}, '', url);
+                                // Restore scroll position
+                                window.scrollTo(0, scrollPosition);
+                                // Re-attach event listeners
+                                attachCategoryListeners();
+                                setupFrameCards();
+                            }
+                        });
+                });
+            });
+
+            // Browser back/forward navigation
+            window.addEventListener('popstate', function() {
+                location.reload();
+            });
+
+            function attachCategoryListeners() {
+                document.querySelectorAll('.category-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const url = this.href;
+                        const scrollPosition = window.scrollY;
+
+                        fetch(url)
+                            .then(response => response.text())
+                            .then(html => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(html, 'text/html');
+                                const newContent = doc.querySelector('.content_section');
+
+                                if (newContent) {
+                                    document.querySelector('.content_section').outerHTML =
+                                        newContent.outerHTML;
+                                    window.history.pushState({}, '', url);
+                                    window.scrollTo(0, scrollPosition);
+                                    attachCategoryListeners();
+                                    setupFrameCards();
+                                }
+                            });
+                    });
+                });
+            }
+
+            // Setup frame cards and preview functionality
+            setupFrameCards();
+
+            // Create html2canvas script if needed
+            if (!window.html2canvas) {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                script.async = true;
+                document.head.appendChild(script);
+            }
+        });
+
+        function setupFrameCards() {
+            // Add preview button to each frame card
+            const frameCards = document.querySelectorAll('.frame-card');
+
+            frameCards.forEach(card => {
+                const overlay = card.querySelector('.group-hover\\:opacity-100');
+
+                // Create preview button
+                const previewBtn = document.createElement('button');
+                previewBtn.className =
+                    'px-4 py-2 bg-white/90 text-gray-800 rounded-full font-medium hover:bg-blue-50 transition-colors duration-300 transform hover:scale-105';
+                previewBtn.textContent = 'Preview';
+                previewBtn.addEventListener('click', openPreviewCameraModal);
+
+                // Replace existing button or add if none exists
+                const existingBtn = overlay.querySelector('button');
+                if (existingBtn) {
+                    overlay.replaceChild(previewBtn, existingBtn);
+                } else {
+                    overlay.appendChild(previewBtn);
+                }
+            });
+        }
+
+        function openPreviewCameraModal(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const modal = document.getElementById('previewCameraModal');
+            const video = document.getElementById('previewVideo');
+            const previewFrameContainer = document.getElementById('previewFrameContainer');
+            const previewFrameImage = document.getElementById('previewFrameImage');
+            const captureButton = document.getElementById('previewCaptureButton');
+
+            // Reset modal state
+            resetModalState();
+
+            // Show the modal
+            modal.style.display = 'flex';
+
+            // Get frame ID from the card
+            const frameCard = e.target.closest('.frame-card');
+            const frameIdElement = frameCard.querySelector('a[href*="frame_id="]');
+            let frameId = null;
+
+            if (frameIdElement) {
+                const href = frameIdElement.getAttribute('href');
+                const match = href.match(/frame_id=(\d+)/);
+                if (match && match[1]) {
+                    frameId = match[1];
+                    modal.setAttribute('data-frame-id', frameId);
+                    window.currentFrameId = frameId;
+                }
+            }
+
+            // Load the frame template
+            if (frameId) {
+                // Show loading state
+                previewFrameImage.innerHTML =
+                    '<div class="flex items-center justify-center w-full h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div></div>';
+
+                // Fetch the frame template
+                fetch(`/get-frame-template/${frameId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        // Insert the frame HTML
+                        previewFrameImage.innerHTML = html;
+                        // Initialize photo slots
+                        initializePhotoSlots(previewFrameImage);
+                    })
+                    .catch(error => {
+                        console.error('Error loading frame template:', error);
+                        previewFrameImage.innerHTML = `
+                            <div class="flex flex-col items-center justify-center w-full h-full text-red-500">
+                                <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <p class="text-center">Failed to load frame template.</p>
+                            </div>
+                        `;
+
+                        // Create 3 dummy slots instead
+                        for (let i = 0; i < 3; i++) {
+                            const dummySlot = document.createElement('div');
+                            dummySlot.className = 'photo-slot';
+                            dummySlot.style.width = '100px';
+                            dummySlot.style.height = '100px';
+                            dummySlot.style.position = 'absolute';
+                            dummySlot.style.top = `${25 + (i * 30)}%`;
+                            dummySlot.style.left = '50%';
+                            dummySlot.style.transform = 'translate(-50%, -50%)';
+                            dummySlot.style.backgroundColor = 'rgba(0,0,0,0.2)';
+                            previewFrameImage.appendChild(dummySlot);
+
+                            // Add img element
+                            const img = document.createElement('img');
+                            dummySlot.appendChild(img);
+                            window.photoSlots.push(img);
+                        }
+                    });
+            } else {
+                // Handle case with no frame ID
+                const frameImageElement = frameCard.querySelector('img');
+                let frameImageSrc = '';
+
+                if (frameImageElement && frameImageElement.src) {
+                    frameImageSrc = frameImageElement.src;
+                }
+
+                previewFrameImage.innerHTML = `
+                    <div class="w-full h-full flex items-center justify-center">
+                        ${frameImageSrc ? `<img src="${frameImageSrc}" alt="Frame" class="max-w-full max-h-full object-contain">` : '<div class="text-gray-400 text-5xl">🖼️</div>'}
+                    </div>
+                `;
+
+                // Initialize photo slots
+                initializePhotoSlots(previewFrameImage);
+            }
+
+            // Initialize camera
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: {
+                                ideal: 640
+                            },
+                            height: {
+                                ideal: 480
+                            },
+                            aspectRatio: 4 / 3
+                        }
+                    })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        window.stream = stream;
+                        video.onloadedmetadata = function(e) {
+                            video.play();
+                        };
+                    })
+                    .catch(err => {
+                        console.error("Error accessing webcam: " + err);
+                        handleCameraError(video, captureButton);
+                    });
+            } else {
+                console.error("getUserMedia not supported");
+                alert("Your browser doesn't support camera access. Please try a different browser.");
+            }
+
+            // Setup modal close handlers
+            const modalClose = modal.querySelector('.modal-close');
+            modalClose.addEventListener('click', closePreviewCameraModal);
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closePreviewCameraModal();
+                }
+            });
+
+            // Setup capture button
+            captureButton.addEventListener('click', startPhotoSession);
+        }
+
+        function initializePhotoSlots(frameElement) {
+            console.log("Initializing photo slots");
+
+            // Clear previous photo slots data
+            window.photoSlots = [];
+
+            // Remove any existing photo slots for a clean start
+            const existingSlots = frameElement.querySelectorAll('.photo-slot');
+            existingSlots.forEach(slot => slot.remove());
+
+            // Create 3 photo slots with the same dimensions and positions as in index.blade.php
+            const slotPositions = [{
+                    top: '20%',
+                    left: '50%'
+                }, // First slot position
+                {
+                    top: '47%',
+                    left: '50%'
+                }, // Second slot position
+                {
+                    top: '74%',
+                    left: '50%'
+                } // Third slot position
+            ];
+
+            // Create 3 photo slots
+            for (let i = 0; i < 3; i++) {
+                const photoSlot = document.createElement('div');
+                photoSlot.className = 'photo-slot';
+                photoSlot.style.width = '150px'; // Same width as in booth
+                photoSlot.style.height = '100px'; // Same height as in booth
+                photoSlot.style.position = 'absolute';
+                photoSlot.style.top = slotPositions[i].top;
+                photoSlot.style.left = slotPositions[i].left;
+                photoSlot.style.transform = 'translate(-50%, -50%)';
+                photoSlot.style.backgroundColor = '#e6e6e6';
+                photoSlot.style.borderRadius = '4px';
+
+                // Create the image element for this slot
+                const img = document.createElement('img');
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                img.style.display = 'none';
+                photoSlot.appendChild(img);
+
+                // Add the slot to the frame
+                frameElement.appendChild(photoSlot);
+
+                // Add to photoSlots array
+                window.photoSlots.push(img);
+            }
+        }
+
+        function processPhotoSlot(slot) {
+            // Find the img element or create one if it doesn't exist
+            let img = slot.querySelector('img');
+            if (!img) {
+                img = document.createElement('img');
+                slot.appendChild(img);
+            }
+
+            // Reset the image
+            img.src = "";
+            img.style.display = "none";
+
+            // Add to photoSlots array
+            window.photoSlots.push(img);
+        }
+
+
+
+        function handleNoFrameId(frameCard, previewFrameImage) {
+            // Extract frame image from the card
+            const frameImageElement = frameCard.querySelector('img');
+            let frameImageSrc = '';
+
+            if (frameImageElement && frameImageElement.src) {
+                frameImageSrc = frameImageElement.src;
+            }
+
+            // Create a basic frame display with the image
+            previewFrameImage.innerHTML = `
+        <div class="w-full h-full flex items-center justify-center">
+            ${frameImageSrc ? `<img src="${frameImageSrc}" alt="Frame" class="max-w-full max-h-full object-contain">` : '<div class="text-gray-400 text-5xl">🖼️</div>'}
+        </div>
+    `;
+
+            // Initialize photo slots using our improved function
+            initializePhotoSlots(previewFrameImage);
+        }
+
+        function handleCameraError(video, captureButton) {
+            const videoContainer = video.parentElement;
+            videoContainer.innerHTML = `
+        <div class="flex flex-col items-center justify-center w-full h-full bg-black text-white p-4">
+            <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <p class="text-lg mb-2">Camera Access Denied</p>
+            <p class="text-sm text-center">Please allow camera access in your browser settings to use this feature.</p>
+        </div>
+        `;
+
+            // Disable capture button
+            captureButton.disabled = true;
+        }
+
+        function resetModalState() {
+            const countdownOverlay = document.getElementById('previewCountdownOverlay');
+            const captureButton = document.getElementById('previewCaptureButton');
+
+            // Reset photo slots
+            if (window.photoSlots) {
+                window.photoSlots.forEach(slot => {
+                    slot.src = '';
+                    slot.style.display = 'none';
+                });
+            }
+            window.photoSlots = [];
+
+            // Reset elemen lain
+            if (countdownOverlay) {
+                countdownOverlay.textContent = '';
+                countdownOverlay.style.display = 'none';
+                countdownOverlay.style.backgroundColor = 'transparent';
+            }
+            if (captureButton) {
+                captureButton.textContent = "📷 Mulai Sesi Foto";
+                captureButton.disabled = false;
+            }
+
+            // Bersihkan countdown yang sedang berjalan
+            if (window.timer) {
+                clearInterval(window.timer);
+                window.timer = null;
+            }
+        }
+
+        function closePreviewCameraModal() {
+            const modal = document.getElementById('previewCameraModal');
+            const video = document.getElementById('previewVideo');
+
+            // Stop all camera tracks
+            if (video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+
+            // Reset modal state
+            resetModalState();
+
+            // Hide modal
+            modal.style.display = 'none';
+        }
+
+        function addScriptIfNeeded() {
+            // Check if html2canvas script is already loaded
+            if (!window.html2canvas) {
+                const html2canvasScript = document.createElement('script');
+                html2canvasScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                html2canvasScript.async = true;
+                document.head.appendChild(html2canvasScript);
+            }
+        }
+
+        function startPhotoSession() {
+            const video = document.getElementById('previewVideo');
+            const captureButton = document.getElementById('previewCaptureButton');
+            const countdownOverlay = document.getElementById('previewCountdownOverlay');
+
+            // Clear any existing photos first
+            if (window.photoSlots) {
+                window.photoSlots.forEach(img => {
+                    img.src = '';
+                    img.style.display = 'none';
+                });
+            }
+
+            // Disable tombol selama sesi
+            captureButton.disabled = true;
+            captureButton.textContent = "Sedang mengambil foto...";
+
+            let photosLeft = 3; // Jumlah foto yang akan diambil
+            let currentPhoto = 0; // Indeks slot foto saat ini
+
+            // Fungsi untuk memulai countdown per foto
+            function startCountdown() {
+                let countdown = 3; // Mulai dari 3
+                countdownOverlay.textContent = countdown;
+                countdownOverlay.style.display = 'flex';
+                countdownOverlay.style.backgroundColor = 'transparent'; // Reset efek flash
+
+                // Interval untuk countdown
+                const countdownTimer = setInterval(() => {
+                    countdown--;
+
+                    if (countdown > 0) {
+                        // Update tampilan countdown
+                        countdownOverlay.textContent = countdown;
+                    } else if (countdown === 0) {
+                        // Tampilkan "Snap!" saat countdown mencapai 0
+                        countdownOverlay.textContent = 'Snap!';
+                    } else {
+                        // Ambil foto
+                        takePhoto(currentPhoto);
+                        currentPhoto++;
+                        photosLeft--;
+
+                        // Bersihkan interval setelah foto diambil
+                        clearInterval(countdownTimer);
+
+                        if (photosLeft > 0) {
+                            // Mulai countdown untuk foto berikutnya
+                            setTimeout(startCountdown, 500); // Jeda singkat antar foto
+                        } else {
+                            // Sesi selesai
+                            countdownOverlay.style.display = 'none';
+                            captureButton.textContent = "Selesai! Klik untuk ulang";
+                            captureButton.disabled = false;
+                        }
+                    }
+                }, 1000); // Interval 1 detik
+            }
+
+            // Mulai countdown untuk foto pertama
+            startCountdown();
+        }
+
+        function takePhoto(slotIndex) {
+            const video = document.getElementById('previewVideo');
+            const countdownOverlay = document.getElementById('previewCountdownOverlay');
+
+            // Efek flash
+            countdownOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+            countdownOverlay.textContent = '';
+
+            // Buat canvas untuk menangkap frame dari video
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+
+            // Flip gambar secara horizontal (efek cermin)
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+
+            // Gambar frame video ke canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Konversi canvas ke data URL
+            const photoDataUrl = canvas.toDataURL('image/jpeg');
+
+            // Tambahkan foto ke slot yang sesuai
+            if (window.photoSlots && window.photoSlots[slotIndex]) {
+                window.photoSlots[slotIndex].src = photoDataUrl;
+                window.photoSlots[slotIndex].style.display = 'block';
+            }
+
+            // Hilangkan efek flash setelah 200ms
+            setTimeout(() => {
+                countdownOverlay.style.backgroundColor = 'transparent';
+                countdownOverlay.textContent = '';
+            }, 200); // Durasi flash lebih lama untuk visibilitas
+        }
+    </script>
 
 @endsection

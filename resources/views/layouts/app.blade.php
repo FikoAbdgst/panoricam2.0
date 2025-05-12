@@ -13,8 +13,8 @@
     @include('components.navbar')
 
     <main>
-        @yield('hero section')
-        @yield('content section')
+        @yield('hero_section')
+        @yield('content_section')
     </main>
 
     @stack('scripts')
