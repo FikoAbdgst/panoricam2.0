@@ -46,4 +46,15 @@ class HomeController extends Controller
         // Return the rendered view
         return view($templatePath, compact('frame'))->render();
     }
+
+    public function getFrameStatus(Request $request, $frameId)
+    {
+        $frame = Frame::findOrFail($frameId);
+
+        return response()->json([
+            'id' => $frame->id,
+            'status' => $frame->status,
+            'isPaid' => $frame->status === Frame::STATUS_PAID
+        ]);
+    }
 }

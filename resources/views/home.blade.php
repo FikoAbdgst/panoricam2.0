@@ -85,6 +85,44 @@
             justify-content: center;
         }
 
+        /* Watermark styles for paid frames */
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .watermark-text {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .watermark-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(45deg,
+                    rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.1) 10px,
+                    transparent 10px,
+                    transparent 20px);
+            opacity: 0.3;
+        }
+
         /* Button styles */
         #previewCaptureButton:disabled {
             opacity: 0.7;
@@ -156,6 +194,42 @@
 
         .photo-slot img[src]:not([src=""]) {
             display: block;
+        }
+
+        /* Watermark Styles */
+        #previewWatermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.4;
+            /* TransmediaDevices: Transparansi watermark */
+            transition: opacity 1.5s ease;
+            display: none;
+            /* Sembunyikan secara default */
+        }
+
+        #previewWatermark.show {
+            display: flex;
+            /* Tampilkan saat frame berbayar */
+        }
+
+        #previewWatermark .watermark-content {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #previewWatermark .watermark-content span {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         /* Adding keyframes animation for modal */
@@ -360,6 +434,11 @@
                 <div class="w-full md:w-3/5">
                     <div class="relative bg-gray-100 rounded-lg overflow-hidden" style="aspect-ratio: 4/3;">
                         <video id="previewVideo" autoplay muted class="w-full h-full object-cover scale-x-[-1]"></video>
+                        <div id="previewWatermark" class="hidden">
+                            <div class="watermark-content">
+                                <img src="{{ asset('logo4.png') }}" alt="Logo" class="h-10">
+                            </div>
+                        </div>
                         <div id="previewCountdownOverlay"
                             class="absolute inset-0 flex items-center justify-center text-6xl font-bold text-white/90">
                         </div>
@@ -383,6 +462,7 @@
         </div>
     </div>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Scrolling functionality
@@ -391,6 +471,7 @@
                     behavior: 'smooth'
                 });
             });
+
 
             // Category link handling
             document.querySelectorAll('.category-link').forEach(link => {
@@ -499,10 +580,16 @@
             const previewFrameContainer = document.getElementById('previewFrameContainer');
             const previewFrameImage = document.getElementById('previewFrameImage');
             const captureButton = document.getElementById('previewCaptureButton');
+            const watermark = document.getElementById('previewWatermark');
 
             // Reset modal state
             resetModalState();
 
+            // Hide watermark initially
+            if (watermark) {
+                watermark.classList.add('hidden');
+                watermark.classList.remove('show');
+            }
             // Show the modal
             modal.style.display = 'flex';
 
@@ -526,6 +613,9 @@
                 // Show loading state
                 previewFrameImage.innerHTML =
                     '<div class="flex items-center justify-center w-full h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div></div>';
+
+                // Add this line to fetch frame status
+                fetchFrameDetails(frameId);
 
                 // Fetch the frame template
                 fetch(`/get-frame-template/${frameId}`)
@@ -743,6 +833,7 @@
         function resetModalState() {
             const countdownOverlay = document.getElementById('previewCountdownOverlay');
             const captureButton = document.getElementById('previewCaptureButton');
+            const watermark = document.getElementById('previewWatermark');
 
             // Reset photo slots
             if (window.photoSlots) {
@@ -753,7 +844,13 @@
             }
             window.photoSlots = [];
 
-            // Reset elemen lain
+            // Reset watermark
+            if (watermark) {
+                watermark.classList.add('hidden');
+                watermark.classList.remove('show');
+            }
+
+            // Reset other elements
             if (countdownOverlay) {
                 countdownOverlay.textContent = '';
                 countdownOverlay.style.display = 'none';
@@ -764,7 +861,7 @@
                 captureButton.disabled = false;
             }
 
-            // Bersihkan countdown yang sedang berjalan
+            // Clear any running countdown
             if (window.timer) {
                 clearInterval(window.timer);
                 window.timer = null;
@@ -865,6 +962,7 @@
         function takePhoto(slotIndex) {
             const video = document.getElementById('previewVideo');
             const countdownOverlay = document.getElementById('previewCountdownOverlay');
+            const watermark = document.getElementById('previewWatermark');
 
             // Efek flash
             countdownOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
@@ -883,20 +981,88 @@
             // Gambar frame video ke canvas
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Konversi canvas ke data URL
-            const photoDataUrl = canvas.toDataURL('image/jpeg');
+            // Reset transformasi untuk watermark
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-            // Tambahkan foto ke slot yang sesuai
-            if (window.photoSlots && window.photoSlots[slotIndex]) {
-                window.photoSlots[slotIndex].src = photoDataUrl;
-                window.photoSlots[slotIndex].style.display = 'block';
-            }
+            // Fungsi untuk menambahkan watermark
+            const addWatermark = () => {
+                return new Promise((resolve) => {
+                    if (watermark && watermark.classList.contains('show')) {
+                        ctx.save();
+                        ctx.translate(canvas.width / 2, canvas.height / 2);
+                        ctx.globalAlpha = 0.4; // Transparansi watermark
 
-            // Hilangkan efek flash setelah 200ms
-            setTimeout(() => {
-                countdownOverlay.style.backgroundColor = 'transparent';
-                countdownOverlay.textContent = '';
-            }, 200); // Durasi flash lebih lama untuk visibilitas
+
+                        // Gambar logo
+                        const logo = new Image();
+                        logo.src = '{{ asset('logo4.png') }}';
+                        logo.onload = () => {
+                            ctx.drawImage(logo, -60, -20, 140, 80); // Sesuaikan ukuran dan posisi logo
+                            ctx.restore();
+                            resolve();
+                        };
+                        logo.onerror = () => {
+                            console.error('Failed to load watermark logo');
+                            ctx.restore();
+                            resolve(); // Lanjutkan meskipun logo gagal dimuat
+                        };
+                    } else {
+                        resolve(); // Tidak ada watermark, lanjutkan
+                    }
+                });
+            };
+
+            // Tambahkan watermark dan simpan foto
+            addWatermark().then(() => {
+                // Konversi canvas ke data URL
+                const photoDataUrl = canvas.toDataURL('image/jpeg');
+
+                // Tambahkan foto ke slot yang sesuai
+                if (window.photoSlots && window.photoSlots[slotIndex]) {
+                    window.photoSlots[slotIndex].src = photoDataUrl;
+                    window.photoSlots[slotIndex].style.display = 'block';
+                }
+
+                // Hilangkan efek flash setelah 200ms
+                setTimeout(() => {
+                    countdownOverlay.style.backgroundColor = 'transparent';
+                    countdownOverlay.textContent = '';
+                }, 200);
+            });
+        }
+
+        function fetchFrameDetails(frameId) {
+            return fetch(`/get-frame-status/${frameId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Show/hide watermark based on frame status
+                    const watermark = document.getElementById('previewWatermark');
+                    if (watermark) {
+                        if (data.status === 'paid') {
+                            watermark.classList.add('show');
+                            watermark.classList.remove('hidden');
+                        } else {
+                            watermark.classList.add('hidden');
+                            watermark.classList.remove('show');
+                        }
+                    }
+                    return data;
+                })
+                .catch(error => {
+                    console.error('Error fetching frame status:', error);
+                    // Default: hide watermark on error
+                    const watermark = document.getElementById('previewWatermark');
+                    if (watermark) {
+                        watermark.classList.add('hidden');
+                        watermark.classList.remove('show');
+                    }
+                    return null;
+                });
         }
     </script>
 

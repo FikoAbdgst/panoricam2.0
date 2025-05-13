@@ -16,6 +16,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/get-frame-template/{frame_id}', [HomeController::class, 'getFrameTemplate'])->name('getFrameTemplate');
 Route::post('/savePhoto', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');
 Route::post('/save-frame-photos', [HomeController::class, 'saveFramePhotos'])->name('saveFramePhotos');
+Route::get('/get-frame-status/{frame_id}', [HomeController::class, 'getFrameStatus'])->name('getFrameStatus');
 
 // Rute autentikasi admin
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
