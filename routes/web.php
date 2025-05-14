@@ -54,6 +54,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
+Route::get('/maintenance', function () {
+    return view('maintenance'); // Pastikan view 'maintenance.blade.php' ada
+})->name('maintenance');
 
 Route::get('/about', function () {
     return view('about');

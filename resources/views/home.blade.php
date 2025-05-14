@@ -319,7 +319,7 @@
                                         <span class="text-lg mr-2">{{ $frame->category->icon }}</span>
                                         <span class="text-sm text-gray-600">{{ $frame->category->name }}</span>
                                     </div>
-                                    <a href="{{ route('booth', ['frame_id' => $frame->id]) }}"
+                                    <a href="{{ $frame->status === 'paid' ? route('maintenance') : route('booth', ['frame_id' => $frame->id]) }}"
                                         class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
                                         Gunakan Frame
                                     </a>
