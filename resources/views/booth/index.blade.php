@@ -16,7 +16,7 @@
 <body class="m-0 font-['Poppins'] bg-pink-50 flex flex-col items-center p-5">
     <header class="w-[90%] mx-auto my-5 p-5 px-12 flex justify-between items-center bg-white shadow-lg rounded-2xl">
         <div class="logo">
-            <img src="/img/logo4.png" alt="Logo" class="h-12">
+            <img src="logo4.png" alt="Logo" class="h-12">
         </div>
         <nav>
             <a href="{{ route('home') }}"
@@ -26,9 +26,9 @@
         </nav>
     </header>
 
-    <div
+    <div 
         class="w-[90%] max-w-[1200px] bg-[url('bg.png')] bg-cover bg-center p-10 mt-1 rounded-3xl shadow-lg flex flex-col items-center">
-        <h1 class="mb-5 font-semibold text-gray-800 text-5xl">
+        <h1 class="mb-5 font-semibold text-gray-800 text-5xl p-4 bg-white rounded-lg">
             <span class="text-red-600">C</span><span class="text-pink-300">A</span><span
                 class="text-green-400">P</span><span class="text-yellow-300">T</span><span
                 class="text-blue-300">U</span><span class="text-purple-400">R</span><span
@@ -37,6 +37,8 @@
                 class="text-orange-300">M</span><span class="text-purple-400">E</span><span
                 class="text-pink-300">!</span>
         </h1>
+
+
 
         <div class="flex gap-8 flex-wrap items-start justify-center">
             <div class="relative w-[660px] h-[500px]">
@@ -57,12 +59,26 @@
 
         <div id="timer" class="text-3xl font-bold text-gray-700 mt-4"></div>
 
-        <div class="mt-5 flex gap-3 flex-wrap justify-center">
+        <div class="mt-5 flex gap-3 flex-wrap justify-center font-medium">
             <button id="captureButton"
-                class="bg-pink-200 text-black border-none py-4 px-8 text-base font-bold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-pink-400 hover:scale-105">📷
-                Take Photo</button>
+                class="bg-white text-black border-2 border-pink-300 py-4 px-8 text-base font-semibold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-pink-300 hover:scale-105">
+            <span class="text-red-600">S</span>
+            <span class="text-pink-500">t</span>
+            <span class="text-green-400">a</span>
+            <span class="text-yellow-500">r</span>
+            <span class="text-blue-300">t</span>
+            <span class="text-purple-400"> </span>
+            <span class="text-yellow-500">C</span>
+            <span class="text-blue-400">a</span>
+            <span class="text-green-500">p</span>
+            <span class="text-orange-500">t</span>
+            <span class="text-purple-400">u</span>
+            <span class="text-pink-400">r</span>
+            <span class="text-red-600">e</span>
+        </button>
+
             <select id="filterSelect"
-                class="py-3.5 px-3 rounded-xl bg-pink-200 border-none text-base font-bold cursor-pointer transition-all duration-300 ease-in-out hover:bg-pink-400">
+                class="py-3.5 px-3 rounded-xl bg-pink-200 text-base font-medium cursor-pointer border-2 border-pink-00 transition-all duration-300 ease-in-out hover:bg-pink-300">
                 <option value="none">No Filter</option>
                 <option value="grayscale(100%)">Grayscale</option>
                 <option value="sepia(100%)">Sepia</option>
@@ -70,9 +86,12 @@
                 <option value="brightness(120%)">Bright</option>
             </select>
             <button id="finishButton"
-                class="hidden bg-green-600 text-white border-none py-4 px-8 text-base font-bold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-green-700 hover:scale-105">✅
-                Selesai</button>
+                class="hidden bg-green-500 text-white border-2 border-green-700 py-4 px-8 text-base font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-green-700 hover:scale-105">
+                Selesai!
+            </button>
         </div>
+
+
     </div>
 
     <!-- Modal for photostrip preview -->
@@ -92,13 +111,13 @@
 
             <div class="flex gap-4 mt-5">
                 <button id="modalResetButton"
-                    class="bg-red-600 text-white border-none py-4 px-8 text-base font-bold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-red-700 hover:scale-105">🔁
+                    class="bg-red-600 text-white border-none py-4 px-8 text-base font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-red-700 hover:scale-105">🔁
                     Reset All</button>
                 <button id="modalDownloadButton"
-                    class="bg-green-600 text-white border-none py-4 px-8 text-base font-bold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-green-700 hover:scale-105">⬇
+                    class="bg-green-600 text-white border-none py-4 px-8 text-base font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-green-700 hover:scale-105">⬇
                     Download</button>
                 <button id="modalShareButton"
-                    class="bg-blue-600 text-white border-none py-4 px-8 text-base font-bold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700 hover:scale-105">📤
+                    class="bg-blue-600 text-white border-none py-4 px-8 text-base font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700 hover:scale-105">📤
                     Share</button>
             </div>
         </div>
@@ -255,7 +274,7 @@
             retakeButtons[currentPhotoIndex].setAttribute('data-has-photo', 'true');
 
             // Change button text back
-            captureButton.textContent = "📷 Take Photo";
+            captureButton.textContent = "Start Capture";
             capturing = false;
 
             // Check if all photos are taken
