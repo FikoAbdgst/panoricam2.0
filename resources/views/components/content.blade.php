@@ -1,6 +1,5 @@
 <!-- resources/views/content.blade.php -->
 <style>
-    /* Salin style dari frame.blade.php */
     #previewCountdownOverlay {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         transition: opacity 0.3s ease, background-color 0.2s ease;

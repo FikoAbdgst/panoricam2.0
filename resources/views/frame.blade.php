@@ -213,7 +213,7 @@
             <div
                 class="mb-16 backdrop-blur-sm bg-[#FEF3E2] bg-opacity-80 rounded-2xl shadow-md p-8 transform transition-all duration-300">
                 <div class="flex flex-wrap gap-6 justify-center">
-                    <a href="{{ route('home') }}" class="category-link group text-center">
+                    <a href="{{ route('frametemp') }}" class="category-link group text-center">
                         <div
                             class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#FEF3E2] flex items-center justify-center
                           shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group-hover:bg-red-50
@@ -225,7 +225,7 @@
                     </a>
 
                     @foreach ($categories as $category)
-                        <a href="{{ route('home', ['category' => $category->id]) }}"
+                        <a href="{{ route('frametemp', ['category' => $category->id]) }}"
                             class="group text-center category-link">
                             <div
                                 class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#FEF3E2] flex items-center justify-center
@@ -494,13 +494,14 @@
                 });
             });
 
-
             // Category link handling
             document.querySelectorAll('.category-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const url = this.href;
                     const scrollPosition = window.scrollY;
+
+                    console.log('Category link clicked:', url);
 
                     fetch(url)
                         .then(response => response.text())
@@ -510,18 +511,16 @@
                             const newContent = doc.querySelector('.content_section');
 
                             if (newContent) {
-                                // Update content
                                 document.querySelector('.content_section').outerHTML =
                                     newContent.outerHTML;
-                                // Update URL without reload
                                 window.history.pushState({}, '', url);
-                                // Restore scroll position
                                 window.scrollTo(0, scrollPosition);
-                                // Re-attach event listeners
                                 attachCategoryListeners();
                                 setupFrameCards();
+                                console.log('Content updated, frame cards re-initialized');
                             }
-                        });
+                        })
+                        .catch(error => console.error('Error fetching category:', error));
                 });
             });
 
@@ -552,7 +551,8 @@
                                     attachCategoryListeners();
                                     setupFrameCards();
                                 }
-                            });
+                            })
+                            .catch(error => console.error('Error fetching category:', error));
                     });
                 });
             }
@@ -560,54 +560,52 @@
             // Setup frame cards and preview functionality
             setupFrameCards();
 
-            // Create html2canvas script if needed
+            // Load html2canvas if not already present
             if (!window.html2canvas) {
                 const script = document.createElement('script');
                 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
                 script.async = true;
                 document.head.appendChild(script);
+                console.log('Loading html2canvas script...');
             }
         });
 
         function setupFrameCards() {
-            // Add preview button to each frame card
             const frameCards = document.querySelectorAll('.frame-card');
+            console.log(`Found ${frameCards.length} frame cards`);
 
             frameCards.forEach(card => {
                 const overlay = card.querySelector('.group-hover\\:opacity-100');
-                const frameId = card.dataset.frameId; // Get frame ID from data attribute
+                const frameId = card.dataset.frameId;
 
-                // Create or update preview button
-                let previewBtn = overlay.querySelector('button');
+                if (!overlay) {
+                    console.warn('Overlay not found for frame card:', card);
+                    return;
+                }
+
+                let previewBtn = overlay.querySelector('.preview-button');
                 if (!previewBtn) {
                     previewBtn = document.createElement('button');
                     previewBtn.className =
                         'px-4 py-2 bg-white/90 text-gray-800 rounded-full font-medium hover:bg-red-50 transition-colors duration-300 transform hover:scale-105 preview-button';
                     previewBtn.textContent = 'Preview';
-
-                    // Add frame ID to the button as data attribute for easier access
-                    if (frameId) {
-                        previewBtn.dataset.frameId = frameId;
-                    }
-
+                    previewBtn.dataset.frameId = frameId;
                     overlay.appendChild(previewBtn);
+                    console.log('Created preview button for frame ID:', frameId);
                 } else {
-                    // Ensure existing button has frameId
                     if (frameId && !previewBtn.dataset.frameId) {
                         previewBtn.dataset.frameId = frameId;
+                        console.log('Updated preview button with frame ID:', frameId);
                     }
                 }
 
-                // Remove existing event listeners and add new one
+                // Remove existing listeners to prevent duplicates
                 previewBtn.removeEventListener('click', openPreviewCameraModal);
-                previewBtn.addEventListener('click', openPreviewCameraModal);
+                previewBtn.addEventListener('click', function(e) {
+                    console.log('Preview button clicked for frame ID:', frameId);
+                    openPreviewCameraModal(e);
+                });
             });
-
-            // Debug logging - count how many cards have frame IDs
-            const cardsWithIds = document.querySelectorAll('.frame-card[data-frame-id]');
-            console.log(
-                `Found ${cardsWithIds.length} frame cards with data-frame-id attributes out of ${frameCards.length} total cards`
-            );
         }
 
         function openPreviewCameraModal(e) {
@@ -685,13 +683,13 @@
                     .catch(error => {
                         console.error('Error loading frame template:', error);
                         const errorContent = `
-                    <div class="flex flex-col items-center justify-center w-full h-full text-red-500">
-                        <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <p class="text-center">Failed to load frame template.</p>
-                    </div>
-                `;
+                        <div class="flex flex-col items-center justify-center w-full h-full text-red-500">
+                            <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <p class="text-center">Failed to load frame template.</p>
+                        </div>
+                    `;
                         previewFrameImage.innerHTML = errorContent;
                         mobilePreviewFrameImage.innerHTML = errorContent;
                         createDummySlots(previewFrameImage);
@@ -700,14 +698,14 @@
             } else {
                 console.error('No frame ID found');
                 const errorContent = `
-            <div class="flex flex-col items-center justify-center w-full h-full text-red-500">
-                <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
-                <p class="text-center">Cannot preview frame: No frame ID found.</p>
-                <p class="text-center text-sm mt-2">Please try again or select a different frame.</p>
-            </div>
-        `;
+                <div class="flex flex-col items-center justify-center w-full h-full text-red-500">
+                    <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <p class="text-center">Cannot preview frame: No frame ID found.</p>
+                    <p class="text-center text-sm mt-2">Please try again or select a different frame.</p>
+                </div>
+            `;
                 previewFrameImage.innerHTML = errorContent;
                 mobilePreviewFrameImage.innerHTML = errorContent;
             }
@@ -748,82 +746,28 @@
 
             const modalCloseButtons = modal.querySelectorAll('.modal-close');
             modalCloseButtons.forEach(btn => {
-                btn.removeEventListener('click', closePreviewCameraModal); // Prevent duplicate listeners
+                btn.removeEventListener('click', closePreviewCameraModal);
                 btn.addEventListener('click', closePreviewCameraModal);
             });
 
             window.removeEventListener('click', handleModalBackdropClick);
             window.addEventListener('click', handleModalBackdropClick);
 
-            // Add capture button listeners
             captureButton.addEventListener('click', () => startPhotoSession(false));
             mobileCaptureButton.addEventListener('click', () => startPhotoSession(true));
 
             enableDragToClose(mobileModalContainer);
         }
-        previewFrameImage.innerHTML = errorContent;
-        mobilePreviewFrameImage.innerHTML = errorContent;
-        }
 
-        // Initialize camera for both desktop and mobile
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: {
-                            ideal: 640
-                        },
-                        height: {
-                            ideal: 480
-                        },
-                        aspectRatio: 4 / 3
-                    }
-                })
-                .then(stream => {
-                    // Set for both desktop and mobile video elements
-                    video.srcObject = stream;
-                    mobileVideo.srcObject = stream;
-                    window.stream = stream;
-
-                    video.onloadedmetadata = function() {
-                        video.play();
-                    };
-                    mobileVideo.onloadedmetadata = function() {
-                        mobileVideo.play();
-                    };
-                })
-                .catch(err => {
-                    console.error("Error accessing webcam: " + err);
-                    handleCameraError(video, captureButton);
-                    handleCameraError(mobileVideo, mobileCaptureButton);
-                });
-        } else {
-            console.error("getUserMedia not supported");
-            alert("Your browser doesn't support camera access. Please try a different browser.");
-        }
-
-        // Setup modal close handlers
-        const modalCloseButtons = modal.querySelectorAll('.modal-close');
-        modalCloseButtons.forEach(btn => {
-            btn.addEventListener('click', closePreviewCameraModal);
-        });
-
-        window.addEventListener('click', (e) => {
+        function handleModalBackdropClick(e) {
+            const modal = document.getElementById('previewCameraModal');
             if (e.target === modal || e.target.classList.contains('modal-backdrop')) {
                 closePreviewCameraModal();
             }
-        });
-
-        // Setup capture buttons for both desktop and mobile
-        captureButton.addEventListener('click', () => startPhotoSession(false));
-        mobileCaptureButton.addEventListener('click', () => startPhotoSession(true));
-
-        // Enable dragging for mobile modal
-        enableDragToClose(mobileModalContainer);
         }
 
         function enableDragToClose(element) {
             if (!element) return;
-
             let startY = 0;
             let currentY = 0;
 
@@ -834,8 +778,6 @@
             element.addEventListener('touchmove', function(e) {
                 currentY = e.touches[0].clientY;
                 const dragDistance = currentY - startY;
-
-                // Only allow dragging down, not up
                 if (dragDistance > 0) {
                     element.style.transform = `translateY(${dragDistance}px)`;
                 }
@@ -843,12 +785,9 @@
 
             element.addEventListener('touchend', function() {
                 const dragDistance = currentY - startY;
-
                 if (dragDistance > 100) {
-                    // Close the modal if dragged down enough
                     closePreviewCameraModal();
                 } else {
-                    // Reset position
                     element.style.transform = '';
                 }
             });
@@ -875,7 +814,6 @@
 
             modalBackdrop.classList.remove('show');
 
-            // Stop video stream
             if (window.stream) {
                 const tracks = window.stream.getTracks();
                 tracks.forEach(track => track.stop());
@@ -884,14 +822,12 @@
                 window.stream = null;
             }
 
-            // Remove event listeners
             const captureButton = document.getElementById('previewCaptureButton');
             const mobileCaptureButton = document.getElementById('mobilePreviewCaptureButton');
             if (captureButton) captureButton.removeEventListener('click', startPhotoSession);
             if (mobileCaptureButton) mobileCaptureButton.removeEventListener('click', startPhotoSession);
             window.removeEventListener('click', handleModalBackdropClick);
 
-            // Reset modal state
             resetModalState();
 
             document.body.classList.remove('modal-open');
@@ -920,11 +856,9 @@
             const previewFrameImage = document.getElementById('previewFrameImage');
             const mobilePreviewFrameImage = document.getElementById('mobilePreviewFrameImage');
 
-            // Reset photo slots
             window.photoSlots = [];
             window.mobilePhotoSlots = [];
 
-            // Clear existing photo slots content
             if (previewFrameImage) {
                 const slots = previewFrameImage.querySelectorAll('.photo-slot');
                 slots.forEach(slot => {
@@ -950,7 +884,6 @@
                 });
             }
 
-            // Reset countdown, capture button, and watermark
             const resetElements = (countdown, capture, mark) => {
                 if (countdown) {
                     countdown.textContent = '';
@@ -961,7 +894,6 @@
                 if (capture) {
                     capture.textContent = "📷 Start Session";
                     capture.disabled = false;
-                    // Remove existing event listeners to prevent duplicate
                     capture.removeEventListener('click', startPhotoSession);
                 }
                 if (mark) {
@@ -973,26 +905,23 @@
             resetElements(countdownOverlay, captureButton, watermark);
             resetElements(mobileCountdownOverlay, mobileCaptureButton, mobileWatermark);
 
-            // Stop any running timers
             if (window.timer) {
                 clearInterval(window.timer);
                 window.timer = null;
             }
 
-            // Reset frame content
             if (previewFrameImage) {
                 previewFrameImage.innerHTML = '<p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>';
             }
             if (mobilePreviewFrameImage) {
                 mobilePreviewFrameImage.innerHTML =
-                    '<p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>';
+                '<p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>';
             }
 
             console.log('Modal state reset');
         }
 
         function createDummySlots(container, isMobile = false) {
-            // Create 3 dummy slots for the container
             for (let i = 0; i < 3; i++) {
                 const dummySlot = document.createElement('div');
                 dummySlot.className = 'photo-slot';
@@ -1005,11 +934,9 @@
                 dummySlot.style.backgroundColor = 'rgba(0,0,0,0.2)';
                 container.appendChild(dummySlot);
 
-                // Add img element
                 const img = document.createElement('img');
                 dummySlot.appendChild(img);
 
-                // Store reference to slots based on container
                 if (isMobile) {
                     if (!window.mobilePhotoSlots) window.mobilePhotoSlots = [];
                     window.mobilePhotoSlots.push(img);
@@ -1022,34 +949,29 @@
 
         function initializePhotoSlots(frameElement, isMobile = false) {
             console.log(`Initializing photo slots for ${isMobile ? 'mobile' : 'desktop'}`);
-
-            // Clear previous photo slots data for the appropriate container
             if (isMobile) {
                 window.mobilePhotoSlots = [];
             } else {
                 window.photoSlots = [];
             }
 
-            // Remove any existing slots
             const existingSlots = frameElement.querySelectorAll('.photo-slot');
             existingSlots.forEach(slot => slot.remove());
 
-            // Create 3 photo slots with the same dimensions and positions
             const slotPositions = [{
                     top: '16%',
                     left: '50%'
-                }, // First slot
+                },
                 {
                     top: '42%',
                     left: '50%'
-                }, // Second slot
+                },
                 {
                     top: '68%',
                     left: '50%'
-                }, // Third slot
+                },
             ];
 
-            // Create slots for this container
             for (let i = 0; i < 3; i++) {
                 const photoSlot = document.createElement('div');
                 photoSlot.className = 'photo-slot';
@@ -1061,7 +983,6 @@
                 photoSlot.style.transform = 'translate(-50%, -50%)';
                 photoSlot.style.backgroundColor = '#e6e6e6';
 
-                // Create the image element
                 const img = document.createElement('img');
                 img.style.width = '100%';
                 img.style.height = '100%';
@@ -1069,10 +990,8 @@
                 img.style.display = 'none';
                 photoSlot.appendChild(img);
 
-                // Add the slot to frame
                 frameElement.appendChild(photoSlot);
 
-                // Add to appropriate slots array
                 if (isMobile) {
                     if (!window.mobilePhotoSlots) window.mobilePhotoSlots = [];
                     window.mobilePhotoSlots.push(img);
@@ -1085,20 +1004,18 @@
 
         function startPhotoSession(isMobile = false) {
             const video = isMobile ? document.getElementById('mobilePreviewVideo') : document.getElementById(
-                'previewVideo');
+            'previewVideo');
             const captureButton = isMobile ? document.getElementById('mobilePreviewCaptureButton') : document
                 .getElementById('previewCaptureButton');
             const countdownOverlay = isMobile ? document.getElementById('mobilePreviewCountdownOverlay') : document
                 .getElementById('previewCountdownOverlay');
-            const photoSlots = isMobile ? window.mobilePhotoSlots : window.photoSlots;
+            const photoslots = isMobile ? window.mobilePhotoSlots : window.photoSlots;
 
-            // Stop any existing timer
             if (window.timer) {
                 clearInterval(window.timer);
                 window.timer = null;
             }
 
-            // Clear photo slots
             if (photoSlots) {
                 photoSlots.forEach(img => {
                     img.src = '';
@@ -1152,10 +1069,9 @@
             startCountdown();
         }
 
-
         function takePhoto(slotIndex, isMobile = false) {
             const video = isMobile ? document.getElementById('mobilePreviewVideo') : document.getElementById(
-                'previewVideo');
+            'previewVideo');
             const countdownOverlay = isMobile ? document.getElementById('mobilePreviewCountdownOverlay') : document
                 .getElementById('previewCountdownOverlay');
             const watermark = isMobile ? document.getElementById('mobilePreviewWatermark') : document.getElementById(
@@ -1164,68 +1080,54 @@
             const frameId = previewCameraModal.getAttribute('data-frame-id');
             const photoSlots = isMobile ? window.mobilePhotoSlots : window.photoSlots;
 
-            // Flash effect
             countdownOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
             countdownOverlay.textContent = '';
             countdownOverlay.classList.add('flash');
 
-            // Create canvas to capture video frame
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             const ctx = canvas.getContext('2d');
 
-            // Flip image horizontally (mirror effect)
             ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
-
-            // Draw video frame to canvas
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Reset transform for watermark
             ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-            // Function to add watermark
             const addWatermark = () => {
                 return new Promise((resolve) => {
                     if (watermark && watermark.classList.contains('show')) {
                         ctx.save();
                         ctx.translate(canvas.width / 2, canvas.height / 2);
-                        ctx.globalAlpha = 0.4; // Watermark transparency
+                        ctx.globalAlpha = 0.4;
 
-                        // Draw logo
                         const logo = new Image();
                         logo.src = '{{ asset('logo.png') }}';
                         logo.onload = () => {
-                            ctx.drawImage(logo, -60, -20, 140, 80); // Adjust logo size and position
+                            ctx.drawImage(logo, -60, -20, 140, 80);
                             ctx.restore();
                             resolve();
                         };
                         logo.onerror = () => {
                             console.error('Failed to load watermark logo');
                             ctx.restore();
-                            resolve(); // Continue even if logo fails to load
+                            resolve();
                         };
                     } else {
-                        resolve(); // No watermark, continue
+                        resolve();
                     }
                 });
             };
 
-            // Add watermark and save photo
             addWatermark().then(() => {
-                // Convert canvas to data URL
                 const photoDataUrl = canvas.toDataURL('image/jpeg');
 
-                // Add photo to appropriate slot
                 if (photoSlots && photoSlots[slotIndex]) {
                     const img = photoSlots[slotIndex];
                     img.src = photoDataUrl;
                     img.style.display = 'block';
 
-                    // If paid frame, add watermark to slot image
                     if (watermark && watermark.classList.contains('show')) {
-                        // Create watermark wrapper if needed
                         const slotParent = img.parentElement;
                         let watermarkElem = slotParent.querySelector('.slot-watermark');
 
@@ -1258,13 +1160,11 @@
                             watermarkElem.appendChild(watermarkContent);
                             slotParent.appendChild(watermarkElem);
                         } else {
-                            // Show existing watermark
                             watermarkElem.style.display = 'block';
                         }
                     }
                 }
 
-                // Hilangkan efek flash setelah 200ms
                 setTimeout(() => {
                     countdownOverlay.style.backgroundColor = 'transparent';
                     countdownOverlay.textContent = '';
@@ -1273,19 +1173,16 @@
         }
 
         function fetchFrameDetails(frameId) {
+            console.log('Fetching frame details for ID:', frameId);
             return fetch(`/get-frame-status/${frameId}`)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     return response.json();
                 })
                 .then(data => {
-                    // Show/hide watermark based on frame price for BOTH desktop and mobile
                     const watermark = document.getElementById('previewWatermark');
                     const mobileWatermark = document.getElementById('mobilePreviewWatermark');
 
-                    // Apply watermark visibility to both desktop and mobile elements
                     const applyWatermarkVisibility = (element) => {
                         if (element) {
                             if (data.price > 0) {
@@ -1298,15 +1195,14 @@
                         }
                     };
 
-                    // Apply to both elements
                     applyWatermarkVisibility(watermark);
                     applyWatermarkVisibility(mobileWatermark);
+                    console.log('Frame status fetched:', data);
 
                     return data;
                 })
                 .catch(error => {
                     console.error('Error fetching frame status:', error);
-                    // Default: hide watermark on error for both desktop and mobile
                     const watermark = document.getElementById('previewWatermark');
                     const mobileWatermark = document.getElementById('mobilePreviewWatermark');
 
@@ -1314,14 +1210,27 @@
                         watermark.classList.add('hidden');
                         watermark.classList.remove('show');
                     }
-
                     if (mobileWatermark) {
                         mobileWatermark.classList.add('hidden');
                         mobileWatermark.classList.remove('show');
                     }
-
                     return null;
                 });
+        }
+
+        function handleCameraError(video, captureButton) {
+            video.style.display = 'none';
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'flex flex-col items-center justify-center w-full h-full text-red-500';
+            errorMessage.innerHTML = `
+            <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <p>Gagal mengakses kamera. Silakan periksa izin kamera atau coba browser lain.</p>
+        `;
+            video.parentElement.appendChild(errorMessage);
+            captureButton.disabled = true;
+            captureButton.textContent = 'Kamera Tidak Tersedia';
         }
     </script>
 
