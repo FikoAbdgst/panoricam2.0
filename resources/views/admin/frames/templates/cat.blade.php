@@ -21,14 +21,14 @@
             <img id="photo3" src="" class="w-full h-full object-cover">
         </div>
         <button class="retake-button absolute top-1 right-1 text-lg" data-index="2" data-has-photo="false">⟲</button>
-        <div>
-         <img src="{{ asset('meow.png') }}" alt="Meow" class="h-[40px] w-auto ">
     </div>
+
+    <div class="absolute bottom-[55px] left-2 w-full text-center">
+        <img src="{{ asset('meow.png') }}" alt="Meow" class="h-[40px] w-auto ">
     </div>
-    
 
     <!-- Frame Footer -->
-    <div class="absolute bottom-[30px] left-0 w-full text-center">
+    <div class="absolute bottom-[20px] left-0 w-full text-center">
         <img src="{{ asset('meoww.png') }}" alt="Logo" class="h-[40px] w-auto mx-auto">
     </div>
 </div>

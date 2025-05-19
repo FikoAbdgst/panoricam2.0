@@ -11,23 +11,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="m-0 font-['Poppins'] bg-pink-50 flex flex-col items-center p-5">
+<body class="m-0 font-['Poppins'] bg-pink-50 flex flex-col items-center">
     <!-- Header remains unchanged -->
-    <header class="w-[90%] mx-auto my-5 p-5 px-12 flex justify-between items-center bg-white shadow-lg rounded-2xl">
-        <div class="logo">
-            <img src="logo4.png" alt="Logo" class="h-12">
-        </div>
-        <nav>
-            <a href="{{ route('home') }}"
-                class="ml-8 no-underline text-gray-600 font-medium transition-colors duration-300 hover:text-pink-500">home</a>
-            <a href="{{ route('about') }}"
-                class="ml-8 no-underline text-gray-600 font-medium transition-colors duration-300 hover:text-pink-500">about</a>
-        </nav>
-    </header>
-
     <div
-        class="w-[90%] max-w-[1200px] bg-[url('bg.png')] bg-cover bg-center p-10 mt-1 rounded-3xl shadow-lg flex flex-col items-center">
-        <h1 class="mb-5 font-semibold text-gray-800 text-5xl p-4 bg-white rounded-lg">
+        class="w-[100%] h-screen  bg-[url('background.png')] bg-cover bg-center py-10 shadow-lg flex flex-col items-center">
+        <h1 class="mb-5 font-semibold text-gray-800 text-5xl  bg-white rounded-lg">
             <span class="text-red-600">C</span><span class="text-pink-300">A</span><span
                 class="text-green-400">P</span><span class="text-yellow-300">T</span><span
                 class="text-blue-300">U</span><span class="text-purple-400">R</span><span

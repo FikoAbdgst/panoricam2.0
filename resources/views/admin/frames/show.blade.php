@@ -35,8 +35,8 @@
                                         <p class="text-gray-600 mb-2"><span class="font-medium">Kategori:</span>
                                             {{ $frame->category ? $frame->category->name : 'Tidak ada kategori' }}</p>
                                         <p class="text-gray-600 mb-2">
-                                            <span class="font-medium">Status:</span>
-                                            @if ($frame->status == 'free')
+                                            <span class="font-medium">Harga:</span>
+                                            @if ($frame->price == 0)
                                                 <span
                                                     class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                                     Gratis
@@ -44,7 +44,7 @@
                                             @else
                                                 <span
                                                     class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                    Berbayar
+                                                    {{ $frame->formatted_price }}
                                                 </span>
                                             @endif
                                         </p>

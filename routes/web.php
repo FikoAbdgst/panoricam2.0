@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\FrameController;
+use App\Http\Controllers\FrameTempController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotoboothController;
 use App\Models\ImageFrame;
@@ -14,10 +15,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Add these routes to your routes/web.php file
 
 Route::get('/get-frame-template/{frame_id}', [HomeController::class, 'getFrameTemplate'])->name('getFrameTemplate');
-Route::post('/savePhoto', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');
 Route::post('/save-frame-photos', [HomeController::class, 'saveFramePhotos'])->name('saveFramePhotos');
 Route::get('/get-frame-status/{frame_id}', [HomeController::class, 'getFrameStatus'])->name('getFrameStatus');
 
+Route::post('/savePhoto', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');
 // Rute autentikasi admin
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login']);
@@ -62,6 +63,7 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+Route::get('/frame', [FrameTempController::class, 'index'])->name('frametemp');
 // Rute photobooth
 Route::get('/booth', [PhotoboothController::class, 'index'])->name('booth');
 Route::post('/save-photo', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');

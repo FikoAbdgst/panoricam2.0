@@ -51,7 +51,7 @@ class FrameController extends Controller
             'slug' => 'nullable|string|max:255|unique:frames,slug',
             'category_id' => 'required|exists:categories,id',
             'frame_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:free,paid', // Add status validation
+            'price' => 'required|numeric|min:0', // Changed from status to price
         ]);
 
         DB::beginTransaction();
@@ -68,7 +68,7 @@ class FrameController extends Controller
                 'slug' => $request->slug ?? Str::slug($request->name),
                 'category_id' => $request->category_id,
                 'image_path' => $imagePath,
-                'status' => $request->status, // Add status field
+                'price' => $request->price, // Changed from status to price
             ]);
 
             DB::commit();
@@ -112,7 +112,7 @@ class FrameController extends Controller
             'slug' => 'nullable|string|max:255|unique:frames,slug,' . $frame->id,
             'category_id' => 'required|exists:categories,id',
             'frame_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:free,paid', // Add status validation
+            'price' => 'required|numeric|min:0', // Changed from status to price
         ]);
 
         DB::beginTransaction();
@@ -122,7 +122,7 @@ class FrameController extends Controller
                 'name' => $request->name,
                 'slug' => $request->slug ?? Str::slug($request->name),
                 'category_id' => $request->category_id,
-                'status' => $request->status, // Add status field
+                'price' => $request->price, // Changed from status to price
             ];
 
             // Update image if provided

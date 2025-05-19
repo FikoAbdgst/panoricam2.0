@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
-class HomeController extends Controller
+class FrameTempController extends Controller
 {
     public function index(Request $request)
     {
@@ -21,12 +21,12 @@ class HomeController extends Controller
 
             if ($selectedCategory) {
                 $frames = Frame::with('category')->where('category_id', $categoryId)->get();
-                return view('home', compact('categories', 'frames', 'selectedCategory', 'topFrames'));
+                return view('frame', compact('categories', 'frames', 'selectedCategory', 'topFrames'));
             }
         }
 
         $frames = Frame::with('category')->get();
-        return view('home', compact('categories', 'frames', 'topFrames'));
+        return view('frame', compact('categories', 'frames', 'topFrames'));
     }
 
     public function getFrameTemplate(Request $request, $frameId)
