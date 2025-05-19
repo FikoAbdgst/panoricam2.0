@@ -49,15 +49,19 @@ class PhotoboothController extends Controller
         // Get frame information
         $frame = Frame::find($frameId);
 
+        // Increment the 'used' field
+        $frame->increment('used');
+
         // Return success with the base64 image data
         return response()->json([
             'success' => true,
             'message' => 'Photo processed successfully',
-            'final_image' => $finalImage, // Mengembalikan data base64 langsung
+            'final_image' => $finalImage,
             'frame_info' => [
                 'id' => $frame->id,
                 'name' => $frame->name,
                 'slug' => $frame->slug,
+                'used' => $frame->used, // Optional: Return updated used count
             ]
         ]);
     }

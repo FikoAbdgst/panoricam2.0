@@ -1,3 +1,5 @@
+{{-- hero.blade --}}
+
 <div class="py-12 bg-[#FEF3E2] font-['Poppins'] h-screen relative">
     <!-- Left side floating photo frames -->
     <div class="absolute left-0 top-1/2 transform -translate-y-1/2 z-30 hidden md:block">
