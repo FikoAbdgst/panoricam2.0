@@ -583,69 +583,81 @@
                 });
             });
 
-            // Category link handling
-            document.querySelectorAll('.category-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const url = this.href;
-                    const scrollPosition = window.scrollY;
-
-                    console.log('Category link clicked:', url);
-
-                    fetch(url)
-                        .then(response => response.text())
-                        .then(html => {
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
-                            const newContent = doc.querySelector('.content_section');
-
-                            harmon
-                            if (newContent) {
-                                document.querySelector('.content_section').outerHTML =
-                                    newContent.outerHTML;
-                                window.history.pushState({}, '', url);
-                                window.scrollTo(0, scrollPosition);
-                                attachCategoryListeners();
-                                setupFrameCards();
-                                console.log('Content updated, frame cards re-initialized');
-                            }
-                        })
-                        .catch(error => console.error('Error fetching category:', error));
-                });
-            });
-
-            // Browser back/forward navigation
-            window.addEventListener('popstate', function() {
-                location.reload();
-            });
-
+            // Function to attach category listeners
             function attachCategoryListeners() {
+                // Remove existing listeners to prevent duplication
+                document.querySelectorAll('.category-link').forEach(link => {
+                    // Clone the node to remove existing listeners
+                    const newLink = link.cloneNode(true);
+                    link.parentNode.replaceChild(newLink, link);
+                });
+
+                // Attach new listeners
                 document.querySelectorAll('.category-link').forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const url = this.href;
                         const scrollPosition = window.scrollY;
 
-                        fetch(url)
-                            .then(response => response.text())
+                        console.log('Category link clicked:', url);
+
+                        fetch(url, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest' // Ensure AJAX request
+                                }
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.text();
+                            })
                             .then(html => {
                                 const parser = new DOMParser();
                                 const doc = parser.parseFromString(html, 'text/html');
                                 const newContent = doc.querySelector('.content_section');
 
                                 if (newContent) {
-                                    document.querySelector('.content_section').outerHTML =
-                                        newContent.outerHTML;
-                                    window.history.pushState({}, '', url);
-                                    window.scrollTo(0, scrollPosition);
-                                    attachCategoryListeners();
-                                    setupFrameCards();
+                                    const currentContent = document.querySelector(
+                                        '.content_section');
+                                    if (currentContent) {
+                                        currentContent.outerHTML = newContent.outerHTML;
+                                        window.history.pushState({}, '', url);
+                                        window.scrollTo(0, scrollPosition);
+                                        attachCategoryListeners
+                                    (); // Reattach listeners for new content
+                                        setupFrameCards(); // Reinitialize frame cards
+                                        console.log(
+                                            'Content updated, frame cards re-initialized');
+                                    } else {
+                                        console.error('Current content_section not found');
+                                        toastr.error(
+                                            'Gagal memperbarui konten. Silakan coba lagi.',
+                                            'Error');
+                                    }
+                                } else {
+                                    console.error('New content_section not found in response');
+                                    toastr.error('Gagal memuat kategori. Silakan coba lagi.',
+                                        'Error');
                                 }
                             })
-                            .catch(error => console.error('Error fetching category:', error));
+                            .catch(error => {
+                                console.error('Error fetching category:', error);
+                                toastr.error(
+                                    'Terjadi kesalahan saat memuat kategori. Silakan coba lagi.',
+                                    'Error');
+                            });
                     });
                 });
             }
+
+            // Initial attachment of category listeners
+            attachCategoryListeners();
+
+            // Browser back/forward navigation
+            window.addEventListener('popstate', function() {
+                location.reload();
+            });
 
             // Setup frame cards and preview functionality
             setupFrameCards();
