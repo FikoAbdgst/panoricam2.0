@@ -256,25 +256,23 @@
     }
 
     .frame-card {
-        background: linear-gradient(145deg, #ffffff, #f0f0f0);
-        border-radius: 16px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
     }
 
     .frame-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(191, 49, 49, 0.15);
-        border-color: rgba(191, 49, 49, 0.1);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
 
     .frame-card .frame-image-container {
         position: relative;
-        height: 220px;
-        background: linear-gradient(to bottom right, #f7f7f7, #ffffff);
+        height: 240px;
+        background: linear-gradient(to bottom right, #f7f7f7, #fff1f1);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -283,15 +281,14 @@
     }
 
     .frame-card:hover .frame-image-container {
-        background: linear-gradient(to bottom right, #fff5f5, #fff0f0);
+        background: linear-gradient(to bottom right, #fff5f5, #ffebeb);
     }
 
     .frame-card .frame-image {
-        max-height: 85%;
-        max-width: 85%;
+        max-height: 90%;
+        max-width: 90%;
         object-fit: contain;
         transition: transform 0.5s ease;
-        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
     }
 
     .frame-card:hover .frame-image {
@@ -301,14 +298,13 @@
     .frame-card .frame-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to bottom,
-                rgba(191, 49, 49, 0.01),
-                rgba(191, 49, 49, 0.7));
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 0;
         transition: opacity 0.3s ease;
+        backdrop-filter: blur(4px);
     }
 
     .frame-card:hover .frame-overlay {
@@ -316,18 +312,17 @@
     }
 
     .frame-card .preview-button {
-        background-color: white;
-        color: #BF3131;
-        font-weight: 600;
-        padding: 10px 24px;
-        border-radius: 50px;
+        background-color: rgba(255, 255, 255, 0.95);
+        color: #1f2937;
+        font-weight: 500;
+        padding: 8px 20px;
+        border-radius: 9999px;
         transform: translateY(20px);
         transition: all 0.3s ease;
-        border: 2px solid transparent;
         display: flex;
         align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        gap: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .frame-card:hover .preview-button {
@@ -337,18 +332,18 @@
     .frame-card .preview-button:hover {
         background-color: #BF3131;
         color: white;
-        box-shadow: 0 6px 16px rgba(191, 49, 49, 0.3);
     }
 
     .frame-card .card-content {
-        padding: 20px;
+        padding: 16px;
+        background: white;
     }
 
     .frame-card .frame-title {
         color: #1f2937;
         font-size: 1.125rem;
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         transition: color 0.3s ease;
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -364,32 +359,32 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 10px;
+        margin-top: 8px;
     }
 
     .frame-card .category {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         color: #4b5563;
-        font-size: 0.875rem;
-        background-color: #f3f4f6;
-        padding: 4px 10px;
-        border-radius: 20px;
+        font-size: 0.75rem;
+        background-color: #fef2f2;
+        padding: 4px 8px;
+        border-radius: 9999px;
         transition: all 0.3s ease;
     }
 
     .frame-card:hover .category {
-        background-color: #fdecec;
+        background-color: #fee2e2;
         color: #BF3131;
     }
 
     .frame-card .usage-count {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         color: #6b7280;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
     }
 
     .frame-card .badge {
@@ -397,16 +392,15 @@
         top: 12px;
         right: 12px;
         z-index: 10;
-        padding: 6px 12px;
-        border-radius: 20px;
+        padding: 4px 10px;
+        border-radius: 9999px;
         font-weight: 600;
         font-size: 0.75rem;
-        letter-spacing: 0.5px;
         display: flex;
         align-items: center;
         gap: 4px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        animation: pulse-subtle 2s infinite;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
     }
 
     .frame-card .badge-free {
@@ -419,54 +413,39 @@
         color: white;
     }
 
-    @keyframes pulse-subtle {
-        0% {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        50% {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        100% {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    }
-
-    /* Skeleton Loading Animation */
     .frame-card-skeleton {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         position: relative;
     }
 
     .frame-card-skeleton .skeleton-image {
-        height: 220px;
+        height: 240px;
         background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
     }
 
     .frame-card-skeleton .skeleton-content {
-        padding: 20px;
+        padding: 16px;
     }
 
     .frame-card-skeleton .skeleton-title {
-        height: 24px;
+        height: 20px;
         width: 70%;
         background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
         border-radius: 4px;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
     }
 
     .frame-card-skeleton .skeleton-details {
         display: flex;
         justify-content: space-between;
-        margin-top: 10px;
+        margin-top: 8px;
     }
 
     .frame-card-skeleton .skeleton-category {
@@ -475,7 +454,7 @@
         background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
-        border-radius: 20px;
+        border-radius: 9999px;
     }
 
     .frame-card-skeleton .skeleton-usage {
@@ -500,7 +479,6 @@
 
 <div class="py-16 bg-[#FEF3E2] content_section">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Bagian Frame Unggulan -->
         <div class="text-center mb-16">
             <h2 class="text-3xl font-bold text-gray-900 inline-block relative">
                 <span class="bg-clip-text text-transparent bg-[#BF3131]">Frame Unggulan</span>
@@ -512,20 +490,19 @@
         </div>
 
         @if ($topFrames->count() > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
                 @foreach ($topFrames as $frame)
-                    <div class="frame-card" data-frame-id="{{ $frame->id }}">
-                        <!-- Status Badge -->
+                    <div class="frame-card group relative" data-frame-id="{{ $frame->id }}">
                         <div class="badge {{ $frame->isFree() ? 'badge-free' : 'badge-premium' }}">
                             @if ($frame->isFree())
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
                                 </svg>
                                 GRATIS
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -534,54 +511,51 @@
                             @endif
                         </div>
 
-                        <!-- Frame Image -->
                         <div class="frame-image-container">
-                            @if ($frame->image_path)
-                                <img src="{{ asset('storage/' . $frame->image_path) }}" alt="{{ $frame->name }}"
-                                    class="frame-image">
-                            @else
-                                <div class="text-gray-400 text-5xl">🖼️</div>
-                            @endif
+                            <div
+                                class="absolute inset-0 flex items-center justify-center p-4 transition-transform duration-500 group-hover:scale-105">
+                                @if ($frame->image_path)
+                                    <img src="{{ asset('storage/' . $frame->image_path) }}" alt="{{ $frame->name }}"
+                                        class="frame-image">
+                                @else
+                                    <div class="text-gray-400 text-5xl">🖼️</div>
+                                @endif
+                            </div>
 
-                            <!-- Overlay with Preview Button -->
                             <div class="frame-overlay">
                                 <button class="preview-button" data-frame-id="{{ $frame->id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
                                     Preview
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Card Content -->
-                        <div class="card-content">
-                            <h3 class="frame-title">{{ $frame->name }}</h3>
-
-                            <div class="frame-details">
+                        <div class="card-content ">
+                            <div class="flex justify-between items-start">
+                                <h3 class="frame-title">{{ $frame->name }}</h3>
                                 <div class="category">
                                     <span>{{ $frame->category->icon }}</span>
                                     <span>{{ $frame->category->name }}</span>
                                 </div>
-
-                                <div class="usage-count">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4" />
+                            </div>
+                            <div class="border-t border-gray-100 mt-2"></div>
+                            <div class="frame-details absolute top-1 bg-red-600 py-2 px-3 rounded-xl">
+                                <div class="usage-count text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="white"
+                                        viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                        <path
+                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
                                     </svg>
-                                    {{ $frame->used }}
+                                    <p class="text-white"> {{ $frame->used }}</p>
                                 </div>
                             </div>
+
+                        </div>
+                        <div
+                            class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 to-amber-500/20 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
                         </div>
                     </div>
                 @endforeach
 
-                <!-- Optional: Skeleton Loading Card (can be shown while frames are loading) -->
                 <div class="frame-card-skeleton hidden">
                     <div class="skeleton-image"></div>
                     <div class="skeleton-content">
@@ -612,21 +586,16 @@
                 </svg>
             </a>
         </div>
-
-        <!-- Bagian Kategori dan Frame Utama -->
-
     </div>
 </div>
 
-<!-- Modal Preview Section -->
 <div id="previewCameraModal" class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop"></div>
 
-    <!-- Desktop Modal -->
     <div
         class="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-4xl mx-4 hidden md:block animate-[modalFadeIn_0.3s]">
         <button
-            class="modal-close absolute top-4 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">&times;</button>
+            class="modal-close absolute top-4 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">×</button>
 
         <h2 class="text-xl font-semibold mb-4 text-center">Frame Preview</h2>
 
@@ -651,8 +620,7 @@
             </div>
 
             <div class="w-[190px] h-[450px] relative">
-                <div id="previewFrameContainer"
-                    class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
+                <div id="previewFrameContainer" class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
                     <div id="previewFrameImage" class="absolute inset-0 flex items-center justify-center bg-gray-100">
                         <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
                     </div>
@@ -661,14 +629,13 @@
         </div>
     </div>
 
-    <!-- Mobile Modal -->
     <div
         class="relative bg-white rounded-t-xl shadow-xl w-full md:hidden mobile-modal-container max-h-[90vh] overflow-y-auto">
         <div class="sticky top-0 z-10 bg-white rounded-t-xl border-b border-gray-200">
             <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto my-3"></div>
             <h2 class="text-xl font-semibold px-4 pb-3 text-center">Frame Preview</h2>
             <button
-                class="modal-close absolute top-3 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">&times;</button>
+                class="modal-close absolute top-3 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">×</button>
         </div>
 
         <div class="p-4 flex flex-col gap-6">
@@ -707,13 +674,11 @@
     </div>
 </div>
 
-<!-- Script dengan Debug Log -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM loaded, initializing frame cards...');
         setupFrameCards();
 
-        // Category link handling
         document.querySelectorAll('.category-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -743,7 +708,6 @@
             });
         });
 
-        // Browser back/forward navigation
         window.addEventListener('popstate', function() {
             location.reload();
         });
@@ -775,7 +739,6 @@
             });
         }
 
-        // Create html2canvas script if needed
         if (!window.html2canvas) {
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
@@ -783,6 +746,33 @@
             document.head.appendChild(script);
             console.log('Loading html2canvas script...');
         }
+
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        window.showPremiumAlert = function(price) {
+            toastr.warning(
+                `Fitur ini masih maintenance`,
+                'Fitur Premium', {
+                    "timeOut": "5000",
+                    "closeButton": true,
+                    "positionClass": "toast-top-center",
+                    "showMethod": "slideDown",
+                    "hideMethod": "slideUp"
+                }
+            );
+        };
     });
 
     function setupFrameCards() {
@@ -790,9 +780,7 @@
         console.log(`Found ${frameCards.length} frame cards`);
 
         frameCards.forEach(card => {
-            // Make the entire card clickable for preview
             card.addEventListener('click', function(e) {
-                // Don't trigger if clicking on the button directly (it will handle its own click)
                 if (e.target.closest('.preview-button')) return;
 
                 const frameId = this.dataset.frameId;
@@ -800,7 +788,6 @@
                 openPreviewCameraModal(e, frameId);
             });
 
-            // For the preview button, we'll set up a specific click handler
             const previewBtn = card.querySelector('.preview-button');
             if (previewBtn) {
                 previewBtn.removeEventListener('click', handlePreviewButtonClick);
@@ -818,11 +805,10 @@
         openPreviewCameraModal(e, frameId);
     }
 
-    function openPreviewCameraModal(e) {
+    function openPreviewCameraModal(e, frameId) {
         e.preventDefault();
         e.stopPropagation();
 
-        // Save the current scroll position
         const scrollPosition = window.scrollY;
         console.log('openPreviewCameraModal called, scroll position saved:', scrollPosition);
 
@@ -832,7 +818,6 @@
             return;
         }
 
-        // Reset state before opening modal
         resetModalState();
 
         const mobileModalContainer = modal.querySelector('.mobile-modal-container');
@@ -859,14 +844,6 @@
                 mobileModalContainer.classList.add('show');
                 console.log('Mobile modal container shown');
             }, 50);
-        }
-
-        const frameCard = e.target.closest('.frame-card');
-        let frameId = null;
-
-        if (frameCard) {
-            frameId = frameCard.dataset.frameId || e.target.dataset.frameId;
-            console.log('Frame ID from card or button:', frameId);
         }
 
         if (frameId) {
@@ -965,19 +942,17 @@
         window.removeEventListener('click', handleModalBackdropClick);
         window.addEventListener('click', (e) => handleModalBackdropClick(e, scrollPosition));
 
-        // Add capture button listeners
         captureButton.addEventListener('click', () => startPhotoSession(false));
         mobileCaptureButton.addEventListener('click', () => startPhotoSession(true));
 
         enableDragToClose(mobileModalContainer);
 
-        // Prevent default scroll behavior
         document.body.style.position = 'fixed';
         document.body.style.top = `-${scrollPosition}px`;
         document.body.style.width = '100%';
     }
 
-    function handleModalBackdropClick(e, testers) {
+    function handleModalBackdropClick(e, scrollPosition) {
         const modal = document.getElementById('previewCameraModal');
         if (e.target === modal || e.target.classList.contains('modal-backdrop')) {
             closePreviewCameraModal(scrollPosition);
@@ -1032,7 +1007,6 @@
 
         modalBackdrop.classList.remove('show');
 
-        // Stop video stream
         if (window.stream) {
             const tracks = window.stream.getTracks();
             tracks.forEach(track => track.stop());
@@ -1041,17 +1015,14 @@
             window.stream = null;
         }
 
-        // Remove event listeners
         const captureButton = document.getElementById('previewCaptureButton');
         const mobileCaptureButton = document.getElementById('mobilePreviewCaptureButton');
         if (captureButton) captureButton.removeEventListener('click', startPhotoSession);
         if (mobileCaptureButton) mobileCaptureButton.removeEventListener('click', startPhotoSession);
         window.removeEventListener('click', handleModalBackdropClick);
 
-        // Reset modal state
         resetModalState();
 
-        // Restore scroll position
         document.body.classList.remove('modal-open');
         document.body.style.position = '';
         document.body.style.top = '';
@@ -1080,11 +1051,9 @@
         const previewFrameImage = document.getElementById('previewFrameImage');
         const mobilePreviewFrameImage = document.getElementById('mobilePreviewFrameImage');
 
-        // Reset photo slots
         window.photoSlots = [];
         window.mobilePhotoSlots = [];
 
-        // Clear existing photo slots content
         if (previewFrameImage) {
             const slots = previewFrameImage.querySelectorAll('.photo-slot');
             slots.forEach(slot => {
@@ -1110,7 +1079,6 @@
             });
         }
 
-        // Reset countdown, capture button, and watermark
         const resetElements = (countdown, capture, mark) => {
             if (countdown) {
                 countdown.textContent = '';
@@ -1121,7 +1089,6 @@
             if (capture) {
                 capture.textContent = "📷 Start Session";
                 capture.disabled = false;
-                // Remove existing event listeners to prevent duplicate
                 capture.removeEventListener('click', startPhotoSession);
             }
             if (mark) {
@@ -1133,13 +1100,11 @@
         resetElements(countdownOverlay, captureButton, watermark);
         resetElements(mobileCountdownOverlay, mobileCaptureButton, mobileWatermark);
 
-        // Stop any running timers
         if (window.timer) {
             clearInterval(window.timer);
             window.timer = null;
         }
 
-        // Reset frame content
         if (previewFrameImage) {
             previewFrameImage.innerHTML = '<p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>';
         }
@@ -1241,13 +1206,11 @@
             .getElementById('previewCountdownOverlay');
         const photoSlots = isMobile ? window.mobilePhotoSlots : window.photoSlots;
 
-        // Stop any existing timer
         if (window.timer) {
             clearInterval(window.timer);
             window.timer = null;
         }
 
-        // Clear photo slots
         if (photoSlots) {
             photoSlots.forEach(img => {
                 img.src = '';

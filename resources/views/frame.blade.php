@@ -2,7 +2,6 @@
 
 @section('hero_section')
     <style>
-        /* [CSS tetap sama seperti sebelumnya, tidak ada perubahan] */
         #previewCountdownOverlay {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             transition: opacity 0.3s ease, background-color 0.2s ease;
@@ -245,10 +244,8 @@
                 @if ($frames->count() > 0)
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         @foreach ($frames as $frame)
-                            <!-- Frame Card Component Redesign -->
                             <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 frame-card relative"
                                 data-frame-id="{{ $frame->id }}">
-                                <!-- Status Badge -->
                                 <div class="absolute top-3 right-3 z-10">
                                     @if ($frame->isFree())
                                         <span
@@ -273,9 +270,7 @@
                                     @endif
                                 </div>
 
-                                <!-- Image Container with Hover Effects -->
                                 <div class="relative h-60 bg-gradient-to-br from-gray-100 to-red-50 overflow-hidden">
-                                    <!-- Frame Image -->
                                     <div
                                         class="absolute inset-0 flex items-center justify-center p-4 transition-transform duration-500 group-hover:scale-105">
                                         @if ($frame->image_path)
@@ -286,7 +281,6 @@
                                         @endif
                                     </div>
 
-                                    <!-- Overlay with Preview Button -->
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
                                         <button
@@ -304,11 +298,8 @@
                                     </div>
                                 </div>
 
-                                <!-- Card Content -->
                                 <div class="p-5 bg-white">
-                                    <!-- Frame Info Section -->
                                     <div class="space-y-3">
-                                        <!-- Title and Category -->
                                         <div class="flex justify-between items-start">
                                             <h3
                                                 class="text-lg font-semibold text-gray-900 group-hover:text-[#BF3131] transition-colors">
@@ -319,10 +310,8 @@
                                             </div>
                                         </div>
 
-                                        <!-- Divider -->
                                         <div class="border-t border-gray-100"></div>
 
-                                        <!-- Action Button -->
                                         @if ($frame->isFree())
                                             <a href="{{ route('booth', ['frame_id' => $frame->id]) }}"
                                                 class="mt-2 inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
@@ -348,7 +337,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Card Highlight Effect -->
                                 <div
                                     class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 to-amber-500/20 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
                                 </div>
@@ -366,7 +354,6 @@
         </div>
     </div>
 
-    <!-- Modal Preview Section -->
     <div id="previewCameraModal" classcopy
         class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop"></div>
@@ -625,7 +612,7 @@
                                         window.history.pushState({}, '', url);
                                         window.scrollTo(0, scrollPosition);
                                         attachCategoryListeners
-                                    (); // Reattach listeners for new content
+                                            (); // Reattach listeners for new content
                                         setupFrameCards(); // Reinitialize frame cards
                                         console.log(
                                             'Content updated, frame cards re-initialized');
