@@ -42,13 +42,14 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col items-center">
         <!-- Logo and about section -->
         <div class="flex items-center mb-4">
-            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3">
-                <svg class="w-6 h-6 text-[#BF3131]" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
-                </svg>
-            </div>
-            <h3 class="text-xl font-bold">Photo Booth</h3>
+
+            <h1 class="mb-5 font-semibold text-gray-800 text-2xl  bg-transparent rounded-lg">
+                <span class="text-red-300">P</span><span class="text-pink-300">A</span><span
+                    class="text-green-400">N</span><span class="text-yellow-300">O</span><span
+                    class="text-blue-300">R</span><span class="text-purple-400">I</span><span
+                    class="text-yellow-300">C</span><span class="text-blue-300">A</span><span
+                    class="text-orange-300">M</span>
+            </h1>
         </div>
         <p class="text-sm text-white/80 mb-4">
             Abadikan momen spesial Anda dengan frame keren dan berbagi dengan teman-teman!

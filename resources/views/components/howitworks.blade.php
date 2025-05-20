@@ -126,7 +126,7 @@
 
         <!-- Call to Action -->
         <div class="mt-16 text-center">
-            <button
+            <a href="{{ route('frametemp') }}"
                 class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#BF3131] hover:bg-[#F16767] transition duration-300 shadow-md hover:shadow-lg">
                 Mulai Mencoba
                 <svg class="ml-2 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -134,7 +134,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
-            </button>
+            </a>
         </div>
     </div>
 </div>

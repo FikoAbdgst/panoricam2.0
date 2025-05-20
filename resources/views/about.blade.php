@@ -40,63 +40,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Kelebihan 1 -->
-                <div
-                    class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 border border-[#F16767]">
-                    <div
-                        class="bg-red-100 text-[#BF3131] rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 text-center mb-3">Teknologi Canggih</h3>
-                    <p class="text-gray-600 text-center">
-                        Kamera DSLR profesional dengan pencahayaan studio menghasilkan foto berkualitas tinggi yang siap
-                        dicetak dalam hitungan detik.
-                    </p>
-                </div>
 
-                <!-- Kelebihan 2 -->
-                <div
-                    class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 border border-[#F16767]">
-                    <div
-                        class="bg-red-100 text-[#BF3131] rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 text-center mb-3">Berbagi Instan</h3>
-                    <p class="text-gray-600 text-center">
-                        Langsung bagikan foto ke media sosial atau kirim via email/SMS. Unduh foto digital atau cetak
-                        langsung di tempat.
-                    </p>
-                </div>
-
-                <!-- Kelebihan 3 -->
-                <div
-                    class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 border border-[#F16767]">
-                    <div
-                        class="bg-red-100 text-[#BF3131] rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 text-center mb-3">Kustomisasi Lengkap</h3>
-                    <p class="text-gray-600 text-center">
-                        Berbagai tema, filter, dan props menarik yang dapat disesuaikan dengan acara Anda. Desain template
-                        foto yang dapat dipersonalisasi.
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 @endsection

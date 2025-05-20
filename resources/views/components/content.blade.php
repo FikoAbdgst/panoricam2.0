@@ -254,6 +254,248 @@
     #mobilePreviewWatermark.show {
         display: flex;
     }
+
+    .frame-card {
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        border-radius: 16px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .frame-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(191, 49, 49, 0.15);
+        border-color: rgba(191, 49, 49, 0.1);
+    }
+
+    .frame-card .frame-image-container {
+        position: relative;
+        height: 220px;
+        background: linear-gradient(to bottom right, #f7f7f7, #ffffff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .frame-card:hover .frame-image-container {
+        background: linear-gradient(to bottom right, #fff5f5, #fff0f0);
+    }
+
+    .frame-card .frame-image {
+        max-height: 85%;
+        max-width: 85%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .frame-card:hover .frame-image {
+        transform: scale(1.05);
+    }
+
+    .frame-card .frame-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom,
+                rgba(191, 49, 49, 0.01),
+                rgba(191, 49, 49, 0.7));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .frame-card:hover .frame-overlay {
+        opacity: 1;
+    }
+
+    .frame-card .preview-button {
+        background-color: white;
+        color: #BF3131;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 50px;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .frame-card:hover .preview-button {
+        transform: translateY(0);
+    }
+
+    .frame-card .preview-button:hover {
+        background-color: #BF3131;
+        color: white;
+        box-shadow: 0 6px 16px rgba(191, 49, 49, 0.3);
+    }
+
+    .frame-card .card-content {
+        padding: 20px;
+    }
+
+    .frame-card .frame-title {
+        color: #1f2937;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        transition: color 0.3s ease;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .frame-card:hover .frame-title {
+        color: #BF3131;
+    }
+
+    .frame-card .frame-details {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .frame-card .category {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #4b5563;
+        font-size: 0.875rem;
+        background-color: #f3f4f6;
+        padding: 4px 10px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .frame-card:hover .category {
+        background-color: #fdecec;
+        color: #BF3131;
+    }
+
+    .frame-card .usage-count {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    .frame-card .badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 10;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        animation: pulse-subtle 2s infinite;
+    }
+
+    .frame-card .badge-free {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+
+    .frame-card .badge-premium {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+
+    @keyframes pulse-subtle {
+        0% {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        50% {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        100% {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    /* Skeleton Loading Animation */
+    .frame-card-skeleton {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .frame-card-skeleton .skeleton-image {
+        height: 220px;
+        background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+    }
+
+    .frame-card-skeleton .skeleton-content {
+        padding: 20px;
+    }
+
+    .frame-card-skeleton .skeleton-title {
+        height: 24px;
+        width: 70%;
+        background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+        margin-bottom: 12px;
+    }
+
+    .frame-card-skeleton .skeleton-details {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .frame-card-skeleton .skeleton-category {
+        height: 20px;
+        width: 40%;
+        background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 20px;
+    }
+
+    .frame-card-skeleton .skeleton-usage {
+        height: 20px;
+        width: 30%;
+        background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
 </style>
 
 <div class="py-16 bg-[#FEF3E2] content_section">
@@ -272,61 +514,84 @@
         @if ($topFrames->count() > 0)
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
                 @foreach ($topFrames as $frame)
-                    <div class="bg-[#FEF3E2] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 frame-card relative"
-                        data-frame-id="{{ $frame->id }}">
+                    <div class="frame-card" data-frame-id="{{ $frame->id }}">
                         <!-- Status Badge -->
-                        <div class="absolute top-3 right-3 z-10">
+                        <div class="badge {{ $frame->isFree() ? 'badge-free' : 'badge-premium' }}">
                             @if ($frame->isFree())
-                                <span
-                                    class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                                    GRATIS
-                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                GRATIS
                             @else
-                                <span
-                                    class="bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                    {{ number_format($frame->price, 0, ',', '.') }} IDR
-                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                {{ number_format($frame->price, 0, ',', '.') }} IDR
                             @endif
                         </div>
 
-                        <div
-                            class="relative p-3 h-52 md:h-60 bg-gradient-to-br from-gray-50 to-red-50 flex items-center justify-center group">
+                        <!-- Frame Image -->
+                        <div class="frame-image-container">
                             @if ($frame->image_path)
                                 <img src="{{ asset('storage/' . $frame->image_path) }}" alt="{{ $frame->name }}"
-                                    class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105">
+                                    class="frame-image">
                             @else
                                 <div class="text-gray-400 text-5xl">🖼️</div>
                             @endif
 
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <button
-                                    class="px-4 py-2 bg-white/90 text-gray-800 rounded-full font-medium hover:bg-red-50 transition-colors duration-300 transform hover:scale-105 preview-button"
-                                    data-frame-id="{{ $frame->id }}">
+                            <!-- Overlay with Preview Button -->
+                            <div class="frame-overlay">
+                                <button class="preview-button" data-frame-id="{{ $frame->id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Preview
                                 </button>
                             </div>
                         </div>
 
-                        <div class="p-5">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-lg font-medium text-gray-900">{{ $frame->name }}</h3>
-                            </div>
+                        <!-- Card Content -->
+                        <div class="card-content">
+                            <h3 class="frame-title">{{ $frame->name }}</h3>
 
-                            <div class="flex items-center mt-2">
-                                <span class="text-lg mr-2">{{ $frame->category->icon }}</span>
-                                <span class="text-sm text-gray-600">{{ $frame->category->name }}</span>
-                            </div>
+                            <div class="frame-details">
+                                <div class="category">
+                                    <span>{{ $frame->category->icon }}</span>
+                                    <span>{{ $frame->category->name }}</span>
+                                </div>
 
-                            <p class="text-sm text-gray-600 mt-1">Digunakan: {{ $frame->used }} kali</p>
+                                <div class="usage-count">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    {{ $frame->used }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endforeach
+
+                <!-- Optional: Skeleton Loading Card (can be shown while frames are loading) -->
+                <div class="frame-card-skeleton hidden">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-details">
+                            <div class="skeleton-category"></div>
+                            <div class="skeleton-usage"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         @else
             <div class="text-center py-12 bg-gradient-to-r from-red-50 to-red-50 rounded-2xl shadow-inner mb-16">
@@ -386,7 +651,8 @@
             </div>
 
             <div class="w-[190px] h-[450px] relative">
-                <div id="previewFrameContainer" class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
+                <div id="previewFrameContainer"
+                    class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
                     <div id="previewFrameImage" class="absolute inset-0 flex items-center justify-center bg-gray-100">
                         <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
                     </div>
@@ -524,37 +790,32 @@
         console.log(`Found ${frameCards.length} frame cards`);
 
         frameCards.forEach(card => {
-            const overlay = card.querySelector('.group-hover\\:opacity-100');
-            const frameId = card.dataset.frameId;
+            // Make the entire card clickable for preview
+            card.addEventListener('click', function(e) {
+                // Don't trigger if clicking on the button directly (it will handle its own click)
+                if (e.target.closest('.preview-button')) return;
 
-            if (!overlay) {
-                console.warn('Overlay not found for frame card:', card);
-                return;
-            }
-
-            let previewBtn = overlay.querySelector('.preview-button');
-            if (!previewBtn) {
-                previewBtn = document.createElement('button');
-                previewBtn.className =
-                    'px-4 py-2 bg-white/90 text-gray-800 rounded-full font-medium hover:bg-red-50 transition-colors duration-300 transform hover:scale-105 preview-button';
-                previewBtn.textContent = 'Preview';
-                previewBtn.dataset.frameId = frameId;
-                overlay.appendChild(previewBtn);
-                console.log('Created preview button for frame ID:', frameId);
-            } else {
-                if (frameId && !previewBtn.dataset.frameId) {
-                    previewBtn.dataset.frameId = frameId;
-                    console.log('Updated preview button with frame ID:', frameId);
-                }
-            }
-
-            // Remove existing listeners to prevent duplicates
-            previewBtn.removeEventListener('click', openPreviewCameraModal);
-            previewBtn.addEventListener('click', function(e) {
-                console.log('Preview button clicked for frame ID:', frameId);
-                openPreviewCameraModal(e);
+                const frameId = this.dataset.frameId;
+                console.log('Frame card clicked for frame ID:', frameId);
+                openPreviewCameraModal(e, frameId);
             });
+
+            // For the preview button, we'll set up a specific click handler
+            const previewBtn = card.querySelector('.preview-button');
+            if (previewBtn) {
+                previewBtn.removeEventListener('click', handlePreviewButtonClick);
+                previewBtn.addEventListener('click', handlePreviewButtonClick);
+            }
         });
+    }
+
+    function handlePreviewButtonClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const frameId = this.dataset.frameId;
+        console.log('Preview button clicked for frame ID:', frameId);
+        openPreviewCameraModal(e, frameId);
     }
 
     function openPreviewCameraModal(e) {

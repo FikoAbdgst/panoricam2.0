@@ -6,8 +6,8 @@
         <div class="relative">
             <!-- Frame 1 - Multi-photo frame -->
             <div class="absolute -left-10 -top-20 transform -rotate-6 shadow-lg">
-                <div class="w-64 bg-white border-4 border-[#BF3131]  rounded-lg relative pt-10 pb-5 ">
-                    <div class="border-2 border-[#BF3131] ">
+                <div class="w-64 bg-white border-4 border-[#BF3131] rounded-lg relative pt-10 pb-5">
+                    <div class="border-2 border-[#BF3131]">
                         <div class="absolute top-2 right-2">
                             <svg class="w-5 h-5 text-[#BF3131]" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -19,31 +19,28 @@
                     <div class="grid grid-cols-1">
                         <!-- Photo slot 1 -->
                         <div class="relative">
-                            <div class="h-36  overflow-hidden flex justify-center">
+                            <div class="h-36 overflow-hidden flex justify-center">
                                 <img src="{{ asset('images/m1.jpeg') }}" alt="Memory placeholder 1"
                                     class="object-cover w-full h-full" />
-
                             </div>
                         </div>
                         <!-- Photo slot 2 -->
                         <div class="relative">
-                            <div class="h-36  overflow-hidden flex justify-center">
+                            <div class="h-36 overflow-hidden flex justify-center">
                                 <img src="{{ asset('images/m2.jpeg') }}" alt="Memory placeholder 2"
                                     class="object-cover w-full h-full" />
                             </div>
                         </div>
                         <!-- Photo slot 3 -->
                         <div class="relative">
-                            <div class="h-36  overflow-hidden flex justify-center">
+                            <div class="h-36 overflow-hidden flex justify-center">
                                 <img src="{{ asset('images/m3.jpeg') }}" alt="Memory placeholder 3"
                                     class="object-cover w-full h-full" />
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -52,8 +49,8 @@
         <div class="relative">
             <!-- Frame 1 - Multi-photo frame with 3 slots -->
             <div class="absolute -right-20 -top-20 transform rotate-6 shadow-lg">
-                <div class="w-64 bg-white border-4 border-[#BF3131]  rounded-lg relative pt-10 pb-5 ">
-                    <div class="border-2 border-[#BF3131] ">
+                <div class="w-64 bg-white border-4 border-[#BF3131] rounded-lg relative pt-10 pb-5">
+                    <div class="border-2 border-[#BF3131]">
                         <div class="absolute top-2 left-2">
                             <svg class="w-5 h-5 text-[#BF3131]" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -65,32 +62,28 @@
                     <div class="grid grid-cols-1">
                         <!-- Photo slot 1 -->
                         <div class="relative">
-                            <div class="h-36  overflow-hidden flex justify-center">
-                                <img src="{{ asset('images/m1.jpeg') }}" alt="Memory placeholder 1"
+                            <div class="h-36 overflow-hidden flex justify-center">
+                                <img src="{{ asset('images/k1.jpeg') }}" alt="Memory placeholder 1"
                                     class="object-cover w-full h-full" />
-
                             </div>
                         </div>
                         <!-- Photo slot 2 -->
                         <div class="relative">
-                            <div class="h-36  overflow-hidden flex justify-center">
-                                <img src="{{ asset('images/m2.jpeg') }}" alt="Memory placeholder 2"
+                            <div class="h-36 overflow-hidden flex justify-center">
+                                <img src="{{ asset('images/k2.jpeg') }}" alt="Memory placeholder 2"
                                     class="object-cover w-full h-full" />
                             </div>
                         </div>
                         <!-- Photo slot 3 -->
                         <div class="relative">
-                            <div class="h-36  overflow-hidden flex justify-center">
-                                <img src="{{ asset('images/m3.jpeg') }}" alt="Memory placeholder 3"
+                            <div class="h-36 overflow-hidden flex justify-center">
+                                <img src="{{ asset('images/k3.jpeg') }}" alt="Memory placeholder 3"
                                     class="object-cover w-full h-full" />
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 
@@ -107,13 +100,6 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
-        </div>
-
-        <!-- Dashed lines similar to the reference image -->
-        <div class="absolute w-24 h-24 top-1/3 left-1/3 border-2 border-dashed border-red-400 rounded-full opacity-30">
-        </div>
-        <div
-            class="absolute w-36 h-36 bottom-1/3 right-1/3 border-2 border-dashed border-red-400 rounded-full opacity-30">
         </div>
     </div>
 

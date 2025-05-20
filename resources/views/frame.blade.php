@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-{{-- frame.blade --}}
 @section('hero_section')
     <style>
+        /* [CSS tetap sama seperti sebelumnya, tidak ada perubahan] */
         #previewCountdownOverlay {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             transition: opacity 0.3s ease, background-color 0.2s ease;
@@ -219,7 +219,7 @@
                           shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group-hover:bg-red-50
                           {{ !isset($selectedCategory) ? 'ring-4 ring-red-300' : '' }}">
                             <span
-                                class="text-3xl md:text-4xl transform group-hover:scale-110 transition-transform duration-300">🏠</span>
+                                class="text- آسان md:text-4xl transform group-hover:scale-110 transition-transform duration-300">🏠</span>
                         </div>
                         <p class="mt-2 text-sm font-medium text-gray-700 group-hover:text-[#BF3131]">Semua</p>
                     </a>
@@ -245,18 +245,24 @@
                 @if ($frames->count() > 0)
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         @foreach ($frames as $frame)
-                            <div class="bg-[#FEF3E2] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 frame-card relative"
+                            <!-- Frame Card Component Redesign -->
+                            <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 frame-card relative"
                                 data-frame-id="{{ $frame->id }}">
                                 <!-- Status Badge -->
                                 <div class="absolute top-3 right-3 z-10">
                                     @if ($frame->isFree())
                                         <span
-                                            class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                                            class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
                                             GRATIS
                                         </span>
                                     @else
                                         <span
-                                            class="bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg flex items-center">
+                                            class="bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -265,54 +271,86 @@
                                             {{ number_format($frame->price, 0, ',', '.') }} IDR
                                         </span>
                                     @endif
-
                                 </div>
 
-                                <div
-                                    class="relative p-3 h-52 md:h-60 bg-gradient-to-br from-gray-50 to-red-50 flex items-center justify-center group">
-                                    @if ($frame->image_path)
-                                        <img src="{{ asset('storage/' . $frame->image_path) }}" alt="{{ $frame->name }}"
-                                            class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105">
-                                    @else
-                                        <div class="text-gray-400 text-5xl">🖼️</div>
-                                    @endif
-
+                                <!-- Image Container with Hover Effects -->
+                                <div class="relative h-60 bg-gradient-to-br from-gray-100 to-red-50 overflow-hidden">
+                                    <!-- Frame Image -->
                                     <div
-                                        class="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        class="absolute inset-0 flex items-center justify-center p-4 transition-transform duration-500 group-hover:scale-105">
+                                        @if ($frame->image_path)
+                                            <img src="{{ asset('storage/' . $frame->image_path) }}"
+                                                alt="{{ $frame->name }}" class="max-h-full max-w-full object-contain">
+                                        @else
+                                            <div class="text-gray-400 text-5xl">🖼️</div>
+                                        @endif
+                                    </div>
+
+                                    <!-- Overlay with Preview Button -->
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
                                         <button
-                                            class="px-4 py-2 bg-white/90 text-gray-800 rounded-full font-medium hover:bg-red-50 transition-colors duration-300 transform hover:scale-105 preview-button"
+                                            class="px-5 py-2.5 bg-white/95 cursor-pointer text-gray-800 rounded-full font-medium hover:bg-red-50 transition-colors duration-300 transform hover:scale-105 preview-button shadow-md flex items-center gap-2"
                                             data-frame-id="{{ $frame->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
                                             Preview
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-medium text-gray-900">{{ $frame->name }}</h3>
-                                    </div>
+                                <!-- Card Content -->
+                                <div class="p-5 bg-white">
+                                    <!-- Frame Info Section -->
+                                    <div class="space-y-3">
+                                        <!-- Title and Category -->
+                                        <div class="flex justify-between items-start">
+                                            <h3
+                                                class="text-lg font-semibold text-gray-900 group-hover:text-[#BF3131] transition-colors">
+                                                {{ $frame->name }}</h3>
+                                            <div class="flex items-center gap-1.5 px-2 py-1 bg-red-50 rounded-full">
+                                                <span class="text-base">{{ $frame->category->icon }}</span>
+                                                <span class="text-xs text-gray-700">{{ $frame->category->name }}</span>
+                                            </div>
+                                        </div>
 
-                                    <div class="flex items-center mt-2">
-                                        <span class="text-lg mr-2">{{ $frame->category->icon }}</span>
-                                        <span class="text-sm text-gray-600">{{ $frame->category->name }}</span>
-                                    </div>
+                                        <!-- Divider -->
+                                        <div class="border-t border-gray-100"></div>
 
-                                    @if ($frame->isFree())
-                                        <a href="{{ route('booth', ['frame_id' => $frame->id]) }}"
-                                            class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
-                                            Gunakan Frame
-                                        </a>
-                                    @else
-                                        <a href="{{ route('maintenance') }}"
-                                            class="mt-4 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                            </svg>
-                                            Gunakan Premium
-                                        </a>
-                                    @endif
+                                        <!-- Action Button -->
+                                        @if ($frame->isFree())
+                                            <a href="{{ route('booth', ['frame_id' => $frame->id]) }}"
+                                                class="mt-2 inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                                </svg>
+                                                Gunakan Frame
+                                            </a>
+                                        @else
+                                            <button
+                                                onclick="showPremiumAlert('{{ number_format($frame->price, 0, ',', '.') }}')"
+                                                class="mt-2 cursor-pointer inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                                </svg>
+                                                Gunakan Premium
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Card Highlight Effect -->
+                                <div
+                                    class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 to-amber-500/20 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
                                 </div>
                             </div>
                         @endforeach
@@ -325,25 +363,27 @@
                     </div>
                 @endif
             </div>
-
-
         </div>
     </div>
 
     <!-- Modal Preview Section -->
-    <div id="previewCameraModal" class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
+    <div id="previewCameraModal" classcopy
+        class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop"></div>
 
         <!-- Desktop Modal -->
         <div
             class="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-4xl mx-4 hidden md:block animate-[modalFadeIn_0.3s]">
             <button
-                class="modal-close absolute top-4 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">&times;</button>
+                class="modal-close absolute top-4 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">×</button>
 
             <h2 class="text-xl font-semibold mb-4 text-center">Frame Preview</h2>
 
             <div class="flex flex-row gap-6 justify-center items-center">
                 <div class="w-3/5">
+                    <div class @if ($frame->isFree()) watermark hidden @else watermark show @endif">
+                        <img src="{{ asset('logo.png') }}" alt="Logo" class="h-10">
+                    </div>
                     <div class="relative bg-white rounded-lg overflow-hidden" style="aspect-ratio: 4/3;">
                         <video id="previewVideo" autoplay muted class="w-full h-full object-cover scale-x-[-1]"></video>
                         <div id="previewWatermark" class="hidden">
@@ -363,9 +403,20 @@
                 </div>
 
                 <div class="w-[190px] h-[450px] relative">
-                    <div id="previewFrameContainer" class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
+                    <div id="previewFrameContainer"
+                        class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
                         <div id="previewFrameImage" class="absolute inset-0 flex items-center justify-center bg-gray-100">
-                            <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
+                            @if (isset($frame) && $frame)
+                                @php
+                                    $templatePath = 'admin.frames.templates.' . $frame->slug;
+                                    if (!view()->exists($templatePath)) {
+                                        $templatePath = 'admin.frames.templates.default';
+                                    }
+                                @endphp
+                                @include($templatePath, ['frame' => $frame])
+                            @else
+                                <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -382,7 +433,7 @@
                 <h2 class="text-xl font-semibold px-4 pb-3 text-center">Frame Preview</h2>
 
                 <button
-                    class="modal-close absolute top-3 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">&times;</button>
+                    class="modal-close absolute top-3 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">×</button>
             </div>
 
             <div class="p-4 flex flex-col gap-6">
@@ -413,7 +464,17 @@
                             class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
                             <div id="mobilePreviewFrameImage"
                                 class="absolute inset-0 flex items-center justify-center bg-gray-100">
-                                <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
+                                @if (isset($frame) && $frame)
+                                    @php
+                                        $templatePath = 'admin.frames.templates.' . $frame->slug;
+                                        if (!view()->exists($templatePath)) {
+                                            $templatePath = 'admin.frames.templates.default';
+                                        }
+                                    @endphp
+                                    @include($templatePath, ['frame' => $frame])
+                                @else
+                                    <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -483,7 +544,35 @@
             display: flex;
         }
     </style>
+    <script>
+        // Configure toastr options
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
 
+        function showPremiumAlert(price) {
+            toastr.warning(
+                `Fitur ini masih maintenance`,
+                'Fitur Premium', {
+                    "timeOut": "5000",
+                    "closeButton": true,
+                    "positionClass": "toast-top-center",
+                    "showMethod": "slideDown",
+                    "hideMethod": "slideUp"
+                }
+            );
+        }
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -510,6 +599,7 @@
                             const doc = parser.parseFromString(html, 'text/html');
                             const newContent = doc.querySelector('.content_section');
 
+                            harmon
                             if (newContent) {
                                 document.querySelector('.content_section').outerHTML =
                                     newContent.outerHTML;
@@ -668,6 +758,7 @@
 
                 fetchFrameDetails(frameId);
 
+                // Fetch frame template
                 fetch(`/get-frame-template/${frameId}`)
                     .then(response => {
                         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -910,14 +1001,6 @@
                 window.timer = null;
             }
 
-            if (previewFrameImage) {
-                previewFrameImage.innerHTML = '<p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>';
-            }
-            if (mobilePreviewFrameImage) {
-                mobilePreviewFrameImage.innerHTML =
-                '<p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>';
-            }
-
             console.log('Modal state reset');
         }
 
@@ -1004,7 +1087,7 @@
 
         function startPhotoSession(isMobile = false) {
             const video = isMobile ? document.getElementById('mobilePreviewVideo') : document.getElementById(
-            'previewVideo');
+                'previewVideo');
             const captureButton = isMobile ? document.getElementById('mobilePreviewCaptureButton') : document
                 .getElementById('previewCaptureButton');
             const countdownOverlay = isMobile ? document.getElementById('mobilePreviewCountdownOverlay') : document
@@ -1071,7 +1154,7 @@
 
         function takePhoto(slotIndex, isMobile = false) {
             const video = isMobile ? document.getElementById('mobilePreviewVideo') : document.getElementById(
-            'previewVideo');
+                'previewVideo');
             const countdownOverlay = isMobile ? document.getElementById('mobilePreviewCountdownOverlay') : document
                 .getElementById('previewCountdownOverlay');
             const watermark = isMobile ? document.getElementById('mobilePreviewWatermark') : document.getElementById(
@@ -1199,6 +1282,18 @@
                     applyWatermarkVisibility(mobileWatermark);
                     console.log('Frame status fetched:', data);
 
+                    // Show toastr notification for premium frames in preview
+                    if (data.price > 0) {
+                        const price = new Intl.NumberFormat('id-ID').format(data.price);
+                        toastr.info(
+                            `Frame ini memerlukan pembayaran sebesar ${price} IDR untuk penggunaan penuh.`,
+                            'Frame Premium', {
+                                "timeOut": "4000",
+                                "positionClass": "toast-top-center"
+                            }
+                        );
+                    }
+
                     return data;
                 })
                 .catch(error => {
@@ -1226,7 +1321,7 @@
             <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
             </svg>
-            <p>Gagal mengakses kamera. Silakan periksa izin kamera atau coba browser lain.</p>
+            <p>GagalPrimero gagal mengakses kamera. Silakan periksa izin kamera atau coba browser lain.</p>
         `;
             video.parentElement.appendChild(errorMessage);
             captureButton.disabled = true;
