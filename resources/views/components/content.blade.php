@@ -490,7 +490,7 @@
         </div>
 
         @if ($topFrames->count() > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 mb-16">
                 @foreach ($topFrames as $frame)
                     <div class="frame-card group relative" data-frame-id="{{ $frame->id }}">
                         <div class="badge {{ $frame->isFree() ? 'badge-free' : 'badge-premium' }}">
