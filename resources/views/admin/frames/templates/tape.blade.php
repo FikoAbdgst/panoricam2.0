@@ -23,9 +23,4 @@
                 data-has-photo="false">⟲</button>
         </div>
     </div>
-
-    <!-- Watermark di sudut kanan bawah -->
-    <div class="absolute bottom-2 right-2 opacity-50">
-        <div class="text-xs text-white font-light" style="text-shadow: 0 0 2px rgba(0,0,0,0.8);">© YourBrand 2025</div>
-    </div>
 </div>

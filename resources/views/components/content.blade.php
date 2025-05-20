@@ -822,7 +822,9 @@
         e.preventDefault();
         e.stopPropagation();
 
-        console.log('openPreviewCameraModal called');
+        // Save the current scroll position
+        const scrollPosition = window.scrollY;
+        console.log('openPreviewCameraModal called, scroll position saved:', scrollPosition);
 
         const modal = document.getElementById('previewCameraModal');
         if (!modal) {
@@ -956,24 +958,29 @@
 
         const modalCloseButtons = modal.querySelectorAll('.modal-close');
         modalCloseButtons.forEach(btn => {
-            btn.removeEventListener('click', closePreviewCameraModal); // Prevent duplicate listeners
-            btn.addEventListener('click', closePreviewCameraModal);
+            btn.removeEventListener('click', closePreviewCameraModal);
+            btn.addEventListener('click', () => closePreviewCameraModal(scrollPosition));
         });
 
         window.removeEventListener('click', handleModalBackdropClick);
-        window.addEventListener('click', handleModalBackdropClick);
+        window.addEventListener('click', (e) => handleModalBackdropClick(e, scrollPosition));
 
         // Add capture button listeners
         captureButton.addEventListener('click', () => startPhotoSession(false));
         mobileCaptureButton.addEventListener('click', () => startPhotoSession(true));
 
         enableDragToClose(mobileModalContainer);
+
+        // Prevent default scroll behavior
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.width = '100%';
     }
 
-    function handleModalBackdropClick(e) {
+    function handleModalBackdropClick(e, testers) {
         const modal = document.getElementById('previewCameraModal');
         if (e.target === modal || e.target.classList.contains('modal-backdrop')) {
-            closePreviewCameraModal();
+            closePreviewCameraModal(scrollPosition);
         }
     }
 
@@ -1004,7 +1011,7 @@
         });
     }
 
-    function closePreviewCameraModal() {
+    function closePreviewCameraModal(scrollPosition) {
         const modal = document.getElementById('previewCameraModal');
         const mobileModalContainer = modal.querySelector('.mobile-modal-container');
         const modalBackdrop = modal.querySelector('.modal-backdrop');
@@ -1044,7 +1051,11 @@
         // Reset modal state
         resetModalState();
 
+        // Restore scroll position
         document.body.classList.remove('modal-open');
+        document.body.style.position = '';
+        document.body.style.top = '';
+        window.scrollTo(0, scrollPosition);
 
         setTimeout(() => {
             modal.style.display = 'none';
@@ -1055,9 +1066,8 @@
                 desktopModal.style.opacity = '';
                 desktopModal.style.transform = '';
             }
+            console.log('Modal closed and scroll position restored to:', scrollPosition);
         }, 300);
-
-        console.log('Modal closed and state reset');
     }
 
     function resetModalState() {
