@@ -8,7 +8,7 @@
                             src="{{ asset('logo.png') }}" alt="Logo" class="h-[70px] w-auto mx-auto"></a>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center gap-5">
                 <a href="{{ route('home') }}"
                     class="text-gray-700 hover:text-[#BF3131] px-3 py-2 rounded-md text-sm font-medium relative group">
                     Home

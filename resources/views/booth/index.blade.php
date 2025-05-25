@@ -557,7 +557,7 @@
         let gifProgressText = document.getElementById('gifProgressText');
         let generatedGifBlob = null;
 
-
+        let hasShownTestimoniModal = false;
         let currentPhotoIndex = null;
         let countdown = 3;
         let timer;
@@ -626,7 +626,7 @@
             ctx.filter = getComputedStyle(video).filter;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             ctx.restore();
-            const dataUrl = canvas.toDataURL();
+            const dataUrl = canvas.toDataURL('image/png', 1.0); // Use maximum quality
 
             if (photoSlots[currentPhotoIndex]) {
                 photoSlots[currentPhotoIndex].src = dataUrl;
@@ -755,32 +755,40 @@
         }
 
         function downloadPhotoStrip() {
-            if (photoStripImage && photoStripImage.startsWith('http')) {
+            const frameContainer = document.querySelector('.frame-container');
+            if (!frameContainer) {
+                console.error('Frame container not found');
+                return;
+            }
+
+            // Set desired HD resolution (e.g., 1080p width)
+            const targetWidth = 1080; // Adjust for desired HD width
+            const scaleFactor = targetWidth / frameContainer.offsetWidth; // Calculate scale based on container width
+
+            html2canvas(frameContainer, {
+                scale: scaleFactor, // Increase resolution by scaling
+                useCORS: true, // Ensure images load correctly if cross-origin
+                logging: false // Disable logging for performance
+            }).then(canvas => {
+                photoStripImage = canvas.toDataURL('image/png', 1.0); // Use maximum quality
                 const a = document.createElement('a');
                 a.href = photoStripImage;
-                a.download = 'photo-strip.png';
+                a.download = 'photo-strip-hd.png';
                 a.click();
 
-                // Tampilkan modal testimoni setelah download
-                setTimeout(() => {
-                    showTestimoniModal();
-                }, 1000);
-            } else {
-                html2canvas(document.querySelector('.frame-container')).then(canvas => {
-                    photoStripImage = canvas.toDataURL();
-                    const a = document.createElement('a');
-                    a.href = photoStripImage;
-                    a.download = 'photo-strip.png';
-                    a.click();
-
-                    // Tampilkan modal testimoni setelah download
+                // Show testimonial modal if not already shown
+                if (!hasShownTestimoniModal) {
                     setTimeout(() => {
                         showTestimoniModal();
                     }, 1000);
-                });
-            }
+                }
+            }).catch(error => {
+                console.error('Error generating photo strip:', error);
+                alert('Failed to generate HD photo strip. Try again.');
+            });
         }
 
+        // Update fungsi sharePhotoStrip
         function sharePhotoStrip() {
             if (navigator.share && photoStripImage) {
                 if (photoStripImage.startsWith('http')) {
@@ -791,10 +799,12 @@
                         })
                         .then(() => {
                             console.log('Shared successfully');
-                            // Tampilkan modal testimoni setelah share berhasil
-                            setTimeout(() => {
-                                showTestimoniModal();
-                            }, 1000);
+                            // Tampilkan modal testimoni hanya jika belum pernah ditampilkan
+                            if (!hasShownTestimoniModal) {
+                                setTimeout(() => {
+                                    showTestimoniModal();
+                                }, 1000);
+                            }
                         })
                         .catch(err => {
                             console.error('Error sharing:', err);
@@ -814,10 +824,12 @@
                                 })
                                 .then(() => {
                                     console.log('Shared successfully');
-                                    // Tampilkan modal testimoni setelah share berhasil
-                                    setTimeout(() => {
-                                        showTestimoniModal();
-                                    }, 1000);
+                                    // Tampilkan modal testimoni hanya jika belum pernah ditampilkan
+                                    if (!hasShownTestimoniModal) {
+                                        setTimeout(() => {
+                                            showTestimoniModal();
+                                        }, 1000);
+                                    }
                                 })
                                 .catch(err => {
                                     console.error('Error sharing:', err);
@@ -837,8 +849,16 @@
                 return;
             }
 
-            html2canvas(frameContainer).then(canvas => {
-                const imageData = canvas.toDataURL();
+            // Set desired HD resolution
+            const targetWidth = 1080; // Adjust for desired HD width
+            const scaleFactor = targetWidth / frameContainer.offsetWidth;
+
+            html2canvas(frameContainer, {
+                scale: scaleFactor,
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const imageData = canvas.toDataURL('image/png', 1.0);
                 savePhotos(imageData);
 
                 if (modalPhotostrip) {
@@ -857,6 +877,9 @@
                         }
                     }
                 }
+            }).catch(error => {
+                console.error('Error generating preview:', error);
+                alert('Failed to generate preview. Try again.');
             });
         }
 
@@ -916,11 +939,12 @@
                 img.onload = function() {
                     const uploadCanvas = document.createElement('canvas');
                     const uploadCtx = uploadCanvas.getContext('2d');
+                    // Use original image dimensions for maximum quality
                     uploadCanvas.width = img.width;
                     uploadCanvas.height = img.height;
                     uploadCtx.filter = filterSelect ? filterSelect.value : 'none';
                     uploadCtx.drawImage(img, 0, 0, img.width, img.height);
-                    const dataUrl = uploadCanvas.toDataURL('image/png');
+                    const dataUrl = uploadCanvas.toDataURL('image/png', 1.0);
 
                     const targetSlot = photoSlots[slotIndex];
                     if (targetSlot) {
@@ -1138,10 +1162,7 @@
             gifProgressBar = document.getElementById('gifProgressBar');
             gifProgressText = document.getElementById('gifProgressText');
 
-            // Periksa status testimoni dari sessionStorage
-            if (!getTestimoniStatus()) {
-                setTestimoniStatus(false); // Pastikan status awal adalah false
-            }
+
 
             initializeWebcam();
             setupFilterChange();
@@ -1301,13 +1322,12 @@
             }
         }
 
-        // Show testimoni modal
         function showTestimoniModal() {
-            if (getTestimoniStatus()) return; // Jangan tampilkan jika sudah ditampilkan di sesi ini
+            if (hasShownTestimoniModal) return; // Jangan tampilkan jika sudah pernah ditampilkan
 
             if (testimoniModal) {
                 testimoniModal.style.display = 'flex';
-                setTestimoniStatus(true); // Tandai bahwa modal sudah ditampilkan
+                hasShownTestimoniModal = true; // Tandai bahwa modal sudah ditampilkan
             }
         }
 
@@ -1424,13 +1444,6 @@
             setupEmojiSelector();
         }
 
-        function getTestimoniStatus() {
-            return sessionStorage.getItem('hasShownTestimoni') === 'true';
-        }
-
-        function setTestimoniStatus(status) {
-            sessionStorage.setItem('hasShownTestimoni', status);
-        }
 
         function createGifFromPhotos() {
             const photos = getAllPhotoData();
@@ -1450,9 +1463,9 @@
             // Create GIF with gif.js
             const gif = new GIF({
                 workers: 2,
-                quality: 10,
-                width: 400,
-                height: 300,
+                quality: 5, // Lower number = higher quality
+                width: 1080, // Set HD width
+                height: 810, // Maintain 4:3 aspect ratio
                 workerScript: '/js/gif.worker.js'
             });
 
@@ -1469,16 +1482,18 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'photo-strip-animation.gif';
+                a.download = 'photo-strip-animation-hd.gif';
                 a.click();
 
                 setTimeout(() => {
                     URL.revokeObjectURL(url);
                 }, 1000);
 
-                setTimeout(() => {
-                    showTestimoniModal();
-                }, 1000);
+                if (!hasShownTestimoniModal) {
+                    setTimeout(() => {
+                        showTestimoniModal();
+                    }, 1000);
+                }
             });
 
             let processedCount = 0;
@@ -1487,9 +1502,8 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 400;
-                    canvas.height = 300;
-
+                    canvas.width = 1080; // HD width
+                    canvas.height = 810; // Maintain aspect ratio
                     const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
                     const x = (canvas.width - img.width * scale) / 2;
                     const y = (canvas.height - img.height * scale) / 2;

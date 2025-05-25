@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -180,11 +177,16 @@
 
         .frame-info-badge {
             background: linear-gradient(135deg, #FEF3E2, #fff);
+            width: 100%;
+            height: fit-content;
             border: 2px solid #BF3131;
             border-radius: 25px;
             padding: 0.5rem 1rem;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
         }
 
         .frame-info-badge::before {
@@ -198,15 +200,39 @@
             transition: left 0.5s;
         }
 
-        .testimonial-card:hover .frame-info-badge::before {
+        .frame-info-badge:hover {
+            background: linear-gradient(135deg, #BF3131, #F16767);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(191, 49, 49, 0.3);
+            border-color: #BF3131;
+        }
+
+        .frame-info-badge:hover .frame-icon {
+            color: white;
+        }
+
+        .frame-info-badge:hover .frame-text {
+            color: white;
+        }
+
+        .frame-info-badge:hover .frame-check {
+            color: #10b981;
+        }
+
+        .frame-info-badge:active {
+            transform: translateY(0px);
+            box-shadow: 0 4px 12px rgba(191, 49, 49, 0.3);
+        }
+
+        /* Prevent testimonial card hover from affecting frame button when button is hovered */
+        .testimonial-card:hover .frame-info-badge:not(:hover)::before {
             left: 100%;
         }
     </style>
 </head>
 
-<body class="hero-bg min-h-screen">
-
-
+<div class="hero-bg min-h-screen">
 
     <!-- Header -->
     <div class="text-center header-section bg-[#FEF3E2] py-20 relative">
@@ -221,7 +247,8 @@
             Apa Kata Mereka?
         </h1>
         <p class="text-gray-600 text-xl max-w-4xl mx-auto px-6 leading-relaxed">
-           Kepuasan kamu adalah tujuan utama kami. Lihat cerita seru dari pengguna yang sudah mencoba PhotoBooth ini dan punya pengalaman seru yang nggak terlupakan!
+            Kepuasan kamu adalah tujuan utama kami. Lihat cerita seru dari pengguna yang sudah mencoba PhotoBooth ini
+            dan punya pengalaman seru yang nggak terlupakan!
         </p>
         <div class="mt-8">
             <div
@@ -271,39 +298,41 @@
         </div>
 
     </div>
+</div>
+<script>
+    let allTestimonis = [];
 
-    <script>
-        let allTestimonis = [];
+    // Load initial data
+    document.addEventListener('DOMContentLoaded', function() {
+        loadTestimonis();
+    });
 
-        // Load initial data
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTestimonis();
-        });
+    // Load testimonials
+    async function loadTestimonis() {
+        try {
+            const response = await fetch('/api/testimonis?per_page=50');
+            const result = await response.json();
 
-        // Load testimonials
-        async function loadTestimonis() {
-            try {
-                const response = await fetch('/api/testimonis?per_page=50');
-                const result = await response.json();
-
-                if (result.success && result.data.data) {
-                    allTestimonis = result.data.data;
-                    displayMarqueeTestimonis(allTestimonis);
-                } else {
-                    loadMockData(); // Fallback to mock data
-                }
-            } catch (error) {
-                console.error('Error loading testimonis:', error);
+            if (result.success && result.data.data) {
+                allTestimonis = result.data.data;
+                displayMarqueeTestimonis(allTestimonis);
+            } else {
                 loadMockData(); // Fallback to mock data
             }
+        } catch (error) {
+            console.error('Error loading testimonis:', error);
+            loadMockData(); // Fallback to mock data
         }
+    }
 
-        // Display testimonials in marquee
-        function displayMarqueeTestimonis(testimonis) {
-            const container = document.getElementById('marqueeContent');
 
-            if (testimonis.length === 0) {
-                container.innerHTML = `
+
+    // Display testimonials in marquee
+    function displayMarqueeTestimonis(testimonis) {
+        const container = document.getElementById('marqueeContent');
+
+        if (testimonis.length === 0) {
+            container.innerHTML = `
                     <div class="text-center py-12 w-full">
                         <div class="text-[#BF3131] mb-4">
                             <i class="fas fa-comments text-6xl opacity-50"></i>
@@ -311,30 +340,30 @@
                         <p class="text-gray-500 text-lg">Belum ada testimoni tersedia.</p>
                     </div>
                 `;
-                return;
-            }
-
-            // Duplicate testimonials for seamless infinite loop
-            const duplicatedTestimonis = [...testimonis, ...testimonis];
-
-            container.innerHTML = duplicatedTestimonis.map(testimoni => createTestimoniCard(testimoni)).join('');
+            return;
         }
 
-        // Create testimonial card
-        function createTestimoniCard(testimoni) {
-            const date = new Date(testimoni.created_at).toLocaleDateString('id-ID', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+        // Duplicate testimonials for seamless infinite loop
+        const duplicatedTestimonis = [...testimonis, ...testimonis];
 
-            const stars = generateStars(testimoni.rating);
-            const emoji = testimoni.emoji || getRandomEmoji(testimoni.rating);
+        container.innerHTML = duplicatedTestimonis.map(testimoni => createTestimoniCard(testimoni)).join('');
+    }
 
-            return `
-                <div class="testimonial-card card-gradient rounded-2xl p-7 shadow-xl mx-3 relative">
+    // Create testimonial card
+    function createTestimoniCard(testimoni) {
+        const date = new Date(testimoni.created_at).toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const stars = generateStars(testimoni.rating);
+        const emoji = testimoni.emoji || getRandomEmoji(testimoni.rating);
+
+        return `
+                <div class="testimonial-card card-gradient rounded-2xl py-7 px-10 shadow-xl mx-3 relative">
                     <!-- Header -->
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center justify-between mb-10">
                         <div class="flex items-center space-x-4">
                             <div class="profile-avatar rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold text-xl">${testimoni.name.charAt(0).toUpperCase()}</span>
@@ -349,8 +378,6 @@
                         </div>
                     </div>
                     
-                  
-                    
                     <!-- Message -->
                     <div class="mb-6">
                         <div class="relative">
@@ -360,8 +387,8 @@
                         </div>
                     </div>
 
-                      <!-- Rating -->
-                    <div class="flex justify-between items-center">
+                    <!-- Rating -->
+                    <div class="flex justify-center items-center">
                         <div class="flex items-center mb-5 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-full px-4 py-2 border border-yellow-200 w-fit">
                             <div class="star-rating mr-3">${stars}</div>
                             <span class="text-sm font-semibold text-gray-700">(${testimoni.rating}/5)</span>
@@ -370,57 +397,37 @@
                     
                     <!-- Frame info -->
                     ${testimoni.frame ? `
-                        <div class="frame-info-badge">
-                            <a href="/booth?frame_id=${testimoni.frame.id}" class="flex items-center justify-center space-x-2 hover:underline">
-                                <i class="fas fa-image text-[#BF3131]"></i>
-                                <span class="text-sm font-semibold text-gray-700">
-                                    Frame: ${testimoni.frame.name}
-                                </span>
-                                <i class="fas fa-check-circle text-green-500 text-sm"></i>
-                            </a>
-                        </div>
-                    ` : ''}
+                                    <a href="/booth?frame_id=${testimoni.frame.id}" class="frame-info-badge">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <i class="fas fa-image frame-icon text-[#BF3131] transition-colors duration-300"></i>
+                                            <span class="text-sm font-semibold frame-text text-gray-700 transition-colors duration-300">
+                                                Frame: ${testimoni.frame.name}
+                                            </span>
+                                            <i class="fas fa-check-circle frame-check text-green-500 text-sm transition-colors duration-300"></i>
+                                        </div>
+                                    </a>
+                                ` : ''}
 
                 </div>
             `;
-        }
+    }
 
-        // Generate stars
-        function generateStars(rating) {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    stars += '<i class="fas fa-star"></i>';
-                } else {
-                    stars += '<i class="far fa-star text-gray-300"></i>';
-                }
+    // Generate stars
+    function generateStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars += '<i class="fas fa-star"></i>';
+            } else {
+                stars += '<i class="far fa-star text-gray-300"></i>';
             }
-            return stars;
         }
-
-        // Get random emoji based on rating
-        function getRandomEmoji(rating) {
-            const emojisByRating = {
-                5: ['😍', '🥰', '😎', '🤩', '💖'],
-                4: ['😊', '😄', '👍', '💝', '✨'],
-                3: ['🙂', '👌', '😌', '💫', '⭐'],
-                2: ['😐', '🤔', '💭', '🤷', '📝'],
-                1: ['😔', '😕', '💔', '😞', '🤐']
-            };
-
-            const emojis = emojisByRating[rating] || emojisByRating[3];
-            return emojis[Math.floor(Math.random() * emojis.length)] || '😊';
+        return stars;
+    }
+    // Auto-load mock data for demo
+    setTimeout(() => {
+        if (allTestimonis.length === 0) {
+            loadMockData();
         }
-
-
-
-        // Auto-load mock data for demo
-        setTimeout(() => {
-            if (allTestimonis.length === 0) {
-                loadMockData();
-            }
-        }, 2000);
-    </script>
-</body>
-
-</html>
+    }, 2000);
+</script>
