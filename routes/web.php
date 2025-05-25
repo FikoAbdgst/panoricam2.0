@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\FrameController;
+use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\FrameTempController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotoboothController;
@@ -51,7 +52,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+
+    Route::get('/testimoni', [TestimoniController::class, 'index'])->name('testimoni.index');
+    Route::patch('/testimoni/{id}/toggle', [TestimoniController::class, 'toggle'])->name('testimoni.toggle');
+    Route::delete('/testimoni/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
 });
+
 Route::get('/maintenance', function () {
     return view('maintenance'); // Pastikan view 'maintenance.blade.php' ada
 })->name('maintenance');

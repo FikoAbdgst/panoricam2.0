@@ -110,7 +110,7 @@
                 Photobooth App
             </h1>
             <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-                Abadikan momen spesial Anda dengan frame keren dan berbagi dengan teman-teman!
+                Abadikan momen spesial kamu dengan frame keren dan berbagi dengan teman-teman!
             </p>
             <div class="mt-8">
                 <button id="scrollToContentBtn"

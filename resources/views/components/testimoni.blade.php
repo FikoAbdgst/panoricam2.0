@@ -218,11 +218,10 @@
         </div>
 
         <h1 class="text-6xl font-extrabold text-gray-900 mb-8 tracking-tight">
-            Apa Kata Pelanggan Kami
+            Apa Kata Mereka?
         </h1>
         <p class="text-gray-600 text-xl max-w-4xl mx-auto px-6 leading-relaxed">
-            Kepuasan pelanggan adalah prioritas utama kami. Berikut testimoni dari mereka yang telah merasakan
-            pengalaman photobooth tak terlupakan bersama PhotoBooth App kami.
+           Kepuasan kamu adalah tujuan utama kami. Lihat cerita seru dari pengguna yang sudah mencoba PhotoBooth ini dan punya pengalaman seru yang nggak terlupakan!
         </p>
         <div class="mt-8">
             <div
@@ -371,14 +370,17 @@
                     
                     <!-- Frame info -->
                     ${testimoni.frame ? `
-                                    <div class="frame-info-badge">
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <i class="fas fa-image text-[#BF3131]"></i>
-                                            <span class="text-sm font-semibold text-gray-700">Frame: ${testimoni.frame.name}</span>
-                                            <i class="fas fa-check-circle text-green-500 text-sm"></i>
-                                        </div>
-                                    </div>
-                                ` : ''}
+                        <div class="frame-info-badge">
+                            <a href="/booth?frame_id=${testimoni.frame.id}" class="flex items-center justify-center space-x-2 hover:underline">
+                                <i class="fas fa-image text-[#BF3131]"></i>
+                                <span class="text-sm font-semibold text-gray-700">
+                                    Frame: ${testimoni.frame.name}
+                                </span>
+                                <i class="fas fa-check-circle text-green-500 text-sm"></i>
+                            </a>
+                        </div>
+                    ` : ''}
+
                 </div>
             `;
         }

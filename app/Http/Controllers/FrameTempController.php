@@ -31,18 +31,21 @@ class FrameTempController extends Controller
             $selectedCategory = null;
         }
 
-        // Filter berdasarkan rating (sorting)
-        $sortBy = $request->query('sort_rating', null);
-        if ($sortBy === 'asc') {
-            // Rating terendah ke tertinggi (null values last)
+        $sortRating = $request->query('sort_rating');
+        $sortPopular = $request->query('sort_popular');
+
+        if ($sortRating === 'asc') {
             $query->orderByRaw('testimonis_avg_rating IS NULL, testimonis_avg_rating ASC');
-        } elseif ($sortBy === 'desc') {
-            // Rating tertinggi ke terendah (null values last)
+        } elseif ($sortRating === 'desc') {
             $query->orderByRaw('testimonis_avg_rating IS NULL, testimonis_avg_rating DESC');
+        } elseif ($sortPopular === 'asc') {
+            $query->orderByRaw('used IS NULL, used ASC');
+        } elseif ($sortPopular === 'desc') {
+            $query->orderByRaw('used IS NULL, used DESC');
         } else {
-            // Default sorting (bisa berdasarkan created_at atau yang lain)
             $query->orderBy('created_at', 'desc');
         }
+
 
         $frames = $query->get();
 

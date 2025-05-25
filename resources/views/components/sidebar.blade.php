@@ -17,6 +17,10 @@
                 class="flex items-center py-3 px-4 text-gray-300 hover:bg-gray-700 hover:text-white {{ request()->routeIs('admin.frames.*') ? 'bg-gray-700 text-white' : '' }}">
                 <span>Kelola Frame</span>
             </a>
+            <a href="{{ route('admin.testimoni.index') }}"
+                class="flex items-center py-3 px-4 text-gray-300 hover:bg-gray-700 hover:text-white {{ request()->routeIs('admin.frames.*') ? 'bg-gray-700 text-white' : '' }}">
+                <span>Kelola Testimoni</span>
+            </a>
         </nav>
     </div>
 

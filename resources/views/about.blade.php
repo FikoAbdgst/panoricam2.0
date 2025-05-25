@@ -6,7 +6,7 @@
         <div class="container mx-auto px-4 md:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Tentang <span
-                        class="text-[#BF3131]">Panociram</span></h2>
+                        class="text-[#BF3131]">Panoricam</span></h2>
                 <div class="w-24 h-1 bg-[#BF3131] mx-auto mb-6"></div>
                 <p class="text-gray-600 max-w-2xl mx-auto">Kami menciptakan momen-momen spesial dengan teknologi photobooth
                     modern</p>
