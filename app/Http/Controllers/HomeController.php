@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Frame;
+use App\Models\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
@@ -58,5 +59,61 @@ class HomeController extends Controller
             'formatted_price' => $frame->formatted_price,
             'isFree' => $frame->isFree()
         ]);
+    }
+    public function getTestimonis(Request $request)
+    {
+        try {
+            $query = Testimoni::query();
+
+            // Filter berdasarkan rating jika ada
+            if ($request->has('rating')) {
+                $query->byRating($request->rating);
+            }
+
+            // Pagination
+            $perPage = $request->get('per_page', 10);
+            $testimonis = $query->latest()
+                ->with('frame')
+                ->paginate($perPage);
+
+            return response()->json([
+                'success' => true,
+                'data' => $testimonis
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data testimoni'
+            ], 500);
+        }
+    }
+    public function getTestimoniStats()
+    {
+        try {
+            $stats = [
+                'total' => Testimoni::count(),
+                'average_rating' => round(Testimoni::avg('rating'), 1),
+                'rating_distribution' => [
+                    '5' => Testimoni::byRating(5)->count(),
+                    '4' => Testimoni::byRating(4)->count(),
+                    '3' => Testimoni::byRating(3)->count(),
+                    '2' => Testimoni::byRating(2)->count(),
+                    '1' => Testimoni::byRating(1)->count(),
+                ],
+                'recent_testimonis' => Testimoni::latest()
+                    ->limit(5)
+                    ->get(['rating', 'name', 'message', 'created_at'])
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $stats
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil statistik testimoni'
+            ], 500);
+        }
     }
 }

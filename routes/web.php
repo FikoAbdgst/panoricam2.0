@@ -43,9 +43,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/frames/{frame}/edit', [FrameController::class, 'edit'])->name('frames.edit');
     Route::put('/frames/{frame}', [FrameController::class, 'update'])->name('frames.update');
     Route::delete('/frames/{frame}', [FrameController::class, 'destroy'])->name('frames.destroy');
-    // In routes/web.php within the admin group
-    Route::get('/frames/{frame}/create-template', [FrameController::class, 'createTemplate'])
-        ->name('frames.create-template');
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
@@ -67,3 +64,7 @@ Route::get('/frame', [FrameTempController::class, 'index'])->name('frametemp');
 // Rute photobooth
 Route::get('/booth', [PhotoboothController::class, 'index'])->name('booth');
 Route::post('/save-photo', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');
+
+Route::post('/submitTestimoni', [PhotoBoothController::class, 'submitTestimoni'])->name('testimoni.submit');
+Route::get('/api/testimonis', [HomeController::class, 'getTestimonis']);
+Route::get('/api/testimoni-stats', [HomeController::class, 'getTestimoniStats']);

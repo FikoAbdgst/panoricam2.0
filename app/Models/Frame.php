@@ -51,4 +51,31 @@ class Frame extends Model
         $templatePath = resource_path('views/admin/frames/templates/' . $this->slug . '.blade.php');
         return file_exists($templatePath);
     }
+    public function testimonis()
+    {
+        return $this->hasMany(Testimoni::class);
+    }
+    // Get average rating
+    public function getAverageRatingAttribute()
+    {
+        return $this->testimonis()->avg('rating');
+    }
+
+    // Get total testimoni count
+    public function getTestimoniCountAttribute()
+    {
+        return $this->testimonis()->count();
+    }
+
+    // Scope untuk filter berdasarkan rating rata-rata
+    public function scopeWithAverageRating($query)
+    {
+        return $query->withAvg('testimonis', 'rating');
+    }
+
+    // Scope untuk sorting berdasarkan rating
+    public function scopeOrderByRating($query, $direction = 'desc')
+    {
+        return $query->orderByRaw("testimonis_avg_rating IS NULL, testimonis_avg_rating {$direction}");
+    }
 }

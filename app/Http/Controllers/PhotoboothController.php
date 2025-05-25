@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Frame;
+use App\Models\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
 class PhotoboothController extends Controller
@@ -70,5 +72,52 @@ class PhotoboothController extends Controller
     {
         $frame = Frame::findOrFail($frameId);
         return $frame->slug;
+    }
+
+    public function submitTestimoni(Request $request)
+    {
+        try {
+            // Validasi input
+            $validator = Validator::make($request->all(), [
+                'rating' => 'required|integer|min:1|max:5',
+                'emoji' => 'nullable|string|max:10',
+                'name' => 'nullable|string|max:100',
+                'message' => 'nullable|string|max:500',
+                'frame_id' => 'nullable|integer|exists:frames,id'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak valid',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+
+            // Simpan testimoni
+            $testimoni = Testimoni::create([
+                'rating' => $request->rating,
+                'emoji' => $request->emoji,
+                'name' => $request->name ?: 'Anonymous',
+                'message' => $request->message,
+                'frame_id' => $request->frame_id,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Testimoni berhasil disimpan',
+                'data' => [
+                    'id' => $testimoni->id,
+                    'rating' => $testimoni->rating,
+                    'name' => $testimoni->name
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server',
+                'error' => config('app.debug') ? $e->getMessage() : 'Internal server error'
+            ], 500);
+        }
     }
 }

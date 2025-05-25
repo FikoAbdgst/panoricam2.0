@@ -22,6 +22,7 @@
         @yield('hero_section')
         @yield('content_section')
         @yield('howitworks_section')
+        @yield('testimoni_section')
         @yield('footer_section')
     </main>
 

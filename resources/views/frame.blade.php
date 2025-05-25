@@ -2,32 +2,18 @@
 
 @section('hero_section')
     <style>
-        #previewCountdownOverlay {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease, background-color 0.2s ease;
-            font-size: 3rem;
-            color: white;
-            display: none;
-        }
-
-        #previewCountdownOverlay.show {
-            display: flex;
-        }
-
-        #previewCountdownOverlay.flash {
-            background-color: rgba(255, 255, 255, 0.9);
-            transition: background-color 0.2s ease;
-        }
-
+        /* Preview Modal Styles */
         #previewCameraModal {
             font-family: 'Poppins', sans-serif;
         }
 
-        #previewVideo {
+        #previewVideo,
+        #mobilePreviewVideo {
             background-color: #000;
         }
 
-        #previewFrameContainer {
+        #previewFrameContainer,
+        #mobilePreviewFrameContainer {
             height: 100%;
             width: 100%;
             position: relative;
@@ -37,13 +23,87 @@
             justify-content: center;
         }
 
-        #previewFrameImage {
+        #previewFrameImage,
+        #mobilePreviewFrameImage {
             position: relative;
             height: 100%;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        #previewFrameImage img,
+        #previewFrameImage svg,
+        #previewFrameImage>div,
+        #mobilePreviewFrameImage img,
+        #mobilePreviewFrameImage svg,
+        #mobilePlusFrameImage>div {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .photo-slot-container {
+            position: absolute;
+            overflow: hidden;
+        }
+
+        .photo-slot {
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .photo-slot img[src]:not([src=""]) {
+            display: block;
+        }
+
+        #previewWatermark,
+        #mobilePreviewWatermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.4;
+            transition: opacity 1.5s ease;
+            display: none;
+        }
+
+        #previewWatermark.show,
+        #mobilePreviewWatermark.show {
+            display: flex;
+        }
+
+        #previewWatermark .watermark-content,
+        #mobilePreviewWatermark .watermark-content {
+            background-color: rgba(155, 155, 155, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #previewWatermark .watermark-content span,
+        #mobilePreviewWatermark .watermark-content span {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .watermark {
@@ -83,7 +143,28 @@
             opacity: 0.3;
         }
 
-        #previewCaptureButton:disabled {
+        #previewCountdownOverlay,
+        #mobilePreviewCountdownOverlay {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease, background-color 0.2s ease;
+            font-size: 3rem;
+            color: white;
+            display: none;
+        }
+
+        #previewCountdownOverlay.show,
+        #mobilePreviewCountdownOverlay.show {
+            display: flex;
+        }
+
+        #previewCountdownOverlay.flash,
+        #mobilePreviewCountdownOverlay.flash {
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: background-color 0.2s ease;
+        }
+
+        #previewCaptureButton:disabled,
+        #mobilePreviewCaptureButton:disabled {
             opacity: 0.7;
             cursor: not-allowed;
         }
@@ -102,88 +183,12 @@
             }
         }
 
-        #previewCountdownOverlay {
+        #previewCountdownOverlay,
+        #mobilePreviewCountdownOverlay {
             animation: pulse 1s infinite;
         }
 
-        #previewFrameImage img,
-        #previewFrameImage svg,
-        #previewFrameImage>div {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
-        }
-
-        #previewFrameContainer .photo-slot {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        #previewFrameContainer .photo-slot img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-slot-container {
-            position: absolute;
-            overflow: hidden;
-        }
-
-        .photo-slot {
-            width: 100%;
-            height: 100%;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .photo-slot img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
-
-        .photo-slot img[src]:not([src=""]) {
-            display: block;
-        }
-
-        #previewWatermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 10;
-            opacity: 0.4;
-            transition: opacity 1.5s ease;
-            display: none;
-        }
-
-        #previewWatermark.show {
-            display: flex;
-        }
-
-        #previewWatermark .watermark-content {
-            background-color: rgba(155, 155, 155, 0.5);
-            padding: 10px 20px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #previewWatermark .watermark-content span {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
+        /* Modal Animation */
         @keyframes modalFadeIn {
             from {
                 opacity: 0;
@@ -195,13 +200,427 @@
                 transform: translateY(0);
             }
         }
+
+        .mobile-modal-container {
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .mobile-modal-container.show {
+            transform: translateY(0);
+        }
+
+        .mobile-modal-container.hide {
+            transform: translateY(100%);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        .modal-backdrop {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-backdrop.show {
+            opacity: 1;
+        }
+
+        /* Category Button Styles (Desktop) - UPDATED */
+        .category-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            /* Increased from 8px */
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            width: 64px;
+            /* Increased from 48px */
+            height: 64px;
+            /* Increased from 48px */
+            border-radius: 16px;
+            /* Increased from 12px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border: 2px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-icon:hover {
+            background-color: #fff5f5;
+            border-color: #fed7d7;
+            transform: translateY(-2px);
+        }
+
+        .category-icon.active {
+            background-color: #BF3131;
+            border-color: #BF3131;
+            color: white;
+            width: 72px;
+            /* Increased from 56px */
+            height: 72px;
+            /* Increased from 56px */
+            transform: scale(1.1);
+        }
+
+        .category-icon.active span,
+        .category-icon-mobile.active span {
+            filter: none !important;
+            text-shadow: 0 0 15px white;
+            /* Ensures the original color is preserved */
+        }
+
+        .category-icon span {
+            font-size: 24px;
+            /* Increased from 18px */
+        }
+
+        .category-label {
+            font-size: 14px;
+            /* Increased from 12px */
+            font-weight: 500;
+            color: #6b7280;
+            transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-btn:hover .category-label {
+            color: #BF3131;
+        }
+
+        .category-btn .category-icon.active+.category-label {
+            color: #BF3131;
+            font-weight: 600;
+            font-size: 15px;
+            /* Increased from 13px */
+        }
+
+        .filter-btn,
+        .rating-filter-btn,
+        .popular-filter-btn,
+        .default-filter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            color: #6b7280;
+        }
+
+        .filter-btn:hover,
+        .rating-filter-btn:hover,
+        .popular-filter-btn:hover,
+        .default-filter-btn:hover {
+            background-color: #fff5f5;
+            border-color: #fed7d7;
+            color: #BF3131;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(191, 49, 49, 0.15);
+        }
+
+        .filter-btn.active,
+        .rating-filter-btn.active,
+        .popular-filter-btn.active,
+        .default-filter-btn.active {
+            background-color: #BF3131;
+            border-color: #BF3131;
+            color: white;
+        }
+
+        .filter-btn.active svg,
+        .rating-filter-btn.active svg,
+        .popular-filter-btn.active svg,
+        .default-filter-btn.active svg {
+            color: white;
+        }
+
+        /* Mobile Filter Button Styles */
+        .mobile-filter-btn,
+        .mobile-rating-filter-btn,
+        .mobile-popular-filter-btn,
+        .mobile-default-filter-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            color: #6b7280;
+        }
+
+        .mobile-filter-btn:hover,
+        .mobile-rating-filter-btn:hover,
+        .mobile-popular-filter-btn:hover,
+        .mobile-default-filter-btn:hover {
+            background-color: #fff5f5;
+            border-color: #fed7d7;
+            color: #BF3131;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(191, 49, 49, 0.15);
+        }
+
+        .mobile-filter-btn.active,
+        .mobile-rating-filter-btn.active,
+        .mobile-popular-filter-btn.active,
+        .mobile-default-filter-btn.active {
+            background-color: #BF3131;
+            border-color: #BF3131;
+            color: white;
+        }
+
+        .mobile-filter-btn.active svg,
+        .mobile-rating-filter-btn.active svg,
+        .mobile-popular-filter-btn.active svg,
+        .mobile-default-filter-btn.active svg {
+            color: white;
+        }
+
+
+
+        /* Category Scroll (Desktop) */
+        .category-scroll-desktop {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding: 20px 40px;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+        }
+
+        .category-scroll-desktop::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .category-scroll-desktop::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .category-scroll-desktop::-webkit-scrollbar-thumb {
+            background-color: #BF3131;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        .category-scroll-desktop::-webkit-scrollbar-thumb:hover {
+            background-color: #a12828;
+        }
+
+        /* Scrollbar Hide for Mobile */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Mobile Category Button Styles - UPDATED to match desktop theme */
+        .category-btn-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            /* Reduced from desktop 12px */
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 65px;
+            padding: 6px 2px;
+        }
+
+        .category-btn-mobile:hover {
+            transform: translateY(-2px);
+        }
+
+        .category-icon-mobile {
+            width: 48px;
+            /* Scaled down from desktop 64px */
+            height: 48px;
+            /* Scaled down from desktop 64px */
+            border-radius: 12px;
+            /* Scaled down from desktop 16px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border: 2px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-icon-mobile:hover {
+            background-color: #fff5f5;
+            border-color: #fed7d7;
+            transform: translateY(-2px);
+        }
+
+        .category-icon-mobile.active {
+            background-color: #BF3131;
+            border-color: #BF3131;
+            color: white;
+            width: 56px;
+            /* Scaled down from desktop 72px */
+            height: 56px;
+            /* Scaled down from desktop 72px */
+            transform: scale(1.1);
+        }
+
+
+        .category-icon-mobile span {
+            font-size: 18px;
+            /* Scaled down from desktop 24px */
+        }
+
+        .category-label-mobile {
+            font-size: 12px;
+            /* Scaled down from desktop 14px */
+            font-weight: 500;
+            color: #6b7280;
+            transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-btn-mobile:hover .category-label-mobile {
+            color: #BF3131;
+        }
+
+        .category-btn-mobile .category-icon-mobile.active+.category-label-mobile {
+            color: #BF3131;
+            font-weight: 600;
+            font-size: 13px;
+            /* Scaled down from desktop 15px */
+        }
+
+        /* Mobile Category Scroll Container - UPDATED to match desktop */
+        .category-scroll-mobile {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            /* Reduced from desktop 30px */
+            padding: 16px 20px;
+            /* Reduced from desktop 20px 40px */
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .category-scroll-mobile::-webkit-scrollbar {
+            height: 6px;
+            /* Smaller than desktop 8px */
+        }
+
+        .category-scroll-mobile::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .category-scroll-mobile::-webkit-scrollbar-thumb {
+            background-color: #BF3131;
+            border-radius: 3px;
+            border: 1px solid transparent;
+            background-clip: content-box;
+        }
+
+        .category-scroll-mobile::-webkit-scrollbar-thumb:hover {
+            background-color: #a12828;
+        }
+
+        /* Responsive Adjustments - UPDATED */
+        @media (max-width: 640px) {
+            .category-btn-mobile {
+                min-width: 65px;
+                padding: 6px 2px;
+                gap: 8px;
+            }
+
+            .category-icon-mobile {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+            }
+
+            .category-icon-mobile.active {
+                width: 56px;
+                height: 56px;
+            }
+
+            .category-icon-mobile span {
+                font-size: 18px;
+            }
+
+            .category-label-mobile {
+                font-size: 12px;
+            }
+
+            .category-btn-mobile .category-icon-mobile.active+.category-label-mobile {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-btn-mobile {
+                min-width: 60px;
+                gap: 6px;
+            }
+
+            .category-icon-mobile {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .category-icon-mobile.active {
+                width: 48px;
+                height: 48px;
+            }
+
+            .category-icon-mobile span {
+                font-size: 16px;
+            }
+
+            .category-label-mobile {
+                font-size: 10px;
+            }
+
+            .category-btn-mobile .category-icon-mobile.active+.category-label-mobile {
+                font-size: 11px;
+            }
+
+            .category-scroll-mobile {
+                gap: 16px;
+                padding: 12px 16px;
+            }
+
+        }
     </style>
     <div class="py-16 bg-[#FEF3E2] content_section pt-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold text-gray-900 inline-block relative">
-                    <span class="bg-clip-text text-transparent bg-[#BF3131]">Pilih Frame
-                        Terbaikmu</span>
+                    <span class="bg-clip-text text-transparent bg-[#BF3131]">Pilih Frame Terbaikmu</span>
                     <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1/2 h-1 bg-[#BF3131] rounded-full">
                     </div>
                 </h2>
@@ -209,34 +628,198 @@
                     yang tak terlupakan</p>
             </div>
 
-            <div
-                class="mb-16 backdrop-blur-sm bg-[#FEF3E2] bg-opacity-80 rounded-2xl shadow-md p-8 transform transition-all duration-300">
-                <div class="flex flex-wrap gap-6 justify-center">
-                    <a href="{{ route('frametemp') }}" class="category-link group text-center">
-                        <div
-                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#FEF3E2] flex items-center justify-center
-                          shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group-hover:bg-red-50
-                          {{ !isset($selectedCategory) ? 'ring-4 ring-red-300' : '' }}">
-                            <span
-                                class="text- آسان md:text-4xl transform group-hover:scale-110 transition-transform duration-300">🏠</span>
-                        </div>
-                        <p class="mt-2 text-sm font-medium text-gray-700 group-hover:text-[#BF3131]">Semua</p>
-                    </a>
-
-                    @foreach ($categories as $category)
-                        <a href="{{ route('frametemp', ['category' => $category->id]) }}"
-                            class="group text-center category-link">
-                            <div
-                                class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#FEF3E2] flex items-center justify-center
-                              shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group-hover:bg-red-50
-                              {{ isset($selectedCategory) && $selectedCategory->id == $category->id ? 'ring-4 ring-red-300' : '' }}">
-                                <span
-                                    class="text-3xl md:text-4xl transform group-hover:scale-110 transition-transform duration-300">{{ $category->icon }}</span>
+            <!-- Category Selector Section -->
+            <div class="mb-8 bg-transparent rounded-xl p-4 sm:p-6">
+                <!-- Mobile: Horizontal Scrollable Categories - UPDATED -->
+                <div class="block sm:hidden mb-4">
+                    <div class="category-scroll-mobile" style="scroll-snap-type: x mandatory;">
+                        <a href="{{ route('frametemp') }}" class="category-btn-mobile group flex-shrink-0"
+                            style="scroll-snap-align: start;">
+                            <div class="category-icon-mobile {{ !isset($selectedCategory) ? 'active' : '' }}">
+                                <span>🏠</span>
                             </div>
-                            <p class="mt-2 text-sm font-medium text-gray-700 group-hover:text-[#BF3131]">
-                                {{ $category->name }}</p>
+                            <span class="category-label-mobile">Semua</span>
                         </a>
-                    @endforeach
+                        @foreach ($categories as $category)
+                            <a href="{{ route('frametemp', ['category' => $category->id]) }}"
+                                class="category-btn-mobile group flex-shrink-0" style="scroll-snap-align: start;">
+                                <div
+                                    class="category-icon-mobile {{ isset($selectedCategory) && $selectedCategory->id == $category->id ? 'active' : '' }}">
+                                    <span>{{ $category->icon }}</span>
+                                </div>
+                                <span class="category-label-mobile">{{ $category->name }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Desktop: Grid Layout -->
+                <div class="hidden sm:flex justify-center items-center">
+                    <div class="w-4/5 category-scroll-desktop">
+                        <a href="{{ route('frametemp') }}" class="category-btn group flex-shrink-0"
+                            style="scroll-snap-align: start;">
+                            <div class="category-icon {{ !isset($selectedCategory) ? 'active' : '' }}">
+                                <span class="text-lg">🏠</span>
+                            </div>
+                            <span class="category-label">Semua</span>
+                        </a>
+                        @foreach ($categories as $category)
+                            <a href="{{ route('frametemp', ['category' => $category->id]) }}"
+                                class="category-btn group flex-shrink-0" style="scroll-snap-align: start;">
+                                <div
+                                    class="category-icon {{ isset($selectedCategory) && $selectedCategory->id == $category->id ? 'active' : '' }}">
+                                    <span class="text-lg">{{ $category->icon }}</span>
+                                </div>
+                                <span class="category-label">{{ $category->name }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Filter Layout -->
+            <div class="block sm:hidden">
+                <button id="toggleFilter"
+                    class="w-full relative flex items-center justify-between px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 rounded-lg border border-gray-300 transition-all duration-300 text-sm font-medium text-gray-700 mb-3">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                        </svg>
+                        <span>Filter & Urutkan</span>
+                    </div>
+
+                    <svg id="filterArrow" xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                    <div
+                        class="w-3 h-3 bg-green-500 absolute -top-1 -right-1 z-50 rounded-full {{ !request('sort_rating') && !request('sort_popular') ? 'hidden' : '' }} ">
+                    </div>
+                </button>
+
+                <div id="filterOptions" class="hidden space-y-2 animate-fade-in mb-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700 block">Urutkan</label>
+                        <div class="flex gap-2">
+                            <a href="{{ route('frametemp', array_merge(request()->except(['sort_rating', 'sort_popular']), ['sort_rating' => request('sort_rating') == 'desc' ? 'asc' : 'desc'])) }}"
+                                class="mobile-rating-filter-btn flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 border {{ request('sort_rating') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ request('sort_rating') == 'desc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7' }}" />
+                                </svg>
+                                <span>Rating
+                                    {{ request('sort_rating') == 'desc' ? 'Tinggi ke Rendah' : (request('sort_rating') == 'asc' ? 'Rendah ke Tinggi' : '') }}</span>
+                            </a>
+                            <a href="{{ route('frametemp', array_merge(request()->except(['sort_rating', 'sort_popular']), ['sort_popular' => request('sort_popular') == 'desc' ? 'asc' : 'desc'])) }}"
+                                class="mobile-popular-filter-btn flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 border {{ request('sort_popular') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ request('sort_popular') == 'desc' ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                                </svg>
+                                <span>Popularitas
+                                    {{ request('sort_popular') == 'desc' ? 'Tinggi ke Rendah' : (request('sort_popular') == 'asc' ? 'Rendah ke Tinggi' : '') }}</span>
+                            </a>
+                            <a href="{{ route('frametemp', request()->except(['sort_rating', 'sort_popular'])) }}"
+                                class="mobile-default-filter-btn flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 border {{ !request('sort_rating') && !request('sort_popular') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <span>Default</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center justify-center gap-2 bg-gradient-to-r from-[#FEF3E2] to-red-50 px-4 py-3 rounded-lg border border-red-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#BF3131]" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <span class="text-sm font-medium text-gray-700">
+                        <span class="font-bold text-[#BF3131]">{{ $frames->count() }}</span> Frame Tersedia
+                    </span>
+                </div>
+            </div>
+
+            <!-- Desktop Filter Layout -->
+            <div class="hidden sm:flex sm:flex-row gap-4 justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button id="toggleFilter"
+                        class="flex relative items-center gap-2 px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 rounded-lg border border-gray-300 transition-all duration-300 text-sm font-medium text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                        </svg>
+                        <span>Filter & Urutkan</span>
+                        <svg id="filterArrow" xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <div
+                            class="w-3 h-3 bg-green-500 absolute -top-1 -right-1 z-50 rounded-full {{ !request('sort_rating') && !request('sort_popular') ? 'hidden' : '' }} ">
+                        </div>
+                    </button>
+
+                    <div id="filterOptions" class="hidden gap-3 animate-fade-in flex">
+                        <div class="flex items-center gap-1">
+                            <a href="{{ route('frametemp', array_merge(request()->except(['sort_rating', 'sort_popular']), ['sort_rating' => request('sort_rating') == 'desc' ? 'asc' : 'desc'])) }}"
+                                class="rating-filter-btn flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all duration-300 border {{ request('sort_rating') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ request('sort_rating') == 'desc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7' }}" />
+                                </svg>
+                                <span>Rating
+                                    {{ request('sort_rating') == 'desc' ? 'Tinggi ke Rendah' : (request('sort_rating') == 'asc' ? 'Rendah ke Tinggi' : '') }}</span>
+                            </a>
+                        </div>
+                        <div class="w-px h-6 bg-gray-300"></div>
+                        <div class="flex items-center gap-1">
+                            <a href="{{ route('frametemp', array_merge(request()->except(['sort_rating', 'sort_popular']), ['sort_popular' => request('sort_popular') == 'desc' ? 'asc' : 'desc'])) }}"
+                                class="popular-filter-btn flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all duration-300 border {{ request('sort_popular') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ request('sort_popular') == 'desc' ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                                </svg>
+                                <span>Popularitas
+                                    {{ request('sort_popular') == 'desc' ? 'Tinggi ke Rendah' : (request('sort_popular') == 'asc' ? 'Rendah ke Tinggi' : '') }}</span>
+                            </a>
+                        </div>
+                        <div class="w-px h-6 bg-gray-300"></div>
+                        <a href="{{ route('frametemp', request()->except(['sort_rating', 'sort_popular'])) }}"
+                            class="default-filter-btn flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all duration-300 border {{ !request('sort_rating') && !request('sort_popular') ? 'active' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <span>Default</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center gap-2 bg-gradient-to-r from-[#FEF3E2] to-red-50 px-4 py-2 rounded-lg border border-red-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#BF3131]" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <span class="text-sm font-medium text-gray-700">
+                        <span class="font-bold text-[#BF3131]">{{ $frames->count() }}</span> Frame
+                    </span>
                 </div>
             </div>
 
@@ -269,7 +852,6 @@
                                         </span>
                                     @endif
                                 </div>
-
                                 <div class="relative h-60 bg-gradient-to-br from-gray-100 to-red-50 overflow-hidden">
                                     <div
                                         class="absolute inset-0 flex items-center justify-center p-4 transition-transform duration-500 group-hover:scale-105">
@@ -280,7 +862,6 @@
                                             <div class="text-gray-400 text-5xl">🖼️</div>
                                         @endif
                                     </div>
-
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
                                         <button
@@ -309,14 +890,52 @@
                                                 <span class="text-xs text-gray-700">{{ $frame->category->name }}</span>
                                             </div>
                                         </div>
-
+                                        @if ($frame->testimonis_avg_rating)
+                                            <div class="flex items-center justify-between">
+                                                <div
+                                                    class="flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 px-3 py-1.5 rounded-lg border border-yellow-200">
+                                                    <div class="flex items-center">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            @if ($i <= round($frame->testimonis_avg_rating))
+                                                                <svg class="w-4 h-4 text-yellow-400 fill-current drop-shadow-sm"
+                                                                    viewBox="0 0 20 20">
+                                                                    <path
+                                                                        d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                                                </svg>
+                                                            @else
+                                                                <svg class="w-4 h-4 text-gray-300 fill-current"
+                                                                    viewBox="0 0 20 20">
+                                                                    <path
+                                                                        d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                                                </svg>
+                                                            @endif
+                                                        @endfor
+                                                    </div>
+                                                    <span
+                                                        class="text-sm font-semibold text-gray-800">{{ number_format($frame->testimonis_avg_rating, 1) }}</span>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div
+                                                class="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
+                                                <div class="flex items-center">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-4 h-4 text-gray-300 fill-current"
+                                                            viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                                <span class="text-sm text-gray-500 font-medium">Belum ada rating</span>
+                                            </div>
+                                        @endif
                                         <div class="border-t border-gray-100"></div>
-
                                         @if ($frame->isFree())
                                             <a href="{{ route('booth', ['frame_id' => $frame->id]) }}"
                                                 class="mt-2 inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                                                 </svg>
@@ -326,8 +945,8 @@
                                             <button
                                                 onclick="showPremiumAlert('{{ number_format($frame->price, 0, ',', '.') }}')"
                                                 class="mt-2 cursor-pointer inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                                 </svg>
@@ -336,7 +955,6 @@
                                         @endif
                                     </div>
                                 </div>
-
                                 <div
                                     class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 to-amber-500/20 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
                                 </div>
@@ -344,9 +962,12 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="text-center py-20 bg-gradient-to-r from-red-50 to-red-50 rounded-2xl shadow-inner">
-                        <div class="inline-block text-7xl mb-6 animate-pulse">🖼️</div>
-                        <p class="text-xl text-gray-600 font-light">Belum ada frame yang tersedia untuk kategori ini.</p>
+                    <div class="text-center py-20 bg-[#FEF3E2]">
+                        <div class="inline-block text-7xl mb-6">😥</div>
+                        <p class="text-xl text-gray-600 font-light">
+                            Tidak ada frame yang tersedia untuk kategori
+                            {{ isset($selectedCategory) ? '"' . $selectedCategory->name . '"' : 'ini' }}.
+                        </p>
                         <p class="mt-3 text-gray-500">Silakan pilih kategori lain atau kembali lagi nanti.</p>
                     </div>
                 @endif
@@ -354,8 +975,7 @@
         </div>
     </div>
 
-    <div id="previewCameraModal" classcopy
-        class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
+    <div id="previewCameraModal" class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop"></div>
 
         <!-- Desktop Modal -->
@@ -368,9 +988,7 @@
 
             <div class="flex flex-row gap-6 justify-center items-center">
                 <div class="w-3/5">
-                    <div class @if ($frame->isFree()) watermark hidden @else watermark show @endif">
-                        <img src="{{ asset('logo.png') }}" alt="Logo" class="h-10">
-                    </div>
+
                     <div class="relative bg-white rounded-lg overflow-hidden" style="aspect-ratio: 4/3;">
                         <video id="previewVideo" autoplay muted class="w-full h-full object-cover scale-x-[-1]"></video>
                         <div id="previewWatermark" class="hidden">
@@ -393,17 +1011,7 @@
                     <div id="previewFrameContainer"
                         class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
                         <div id="previewFrameImage" class="absolute inset-0 flex items-center justify-center bg-gray-100">
-                            @if (isset($frame) && $frame)
-                                @php
-                                    $templatePath = 'admin.frames.templates.' . $frame->slug;
-                                    if (!view()->exists($templatePath)) {
-                                        $templatePath = 'admin.frames.templates.default';
-                                    }
-                                @endphp
-                                @include($templatePath, ['frame' => $frame])
-                            @else
-                                <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
-                            @endif
+                            <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
                         </div>
                     </div>
                 </div>
@@ -414,17 +1022,13 @@
         <div
             class="relative bg-white rounded-t-xl shadow-xl w-full md:hidden mobile-modal-container max-h-[90vh] overflow-y-auto">
             <div class="sticky top-0 z-10 bg-white rounded-t-xl border-b border-gray-200">
-                <!-- Drag handle -->
                 <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto my-3"></div>
-
                 <h2 class="text-xl font-semibold px-4 pb-3 text-center">Frame Preview</h2>
-
                 <button
                     class="modal-close absolute top-3 right-4 text-2xl text-gray-500 hover:text-black cursor-pointer">×</button>
             </div>
 
             <div class="p-4 flex flex-col gap-6">
-                <!-- Camera Preview (4:3) -->
                 <div class="w-full">
                     <div class="relative bg-white rounded-lg overflow-hidden" style="aspect-ratio: 4/3;">
                         <video id="mobilePreviewVideo" autoplay muted
@@ -451,17 +1055,7 @@
                             class="w-full h-full relative bg-transparent shadow-md overflow-hidden">
                             <div id="mobilePreviewFrameImage"
                                 class="absolute inset-0 flex items-center justify-center bg-gray-100">
-                                @if (isset($frame) && $frame)
-                                    @php
-                                        $templatePath = 'admin.frames.templates.' . $frame->slug;
-                                        if (!view()->exists($templatePath)) {
-                                            $templatePath = 'admin.frames.templates.default';
-                                        }
-                                    @endphp
-                                    @include($templatePath, ['frame' => $frame])
-                                @else
-                                    <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
-                                @endif
+                                <p class="text-gray-400 text-center p-4">Frame akan muncul di sini</p>
                             </div>
                         </div>
                     </div>
@@ -469,68 +1063,7 @@
             </div>
         </div>
     </div>
-    <style>
-        .mobile-modal-container {
-            transform: translateY(100%);
-            transition: transform 0.3s ease-out;
-        }
 
-        .mobile-modal-container.show {
-            transform: translateY(0);
-        }
-
-        .mobile-modal-container.hide {
-            transform: translateY(100%);
-        }
-
-        body.modal-open {
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-        }
-
-        .modal-backdrop {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-backdrop.show {
-            opacity: 1;
-        }
-
-        #mobilePreviewCountdownOverlay {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease, background-color 0.2s ease;
-            font-size: 3rem;
-            color: white;
-            display: none;
-        }
-
-        #mobilePreviewCountdownOverlay.show {
-            display: flex;
-        }
-
-        #mobilePreviewCountdownOverlay.flash {
-            background-color: rgba(255, 255, 255, 0.9);
-            transition: background-color 0.2s ease;
-        }
-
-        #mobilePreviewWatermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 10;
-            opacity: 0.4;
-            transition: opacity 1.5s ease;
-            display: none;
-        }
-
-        #mobilePreviewWatermark.show {
-            display: flex;
-        }
-    </style>
     <script>
         // Configure toastr options
         toastr.options = {
@@ -562,92 +1095,20 @@
     </script>
 
     <script>
+        let isFilterOpen = false;
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Scrolling functionality
-            document.getElementById('scrollToContentBtn')?.addEventListener('click', function() {
-                document.querySelector('.content_section').scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+            // Initialize toggle filter functionality
+            initializeToggleFilter();
 
-            // Function to attach category listeners
-            function attachCategoryListeners() {
-                // Remove existing listeners to prevent duplication
-                document.querySelectorAll('.category-link').forEach(link => {
-                    // Clone the node to remove existing listeners
-                    const newLink = link.cloneNode(true);
-                    link.parentNode.replaceChild(newLink, link);
-                });
-
-                // Attach new listeners
-                document.querySelectorAll('.category-link').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const url = this.href;
-                        const scrollPosition = window.scrollY;
-
-                        console.log('Category link clicked:', url);
-
-                        fetch(url, {
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest' // Ensure AJAX request
-                                }
-                            })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error! status: ${response.status}`);
-                                }
-                                return response.text();
-                            })
-                            .then(html => {
-                                const parser = new DOMParser();
-                                const doc = parser.parseFromString(html, 'text/html');
-                                const newContent = doc.querySelector('.content_section');
-
-                                if (newContent) {
-                                    const currentContent = document.querySelector(
-                                        '.content_section');
-                                    if (currentContent) {
-                                        currentContent.outerHTML = newContent.outerHTML;
-                                        window.history.pushState({}, '', url);
-                                        window.scrollTo(0, scrollPosition);
-                                        attachCategoryListeners
-                                            (); // Reattach listeners for new content
-                                        setupFrameCards(); // Reinitialize frame cards
-                                        console.log(
-                                            'Content updated, frame cards re-initialized');
-                                    } else {
-                                        console.error('Current content_section not found');
-                                        toastr.error(
-                                            'Gagal memperbarui konten. Silakan coba lagi.',
-                                            'Error');
-                                    }
-                                } else {
-                                    console.error('New content_section not found in response');
-                                    toastr.error('Gagal memuat kategori. Silakan coba lagi.',
-                                        'Error');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error fetching category:', error);
-                                toastr.error(
-                                    'Terjadi kesalahan saat memuat kategori. Silakan coba lagi.',
-                                    'Error');
-                            });
-                    });
-                });
-            }
-
-            // Initial attachment of category listeners
-            attachCategoryListeners();
+            // Initialize all functionality
+            setupFrameCards();
+            attachAllListeners();
 
             // Browser back/forward navigation
             window.addEventListener('popstate', function() {
                 location.reload();
             });
-
-            // Setup frame cards and preview functionality
-            setupFrameCards();
 
             // Load html2canvas if not already present
             if (!window.html2canvas) {
@@ -677,7 +1138,13 @@
                     previewBtn = document.createElement('button');
                     previewBtn.className =
                         'px-4 py-2 bg-white/90 text-gray-800 rounded-full font-medium hover:bg-red-50 transition-colors duration-300 transform hover:scale-105 preview-button';
-                    previewBtn.textContent = 'Preview';
+                    previewBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                </svg>
+                Preview
+            `;
                     previewBtn.dataset.frameId = frameId;
                     overlay.appendChild(previewBtn);
                     console.log('Created preview button for frame ID:', frameId);
@@ -691,7 +1158,10 @@
                 // Remove existing listeners to prevent duplicates
                 previewBtn.removeEventListener('click', openPreviewCameraModal);
                 previewBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     console.log('Preview button clicked for frame ID:', frameId);
+                    // Add your preview modal logic here
                     openPreviewCameraModal(e);
                 });
             });
@@ -1325,6 +1795,466 @@
             video.parentElement.appendChild(errorMessage);
             captureButton.disabled = true;
             captureButton.textContent = 'Kamera Tidak Tersedia';
+        }
+
+
+        function initializeToggleFilter() {
+            // Handle both mobile and desktop toggle buttons
+            const toggleButtons = document.querySelectorAll('#toggleFilter');
+
+            toggleButtons.forEach(toggleButton => {
+                // Different logic for mobile vs desktop
+                let filterOptions;
+
+                // Check if this is mobile (block sm:hidden) or desktop (hidden sm:flex)
+                const isMobile = toggleButton.closest('.block.sm\\:hidden') !== null;
+
+                if (isMobile) {
+                    // Mobile: filter options are sibling elements
+                    filterOptions = toggleButton.closest('.block.sm\\:hidden').querySelector('#filterOptions');
+                } else {
+                    // Desktop: filter options are in the same flex container, next sibling of the button's parent
+                    const buttonContainer = toggleButton.closest('.flex.items-center.gap-4');
+                    filterOptions = buttonContainer ? buttonContainer.querySelector('#filterOptions') : null;
+                }
+
+                const filterArrow = toggleButton.querySelector('#filterArrow');
+
+                // Check if all required elements exist
+                if (!toggleButton || !filterOptions || !filterArrow) {
+                    console.warn('Toggle filter elements not found for button:', {
+                        toggleButton: !!toggleButton,
+                        filterOptions: !!filterOptions,
+                        filterArrow: !!filterArrow,
+                        isMobile: isMobile
+                    });
+                    return; // Skip this button if elements are missing
+                }
+
+                console.log('Initializing toggle for:', isMobile ? 'Mobile' : 'Desktop', {
+                    button: toggleButton,
+                    options: filterOptions
+                });
+
+                if (isFilterOpen) {
+                    showFilterOptions(filterOptions, filterArrow, toggleButton, isMobile);
+                } else {
+                    hideFilterOptions(filterOptions, filterArrow, toggleButton, isMobile);
+                }
+
+                const newToggleButton = toggleButton.cloneNode(true);
+                toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
+
+                newToggleButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent event bubbling
+
+                    const currentlyOpen = !filterOptions.classList.contains('hidden');
+                    isFilterOpen = !currentlyOpen; // Toggle global state
+
+                    const newFilterArrow = newToggleButton.querySelector('#filterArrow');
+
+                    // Toggle visibility
+                    if (!currentlyOpen) {
+                        showFilterOptions(filterOptions, newFilterArrow, newToggleButton, isMobile);
+                    } else {
+                        hideFilterOptions(filterOptions, newFilterArrow, newToggleButton, isMobile);
+                    }
+
+                    console.log('Filter options toggled:', isFilterOpen ? 'shown' : 'hidden');
+                });
+
+                document.addEventListener('click', function(e) {
+                    const isClickInsideFilter = newToggleButton.contains(e.target) ||
+                        filterOptions.contains(e.target) ||
+                        e.target.closest(
+                            '.rating-filter-btn, .mobile-rating-filter-btn, .popular-filter-btn, .mobile-popular-filter-btn, .default-filter-btn, .mobile-default-filter-btn'
+                        );
+
+                    // Only close if click is completely outside the filter area AND not on a filter button
+                    if (!isClickInsideFilter && !e.target.closest('[class*="filter-btn"]')) {
+                        const newFilterArrow = newToggleButton.querySelector('#filterArrow');
+                        isFilterOpen = false;
+                        hideFilterOptions(filterOptions, newFilterArrow, newToggleButton, isMobile);
+                        console.log('Filter options closed due to outside click');
+                    }
+                });
+
+                console.log('Toggle filter initialized successfully for button');
+            });
+        }
+
+        function showFilterOptions(filterOptions, filterArrow, toggleButton, isMobile) {
+            filterOptions.classList.remove('hidden');
+
+            // Add appropriate display class based on mobile/desktop
+            if (isMobile) {
+                filterOptions.classList.add('animate-fade-in');
+            } else {
+                filterOptions.classList.add('flex', 'animate-fade-in');
+            }
+
+            if (filterArrow) {
+                filterArrow.style.transform = 'rotate(180deg)';
+            }
+            toggleButton.classList.add('bg-[#BF3131]', 'text-white', 'border-[#BF3131]');
+            toggleButton.classList.remove('bg-gradient-to-r', 'from-gray-100', 'to-gray-200',
+                'text-gray-700', 'border-gray-300');
+        }
+
+        function hideFilterOptions(filterOptions, filterArrow, toggleButton, isMobile) {
+            filterOptions.classList.add('hidden');
+            filterOptions.classList.remove('animate-fade-in');
+
+            // Remove flex class for desktop
+            if (!isMobile) {
+                filterOptions.classList.remove('flex');
+            }
+
+            if (filterArrow) {
+                filterArrow.style.transform = 'rotate(0deg)';
+            }
+            toggleButton.classList.remove('bg-[#BF3131]', 'text-white', 'border-[#BF3131]');
+            toggleButton.classList.add('bg-gradient-to-r', 'from-gray-100', 'to-gray-200',
+                'text-gray-700', 'border-gray-300');
+        }
+
+        function attachAllListeners() {
+            console.log('Attaching all listeners...');
+
+            // Attach category listeners
+            const categoryLinks = document.querySelectorAll('.category-btn, .category-btn-mobile');
+            categoryLinks.forEach(link => {
+                const newLink = link.cloneNode(true);
+                link.parentNode.replaceChild(newLink, link);
+
+                newLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('href');
+                    console.log('Category filter clicked:', url);
+                    handleFilterRequest(url, 'category');
+                });
+            });
+
+            // UPDATED: Attach filter listeners - keep filter state
+            const filterLinks = document.querySelectorAll(
+                '.filter-btn, .mobile-filter-btn, ' +
+                '.rating-filter-btn, .mobile-rating-filter-btn, ' +
+                '.popular-filter-btn, .mobile-popular-filter-btn, ' +
+                '.default-filter-btn, .mobile-default-filter-btn'
+            );
+
+            filterLinks.forEach(link => {
+                const newLink = link.cloneNode(true);
+                link.parentNode.replaceChild(newLink, link);
+
+                newLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // ADDED: Prevent event bubbling
+
+                    const url = this.getAttribute('href');
+                    console.log('Filter clicked:', url);
+
+                    // Determine filter type based on class
+                    let filterType = 'filter';
+                    if (this.classList.contains('rating-filter-btn') || this.classList.contains(
+                            'mobile-rating-filter-btn')) {
+                        filterType = 'rating';
+                    } else if (this.classList.contains('popular-filter-btn') || this.classList.contains(
+                            'mobile-popular-filter-btn')) {
+                        filterType = 'popularitas';
+                    } else if (this.classList.contains('default-filter-btn') || this.classList.contains(
+                            'mobile-default-filter-btn')) {
+                        filterType = 'default';
+                    }
+
+                    isFilterOpen = true; // Ensure filter stays open
+                    handleFilterRequest(url, filterType);
+                });
+            });
+
+            // Re-initialize toggle filter after content update
+            initializeToggleFilter();
+
+            console.log('All listeners attached successfully');
+        }
+
+        function handleFilterRequest(url, filterType = 'filter') {
+            if (!url) {
+                console.error('No URL provided for filter request');
+                return;
+            }
+
+            const scrollPosition = window.scrollY;
+            console.log(`${filterType} filter clicked:`, url);
+
+            // Show loading indicator with specific message
+            showLoadingIndicator(filterType);
+
+            fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                        'Cache-Control': 'no-cache'
+                    }
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // Add minimum delay for better UX
+                    return new Promise(resolve => {
+                        setTimeout(() => resolve(html), 300);
+                    });
+                })
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.querySelector('.content_section');
+
+                    if (newContent) {
+                        const currentContent = document.querySelector('.content_section');
+                        if (currentContent) {
+                            // Check if the response contains frames
+                            const framesGrid = newContent.querySelector('.grid');
+                            const noFramesMessage = newContent.querySelector('.text-center.py-20');
+
+                            // Smooth transition
+                            currentContent.style.transition = 'opacity 0.3s ease';
+                            currentContent.style.opacity = '0';
+
+                            setTimeout(() => {
+                                currentContent.outerHTML = newContent.outerHTML;
+
+                                // Update URL - PINDAHKAN KE SINI AGAR SELALU DIEKSEKUSI
+                                window.history.pushState({}, '', url);
+
+                                // Restore scroll position
+                                window.scrollTo(0, scrollPosition);
+
+                                // Reattach listeners
+                                attachAllListeners();
+                                if (typeof setupFrameCards === 'function') {
+                                    setupFrameCards();
+                                }
+
+                                const updatedContent = document.querySelector('.content_section');
+                                if (updatedContent) {
+                                    updatedContent.style.opacity = '0';
+                                    updatedContent.style.transition = 'opacity 0.3s ease';
+                                    setTimeout(() => {
+                                        updatedContent.style.opacity = '1';
+                                    }, 50);
+                                }
+
+                                hideLoadingIndicator();
+                                console.log('Content updated successfully, filter state maintained');
+                            }, 300);
+                        } else {
+                            console.error('Current content_section not found');
+                            hideLoadingIndicator();
+                            // TETAP UPDATE URL MESKIPUN ERROR
+                            window.history.pushState({}, '', url);
+                            console.error('Failed to update content section');
+                        }
+                    } else {
+                        console.error('New content_section not found in response');
+                        hideLoadingIndicator();
+
+                        // TETAP UPDATE URL DAN KATEGORI MESKIPUN TIDAK ADA FRAME
+                        window.history.pushState({}, '', url);
+
+                        updateCategorySelection(url);
+
+                        displayNoFramesMessage(url);
+
+                        console.log('Displayed no frames message');
+                    }
+                })
+                .catch(error => {
+                    console.error(`Error fetching ${filterType}:`, error);
+                    hideLoadingIndicator();
+
+                    // TETAP UPDATE URL MESKIPUN ERROR
+                    window.history.pushState({}, '', url);
+
+                    updateCategorySelection(url);
+
+                    displayNoFramesMessage(url);
+
+                    console.log('Displayed no frames message due to fetch error');
+                });
+        }
+
+        function updateCategorySelection(url) {
+            // Parse URL to get category parameter
+            const urlObj = new URL(url, window.location.origin);
+            const categoryId = urlObj.searchParams.get('category');
+
+            console.log('Updating category selection for categoryId:', categoryId);
+
+            // Remove active class from all category buttons
+            const allCategoryBtns = document.querySelectorAll(
+                '.category-btn .category-icon, .category-btn-mobile .category-icon-mobile');
+            allCategoryBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (categoryId) {
+                // PERBAIKAN: Cari berdasarkan href yang berisi category parameter
+                const selectedCategoryBtns = document.querySelectorAll(
+                    `a[href*="category=${categoryId}"]`
+                );
+
+                selectedCategoryBtns.forEach(link => {
+                    const categoryIcon = link.querySelector('.category-icon, .category-icon-mobile');
+                    if (categoryIcon) {
+                        categoryIcon.classList.add('active');
+                        console.log('Added active class to category icon for categoryId:', categoryId);
+                    }
+                });
+            } else {
+                // PERBAIKAN: Cari link "Semua" yang tidak memiliki parameter category
+                const allCategoryLinks = document.querySelectorAll('a[href*="frametemp"]');
+
+                allCategoryLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    // Pastikan ini adalah link "Semua" (tidak ada parameter category)
+                    if (href && !href.includes('category=')) {
+                        const categoryIcon = link.querySelector('.category-icon, .category-icon-mobile');
+                        if (categoryIcon) {
+                            categoryIcon.classList.add('active');
+                            console.log('Added active class to "Semua" category icon');
+                        }
+                    }
+                });
+            }
+        }
+
+        function displayNoFramesMessage(url) {
+            const framesSection = document.querySelector('.mt-12');
+            if (!framesSection) return;
+
+            // Parse URL to get category info
+            const urlObj = new URL(url, window.location.origin);
+            const categoryId = urlObj.searchParams.get('category');
+
+            let categoryName = 'ini';
+            if (categoryId) {
+                // PERBAIKAN: Cari nama kategori dari link yang aktif
+                const categoryLinks = document.querySelectorAll(`a[href*="category=${categoryId}"]`);
+
+                for (let link of categoryLinks) {
+                    const categoryLabel = link.querySelector('.category-label, .category-label-mobile');
+                    if (categoryLabel) {
+                        categoryName = `"${categoryLabel.textContent.trim()}"`;
+                        console.log('Found category name:', categoryName);
+                        break;
+                    }
+                }
+            }
+
+            framesSection.innerHTML = `
+        <div class="text-center py-20 bg-[#FEF3E2] rounded-2xl">
+            <div class="inline-block text-7xl mb-6">😥</div>
+            <p class="text-xl text-gray-600 font-light">
+                Tidak ada frame yang tersedia untuk kategori ${categoryName}.
+            </p>
+            <p class="mt-3 text-gray-500">Silakan pilih kategori lain atau kembali lagi nanti.</p>
+        </div>
+    `;
+        }
+
+        function showLoadingIndicator(filterType = 'filter') {
+            const framesSection = document.querySelector('.mt-12');
+
+            if (framesSection) {
+                // Store original content
+                framesSection.setAttribute('data-original-content', framesSection.innerHTML);
+
+                // Determine loading message based on filter type
+                let loadingMessage = 'Memuat Frame...';
+                let loadingSubtext = 'Mohon tunggu sebentar';
+                let loadingIcon = '🔄';
+
+                // Get  category name from the DOM or URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const categoryId = urlParams.get('category');
+                let categoryName = 'ini';
+                if (categoryId) {
+                    const activeCategory = document.querySelector(
+                        `.category-btn[data-category-id="${categoryId}"] .category-label, .category-btn-mobile[data-category-id="${categoryId}"] .category-label-mobile`
+                    );
+                    categoryName = activeCategory ? activeCategory.textContent : 'Unknown Category';
+                }
+
+                switch (filterType) {
+                    case 'category':
+                        loadingMessage = `Memuat Kategori "${categoryName}"...`;
+                        break;
+                    case 'rating':
+                        loadingMessage = 'Mengurutkan Rating...';
+                        break;
+                    case 'popularitas':
+                        loadingMessage = 'Mengurutkan Popularitas...';
+                        break;
+                    case 'default':
+                        loadingMessage = 'Memuat Urutan Default...';
+                        break;
+                    default:
+                        loadingMessage = 'Memuat Frame...';
+                }
+
+                // Create loading overlay that covers the entire frames area
+                const loadingHTML = `
+            <div id="frames-loading-overlay" class="relative">
+                <!-- Loading backdrop -->
+                <div class="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 rounded-2xl"></div>
+                
+                <!-- Loading content -->
+                <div class="relative z-20 text-center py-32 bg-[#FEF3E2] ">
+                    <!-- Animated loader -->
+                    <div class="flex justify-center mb-6">
+                        <div class="relative">
+                            <!-- Outer spinning ring -->
+                            <div class="animate-spin rounded-full h-16 w-16 border-4 border-gray-200"></div>
+                            <div class="animate-spin rounded-full h-16 w-16 border-4 border-[#BF3131] border-t-transparent absolute top-0 left-0"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading text with animation -->
+                    <div class="space-y-2">
+                        <h3 class="text-xl font-semibold text-gray-800 ">
+                            ${loadingMessage}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                @keyframes loading-progress {
+                    0% { width: 0%; }
+                    50% { width: 100%; }
+                    100% { width: 0%; }
+                }
+            </style>
+        `;
+
+                framesSection.innerHTML = loadingHTML;
+                framesSection.style.transition = 'all 0.3s ease';
+            }
+        }
+
+        function hideLoadingIndicator() {
+            const loadingOverlay = document.getElementById('frames-loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.remove();
+            }
         }
     </script>
 

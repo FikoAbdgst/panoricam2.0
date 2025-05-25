@@ -10,6 +10,9 @@
 @section('howitworks_section')
     @include('components.howitworks')
 @endsection
+@section('testimoni_section')
+    @include('components.testimoni')
+@endsection
 @section('footer_section')
     @include('components.footer')
 @endsection

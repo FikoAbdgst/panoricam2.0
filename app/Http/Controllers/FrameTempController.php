@@ -13,20 +13,45 @@ class FrameTempController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all();
-        $topFrames = Frame::with('category')->orderBy('used', 'desc')->take(3)->get(); // Ambil 3 frame dengan used terbanyak
+        $topFrames = Frame::with('category')->orderBy('used', 'desc')->take(3)->get();
 
-        if ($request->has('category')) {
+        // Base query dengan eager loading testimoni untuk menghitung rating
+        $query = Frame::with(['category', 'testimonis'])
+            ->withAvg('testimonis', 'rating');
+
+        // Filter berdasarkan kategori
+        if ($request->has('category') && $request->category) {
             $categoryId = $request->query('category');
             $selectedCategory = Category::find($categoryId);
 
             if ($selectedCategory) {
-                $frames = Frame::with('category')->where('category_id', $categoryId)->get();
-                return view('frame', compact('categories', 'frames', 'selectedCategory', 'topFrames'));
+                $query->where('category_id', $categoryId);
             }
+        } else {
+            $selectedCategory = null;
         }
 
-        $frames = Frame::with('category')->get();
-        return view('frame', compact('categories', 'frames', 'topFrames'));
+        // Filter berdasarkan rating (sorting)
+        $sortBy = $request->query('sort_rating', null);
+        if ($sortBy === 'asc') {
+            // Rating terendah ke tertinggi (null values last)
+            $query->orderByRaw('testimonis_avg_rating IS NULL, testimonis_avg_rating ASC');
+        } elseif ($sortBy === 'desc') {
+            // Rating tertinggi ke terendah (null values last)
+            $query->orderByRaw('testimonis_avg_rating IS NULL, testimonis_avg_rating DESC');
+        } else {
+            // Default sorting (bisa berdasarkan created_at atau yang lain)
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $frames = $query->get();
+
+        // Jika request AJAX, return partial view
+        if ($request->ajax()) {
+            return view('frame', compact('categories', 'frames', 'selectedCategory', 'topFrames'))->render();
+        }
+
+        return view('frame', compact('categories', 'frames', 'selectedCategory', 'topFrames'));
     }
 
     public function getFrameTemplate(Request $request, $frameId)

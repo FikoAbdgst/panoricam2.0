@@ -8,6 +8,7 @@
     <title>Photo Strip Booth</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
 </head>
 
 <body class="m-0 font-['Poppins'] bg-[#FEF3E2] flex flex-col items-center relative min-h-screen">
@@ -141,13 +142,81 @@
             <div class="flex flex-wrap gap-3 mt-3 justify-center">
                 <button id="modalDownloadButton"
                     class="bg-[#BF3131] text-white border-none py-2 px-5 text-sm font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg">⬇
-                    Download</button>
+                    Download PNG</button>
+                <button id="modalGifButton"
+                    class="bg-[#4CAF50] text-white border-none py-2 px-5 text-sm font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#45a049] hover:scale-105 shadow-sm hover:shadow-lg">🎬
+                    Create GIF</button>
                 <button id="modalShareButton"
                     class="bg-[#BF3131] text-white border-none py-2 px-5 text-sm font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg">📤
                     Share</button>
             </div>
         </div>
     </div>
+    <div id="gifLoadingModal"
+        class="fixed z-50 left-0 top-0 w-full h-full bg-black bg-opacity-70 overflow-auto justify-center items-center hidden">
+        <div
+            class="bg-[#FEF3E2] mx-auto w-4/5 max-w-[400px] rounded-3xl shadow-lg p-8 relative flex flex-col items-center">
+            <div class="w-16 h-16 border-4 border-[#BF3131] border-t-transparent rounded-full animate-spin mb-4"></div>
+            <h3 class="text-xl mb-2 text-gray-800 font-bold">Creating GIF...</h3>
+            <p class="text-gray-600 text-center mb-4">Please wait while we process your photos into an animated GIF</p>
+            <div id="gifProgress" class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                <div id="gifProgressBar" class="bg-[#BF3131] h-2.5 rounded-full transition-all duration-300"
+                    style="width: 0%"></div>
+            </div>
+            <p id="gifProgressText" class="text-sm text-gray-500">Initializing...</p>
+        </div>
+    </div>
+    <div id="testimoniModal"
+        class="fixed z-50 left-0 top-0 w-full h-full bg-black bg-opacity-70 overflow-auto justify-center items-center hidden testimoni-modal">
+        <div
+            class="bg-[#FEF3E2] mx-auto w-4/5 max-w-[500px] rounded-3xl shadow-lg p-8 relative flex flex-col items-center animate-[modalFadeIn_0.4s]">
+            <button
+                class="testimoni-modal-close absolute top-4 right-4 text-3xl font-bold text-gray-400 bg-transparent border-none cursor-pointer hover:text-black">×</button>
+
+            <h2 class="text-2xl mb-4 text-gray-800 font-bold text-center">Bagaimana pengalaman Anda?</h2>
+            <p class="text-gray-600 text-center mb-6">Berikan rating dan testimoni untuk membantu kami berkembang!</p>
+
+            <!-- Rating Bintang -->
+            <div class="star-rating" id="starRating">
+                <span class="star" data-rating="1">★</span>
+                <span class="star" data-rating="2">★</span>
+                <span class="star" data-rating="3">★</span>
+                <span class="star" data-rating="4">★</span>
+                <span class="star" data-rating="5">★</span>
+            </div>
+
+            <!-- Emoji Selector -->
+            <div class="emoji-selector" id="emojiSelector">
+                <span class="emoji-option" data-emoji="😊">😊</span>
+                <span class="emoji-option" data-emoji="😍">😍</span>
+                <span class="emoji-option" data-emoji="🤩">🤩</span>
+                <span class="emoji-option" data-emoji="😎">😎</span>
+                <span class="emoji-option" data-emoji="🥰">🥰</span>
+            </div>
+
+            <!-- Form Input -->
+            <div class="w-full">
+                <input type="text" id="testimoniName" placeholder="Nama Anda (opsional)"
+                    class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none">
+
+                <textarea id="testimoniMessage" placeholder="Ceritakan pengalaman Anda menggunakan photo booth ini..." rows="4"
+                    class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none resize-none"></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 mt-4 justify-center w-full">
+                <button id="skipTestimoni"
+                    class="bg-gray-500 text-white border-none py-2.5 px-5 text-sm font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-600 hover:scale-105 shadow-sm hover:shadow-lg">
+                    Lewati
+                </button>
+                <button id="submitTestimoni"
+                    class="bg-[#BF3131] text-white border-none py-2.5 px-5 text-sm font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg">
+                    Kirim Testimoni
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <input type="hidden" id="frameId" value="{{ $frame->id }}">
 
@@ -394,6 +463,56 @@
                 margin-top: 0 !important;
             }
         }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+        }
+
+        .star:hover~.star {
+            color: #ddd;
+        }
+
+        .testimoni-modal {
+            backdrop-filter: blur(5px);
+        }
+
+        .emoji-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .emoji-option {
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .emoji-option:hover,
+        .emoji-option.selected {
+            opacity: 1;
+            transform: scale(1.2);
+            background-color: rgba(191, 49, 49, 0.1);
+        }
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -423,6 +542,21 @@
         let uploadModal = document.getElementById('uploadModal');
         let slotSelectButtons = document.querySelectorAll('.slot-select-button');
         let uploadModalClose = document.querySelector('.upload-modal-close');
+        let testimoniModal = document.getElementById('testimoniModal');
+        let testimoniModalClose = document.querySelector('.testimoni-modal-close');
+        let starRating = document.getElementById('starRating');
+        let emojiSelector = document.getElementById('emojiSelector');
+        let testimoniName = document.getElementById('testimoniName');
+        let testimoniMessage = document.getElementById('testimoniMessage');
+        let submitTestimoni = document.getElementById('submitTestimoni');
+        let skipTestimoni = document.getElementById('skipTestimoni');
+
+        let modalGifButton = document.getElementById('modalGifButton');
+        let gifLoadingModal = document.getElementById('gifLoadingModal');
+        let gifProgressBar = document.getElementById('gifProgressBar');
+        let gifProgressText = document.getElementById('gifProgressText');
+        let generatedGifBlob = null;
+
 
         let currentPhotoIndex = null;
         let countdown = 3;
@@ -432,6 +566,8 @@
         let selectedFile = null;
         let selectedSlotIndex = null;
         let isInitialized = false;
+        let selectedRating = 0;
+        let selectedEmoji = '';
 
         let isMirrored = true;
         let selectedCountdown = 3;
@@ -467,6 +603,7 @@
                     );
                 });
         }
+
 
         function setupFilterChange() {
             if (filterSelect) {
@@ -623,6 +760,11 @@
                 a.href = photoStripImage;
                 a.download = 'photo-strip.png';
                 a.click();
+
+                // Tampilkan modal testimoni setelah download
+                setTimeout(() => {
+                    showTestimoniModal();
+                }, 1000);
             } else {
                 html2canvas(document.querySelector('.frame-container')).then(canvas => {
                     photoStripImage = canvas.toDataURL();
@@ -630,6 +772,11 @@
                     a.href = photoStripImage;
                     a.download = 'photo-strip.png';
                     a.click();
+
+                    // Tampilkan modal testimoni setelah download
+                    setTimeout(() => {
+                        showTestimoniModal();
+                    }, 1000);
                 });
             }
         }
@@ -642,7 +789,13 @@
                             text: 'Check out my photo strip!',
                             url: photoStripImage
                         })
-                        .then(() => console.log('Shared successfully'))
+                        .then(() => {
+                            console.log('Shared successfully');
+                            // Tampilkan modal testimoni setelah share berhasil
+                            setTimeout(() => {
+                                showTestimoniModal();
+                            }, 1000);
+                        })
                         .catch(err => {
                             console.error('Error sharing:', err);
                             alert('Sharing failed. Try downloading instead.');
@@ -659,7 +812,13 @@
                                     text: 'Check out my photo strip!',
                                     files: [file]
                                 })
-                                .then(() => console.log('Shared successfully'))
+                                .then(() => {
+                                    console.log('Shared successfully');
+                                    // Tampilkan modal testimoni setelah share berhasil
+                                    setTimeout(() => {
+                                        showTestimoniModal();
+                                    }, 1000);
+                                })
                                 .catch(err => {
                                     console.error('Error sharing:', err);
                                     alert('Sharing failed. Try downloading instead.');
@@ -920,6 +1079,8 @@
             if (resetButton) resetButton.addEventListener('click', resetPhotos);
             if (modalDownloadButton) modalDownloadButton.addEventListener('click', downloadPhotoStrip);
             if (modalShareButton) modalShareButton.addEventListener('click', sharePhotoStrip);
+            if (modalGifButton) modalGifButton.addEventListener('click', createGifFromPhotos);
+
 
             window.addEventListener('click', (e) => {
                 if (modal && e.target === modal) {
@@ -931,7 +1092,12 @@
                     selectedFile = null;
                     selectedSlotIndex = null;
                 }
+                if (gifLoadingModal && e.target === gifLoadingModal) {
+                    // Prevent closing while processing
+                    // gifLoadingModal.style.display = 'none';
+                }
             });
+
         }
 
         function debugPhotoSlots() {
@@ -966,11 +1132,23 @@
             retakeButtons = document.querySelectorAll('.retake-button');
             slotSelectButtons = document.querySelectorAll('.slot-select-button');
 
+            // Tambahkan ini untuk inisialisasi elemen GIF
+            modalGifButton = document.getElementById('modalGifButton');
+            gifLoadingModal = document.getElementById('gifLoadingModal');
+            gifProgressBar = document.getElementById('gifProgressBar');
+            gifProgressText = document.getElementById('gifProgressText');
+
+            // Periksa status testimoni dari sessionStorage
+            if (!getTestimoniStatus()) {
+                setTestimoniStatus(false); // Pastikan status awal adalah false
+            }
+
             initializeWebcam();
             setupFilterChange();
             setupMirrorToggle();
             setupCountdownSelect();
             setupEventListeners();
+            setupTestimoniEventListeners();
             updateRetakeButtonsState();
             debugPhotoSlots();
         }
@@ -1083,6 +1261,278 @@
                 }
             });
         });
+
+        function setupStarRating() {
+            if (starRating) {
+                const stars = starRating.querySelectorAll('.star');
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        selectedRating = index + 1;
+                        updateStarDisplay();
+                    });
+                });
+            }
+        }
+
+        function updateStarDisplay() {
+            const stars = starRating.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Setup emoji selector
+        function setupEmojiSelector() {
+            if (emojiSelector) {
+                const emojis = emojiSelector.querySelectorAll('.emoji-option');
+                emojis.forEach(emoji => {
+                    emoji.addEventListener('click', () => {
+                        // Remove selected class from all
+                        emojis.forEach(e => e.classList.remove('selected'));
+                        // Add selected class to clicked emoji
+                        emoji.classList.add('selected');
+                        selectedEmoji = emoji.getAttribute('data-emoji');
+                    });
+                });
+            }
+        }
+
+        // Show testimoni modal
+        function showTestimoniModal() {
+            if (getTestimoniStatus()) return; // Jangan tampilkan jika sudah ditampilkan di sesi ini
+
+            if (testimoniModal) {
+                testimoniModal.style.display = 'flex';
+                setTestimoniStatus(true); // Tandai bahwa modal sudah ditampilkan
+            }
+        }
+
+        // Close testimoni modal
+        function closeTestimoniModal() {
+            if (testimoniModal) {
+                testimoniModal.style.display = 'none';
+            }
+        }
+
+        // Submit testimoni
+        function submitTestimoniData() {
+            if (selectedRating === 0) {
+                alert('Mohon berikan rating terlebih dahulu!');
+                return;
+            }
+
+            const tokenElement = document.querySelector('meta[name="csrf-token"]');
+            if (!tokenElement) {
+                console.error('CSRF token not found');
+                return;
+            }
+
+            const token = tokenElement.getAttribute('content');
+            const submitButton = document.getElementById('submitTestimoni');
+
+            // Disable button dan ubah text
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Mengirim...';
+            }
+
+            fetch('/submitTestimoni', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({
+                        rating: selectedRating,
+                        emoji: selectedEmoji,
+                        name: testimoniName ? testimoniName.value.trim() : '',
+                        message: testimoniMessage ? testimoniMessage.value.trim() : '',
+                        frame_id: frameId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Terima kasih atas testimoni Anda! 🙏');
+                        closeTestimoniModal();
+                        resetTestimoniForm();
+                    } else {
+                        alert('Gagal mengirim testimoni. Silakan coba lagi.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                })
+                .finally(() => {
+                    // Re-enable button
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Kirim Testimoni';
+                    }
+                });
+        }
+
+        // Reset testimoni form
+        function resetTestimoniForm() {
+            selectedRating = 0;
+            selectedEmoji = '';
+            if (testimoniName) testimoniName.value = '';
+            if (testimoniMessage) testimoniMessage.value = '';
+
+            // Reset star display
+            const stars = starRating?.querySelectorAll('.star');
+            if (stars) {
+                stars.forEach(star => star.classList.remove('active'));
+            }
+
+            // Reset emoji selection
+            const emojis = emojiSelector?.querySelectorAll('.emoji-option');
+            if (emojis) {
+                emojis.forEach(emoji => emoji.classList.remove('selected'));
+            }
+        }
+
+        // Setup testimoni event listeners
+        function setupTestimoniEventListeners() {
+            if (testimoniModalClose) {
+                testimoniModalClose.addEventListener('click', closeTestimoniModal);
+            }
+
+            if (skipTestimoni) {
+                skipTestimoni.addEventListener('click', closeTestimoniModal);
+            }
+
+            if (submitTestimoni) {
+                submitTestimoni.addEventListener('click', submitTestimoniData);
+            }
+
+            // Close modal when clicking outside
+            if (testimoniModal) {
+                testimoniModal.addEventListener('click', (e) => {
+                    if (e.target === testimoniModal) {
+                        closeTestimoniModal();
+                    }
+                });
+            }
+
+            setupStarRating();
+            setupEmojiSelector();
+        }
+
+        function getTestimoniStatus() {
+            return sessionStorage.getItem('hasShownTestimoni') === 'true';
+        }
+
+        function setTestimoniStatus(status) {
+            sessionStorage.setItem('hasShownTestimoni', status);
+        }
+
+        function createGifFromPhotos() {
+            const photos = getAllPhotoData();
+
+            if (photos.length < 3) {
+                alert('Need at least 3 photos to create a GIF!');
+                return;
+            }
+
+            // Show loading modal
+            if (gifLoadingModal) {
+                gifLoadingModal.style.display = 'flex';
+            }
+
+            updateGifProgress(0, 'Initializing GIF creation...');
+
+            // Create GIF with gif.js
+            const gif = new GIF({
+                workers: 2,
+                quality: 10,
+                width: 400,
+                height: 300,
+                workerScript: '/js/gif.worker.js'
+            });
+
+            gif.on('progress', function(p) {
+                const percentage = Math.round(p * 100);
+                updateGifProgress(percentage,
+                    `Processing frame ${Math.ceil(p * photos.length)} of ${photos.length}...`);
+            });
+
+            gif.on('finished', function(blob) {
+                generatedGifBlob = blob;
+                hideGifLoading();
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'photo-strip-animation.gif';
+                a.click();
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(url);
+                }, 1000);
+
+                setTimeout(() => {
+                    showTestimoniModal();
+                }, 1000);
+            });
+
+            let processedCount = 0;
+            photos.forEach((photoData, index) => {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 400;
+                    canvas.height = 300;
+
+                    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+                    const x = (canvas.width - img.width * scale) / 2;
+                    const y = (canvas.height - img.height * scale) / 2;
+
+                    ctx.fillStyle = '#FEF3E2';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+                    gif.addFrame(canvas, {
+                        delay: 1000
+                    });
+
+                    processedCount++;
+                    updateGifProgress((processedCount / photos.length) * 50,
+                        `Loading photo ${processedCount} of ${photos.length}...`);
+
+                    if (processedCount === photos.length) {
+                        updateGifProgress(50, 'Starting GIF compilation...');
+                        gif.render();
+                    }
+                };
+                img.src = photoData;
+            });
+        }
+
+        // Update GIF progress
+        function updateGifProgress(percentage, text) {
+            if (gifProgressBar) {
+                gifProgressBar.style.width = percentage + '%';
+            }
+            if (gifProgressText) {
+                gifProgressText.textContent = text;
+            }
+        }
+
+        // Hide GIF loading modal
+        function hideGifLoading() {
+            if (gifLoadingModal) {
+                gifLoadingModal.style.display = 'none';
+            }
+        }
+
+
 
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
