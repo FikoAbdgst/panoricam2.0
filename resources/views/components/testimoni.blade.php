@@ -1,3 +1,4 @@
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,11 +15,15 @@
         .testimonial-card {
             min-width: 380px;
             max-width: 380px;
+            min-height: 320px;
             transition: all 0.4s ease;
             backdrop-filter: blur(15px);
             border: 3px solid #BF3131;
             position: relative;
             overflow: hidden;
+            white-space: normal; /* Allow text wrapping inside cards */
+            display: flex;
+            flex-direction: column;
         }
 
         .testimonial-card::before {
@@ -173,6 +178,10 @@
             line-height: 1.7;
             color: #4a5568;
             position: relative;
+            word-wrap: break-word; /* Allow long words to break */
+            overflow-wrap: break-word; /* Ensure text wraps properly */
+            white-space: normal; /* Override parent's nowrap */
+            hyphens: auto; /* Add hyphenation for better text flow */
         }
 
         .frame-info-badge {
@@ -231,7 +240,7 @@
         }
     </style>
 </head>
-
+<body>
 <div class="hero-bg min-h-screen">
 
     <!-- Header -->
@@ -325,8 +334,6 @@
         }
     }
 
-
-
     // Display testimonials in marquee
     function displayMarqueeTestimonis(testimonis) {
         const container = document.getElementById('marqueeContent');
@@ -363,7 +370,7 @@
         return `
                 <div class="testimonial-card card-gradient rounded-2xl py-7 px-10 shadow-xl mx-3 relative">
                     <!-- Header -->
-                    <div class="flex items-center justify-between mb-10">
+                    <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center space-x-4">
                             <div class="profile-avatar rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold text-xl">${testimoni.name.charAt(0).toUpperCase()}</span>
@@ -378,35 +385,38 @@
                         </div>
                     </div>
                     
-                    <!-- Message -->
-                    <div class="mb-6">
+                    <!-- Message (flexible content) -->
+                    <div class="flex-grow mb-6">
                         <div class="relative">
                             <i class="fas fa-quote-left text-[#BF3131] text-2xl opacity-30 absolute -top-2 -left-1"></i>
-                            <p class="message-text font-medium pl-6 pr-2">${testimoni.message}</p>
+                            <p class="message-text font-medium pl-6 pr-2 mt-4">${testimoni.message}</p>
                             <i class="fas fa-quote-right text-[#BF3131] text-2xl opacity-30 absolute -bottom-2 -right-1"></i>
                         </div>
                     </div>
 
-                    <!-- Rating -->
-                    <div class="flex justify-center items-center">
-                        <div class="flex items-center mb-5 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-full px-4 py-2 border border-yellow-200 w-fit">
-                            <div class="star-rating mr-3">${stars}</div>
-                            <span class="text-sm font-semibold text-gray-700">(${testimoni.rating}/5)</span>
+                    <!-- Bottom section (fixed at bottom) -->
+                    <div class="mt-auto">
+                        <!-- Rating -->
+                        <div class="flex justify-center items-center mb-4">
+                            <div class="flex items-center bg-gradient-to-r from-yellow-50 to-orange-50 rounded-full px-4 py-2 border border-yellow-200 w-fit">
+                                <div class="star-rating mr-3">${stars}</div>
+                                <span class="text-sm font-semibold text-gray-700">(${testimoni.rating}/5)</span>
+                            </div>
                         </div>
+                        
+                        <!-- Frame info -->
+                        ${testimoni.frame ? `
+                                        <a href="/booth?frame_id=${testimoni.frame.id}" class="frame-info-badge">
+                                            <div class="flex items-center justify-center space-x-2">
+                                                <i class="fas fa-image frame-icon text-[#BF3131] transition-colors duration-300"></i>
+                                                <span class="text-sm font-semibold frame-text text-gray-700 transition-colors duration-300">
+                                                    Frame: ${testimoni.frame.name}
+                                                </span>
+                                                <i class="fas fa-check-circle frame-check text-green-500 text-sm transition-colors duration-300"></i>
+                                            </div>
+                                        </a>
+                                    ` : ''}
                     </div>
-                    
-                    <!-- Frame info -->
-                    ${testimoni.frame ? `
-                                    <a href="/booth?frame_id=${testimoni.frame.id}" class="frame-info-badge">
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <i class="fas fa-image frame-icon text-[#BF3131] transition-colors duration-300"></i>
-                                            <span class="text-sm font-semibold frame-text text-gray-700 transition-colors duration-300">
-                                                Frame: ${testimoni.frame.name}
-                                            </span>
-                                            <i class="fas fa-check-circle frame-check text-green-500 text-sm transition-colors duration-300"></i>
-                                        </div>
-                                    </a>
-                                ` : ''}
 
                 </div>
             `;
@@ -424,6 +434,21 @@
         }
         return stars;
     }
+
+    // Get random emoji based on rating
+    function getRandomEmoji(rating) {
+        const emojisByRating = {
+            5: ['😍', '🤩', '⭐', '🎉', '💖', '👏'],
+            4: ['😊', '👍', '😄', '🙂', '💙'],
+            3: ['😐', '👌', '🙂'],
+            2: ['😕', '👎'],
+            1: ['😞', '👎', '😔']
+        };
+        
+        const emojis = emojisByRating[rating] || emojisByRating[5];
+        return emojis[Math.floor(Math.random() * emojis.length)];
+    }
+
     // Auto-load mock data for demo
     setTimeout(() => {
         if (allTestimonis.length === 0) {
@@ -431,3 +456,5 @@
         }
     }, 2000);
 </script>
+</body>
+</html>
