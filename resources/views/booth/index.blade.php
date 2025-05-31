@@ -194,13 +194,20 @@
                 <span class="emoji-option" data-emoji="🥰">🥰</span>
             </div>
 
-            <!-- Form Input -->
+            <!-- Form Input dengan validasi -->
             <div class="w-full">
-                <input type="text" id="testimoniName" placeholder="Nama Anda (opsional)"
-                    class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none">
+                <input type="text" id="testimoniName" placeholder="Nama Anda *" required
+                    class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none transition-colors duration-200"
+                    minlength="2" maxlength="50">
 
-                <textarea id="testimoniMessage" placeholder="Ceritakan pengalaman Anda menggunakan photo booth ini..." rows="4"
-                    class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none resize-none"></textarea>
+                <textarea id="testimoniMessage" placeholder="Ceritakan pengalaman Anda menggunakan photo booth ini... *"
+                    rows="4" required minlength="10" maxlength="500"
+                    class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none resize-none transition-colors duration-200"></textarea>
+
+                <!-- Counter untuk textarea -->
+                <div class="text-right text-xs text-gray-500 -mt-3 mb-4">
+                    <span id="messageCounter">0/500</span>
+                </div>
             </div>
 
             <!-- Action Buttons -->
@@ -491,20 +498,88 @@
             backdrop-filter: blur(5px);
         }
 
+
+
+        /* Tambahkan CSS ini ke dalam tag <style> atau file CSS Anda */
+
+        /* Styling untuk input yang error */
+        .error-input {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 1px #ef4444 !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Animasi shake untuk input error */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Styling untuk input yang valid */
+        .valid-input {
+            border-color: #10b981 !important;
+            box-shadow: 0 0 0 1px #10b981 !important;
+        }
+
+        /* Styling untuk emoji dan star yang wajib dipilih */
+        .required-selection {
+            position: relative;
+        }
+
+        .required-selection::after {
+            content: " *";
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* Update styling untuk star rating */
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 5px;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #fbbf24;
+            transform: scale(1.1);
+        }
+
+        /* Update styling untuk emoji selector */
         .emoji-selector {
             display: flex;
             gap: 10px;
+            margin: 20px 0;
             justify-content: center;
-            margin: 15px 0;
         }
 
         .emoji-option {
             font-size: 2rem;
             cursor: pointer;
-            padding: 10px;
+            padding: 5px;
             border-radius: 50%;
-            transition: all 0.3s ease;
-            opacity: 0.5;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
         }
 
         .emoji-option:hover,
@@ -1284,12 +1359,23 @@
         });
 
         function setupStarRating() {
-            if (starRating) {
-                const stars = starRating.querySelectorAll('.star');
+            const starRatingContainer = document.getElementById('starRating');
+            if (starRatingContainer) {
+                // Tambahkan label required jika belum ada
+                if (!starRatingContainer.previousElementSibling?.classList?.contains('rating-label')) {
+                    const label = document.createElement('div');
+                    label.className = 'rating-label text-center text-gray-700 font-medium mb-2';
+                    label.innerHTML = 'Berikan Rating <span style="color: #ef4444;">*</span>';
+                    starRatingContainer.parentNode.insertBefore(label, starRatingContainer);
+                }
+
+                const stars = starRatingContainer.querySelectorAll('.star');
                 stars.forEach((star, index) => {
                     star.addEventListener('click', () => {
                         selectedRating = index + 1;
                         updateStarDisplay();
+                        // Hapus error state jika ada
+                        starRatingContainer.classList.remove('error-selection');
                     });
                 });
             }
@@ -1306,10 +1392,18 @@
             });
         }
 
-        // Setup emoji selector
         function setupEmojiSelector() {
-            if (emojiSelector) {
-                const emojis = emojiSelector.querySelectorAll('.emoji-option');
+            const emojiSelectorContainer = document.getElementById('emojiSelector');
+            if (emojiSelectorContainer) {
+                // Tambahkan label required jika belum ada
+                if (!emojiSelectorContainer.previousElementSibling?.classList?.contains('emoji-label')) {
+                    const label = document.createElement('div');
+                    label.className = 'emoji-label text-center text-gray-700 font-medium mb-2';
+                    label.innerHTML = 'Pilih Emoji <span style="color: #ef4444;">*</span>';
+                    emojiSelectorContainer.parentNode.insertBefore(label, emojiSelectorContainer);
+                }
+
+                const emojis = emojiSelectorContainer.querySelectorAll('.emoji-option');
                 emojis.forEach(emoji => {
                     emoji.addEventListener('click', () => {
                         // Remove selected class from all
@@ -1317,6 +1411,8 @@
                         // Add selected class to clicked emoji
                         emoji.classList.add('selected');
                         selectedEmoji = emoji.getAttribute('data-emoji');
+                        // Hapus error state jika ada
+                        emojiSelectorContainer.classList.remove('error-selection');
                     });
                 });
             }
@@ -1340,14 +1436,38 @@
 
         // Submit testimoni
         function submitTestimoniData() {
+            // Validasi rating
             if (selectedRating === 0) {
-                alert('Mohon berikan rating terlebih dahulu!');
+                alert('Mohon berikan rating terlebih dahulu! ⭐');
+                return;
+            }
+
+            // Validasi nama (wajib diisi)
+            const name = testimoniName ? testimoniName.value.trim() : '';
+            if (!name || name.length < 2) {
+                alert('Mohon masukkan nama Anda (minimal 2 karakter)! 👤');
+                testimoniName.focus();
+                return;
+            }
+
+            // Validasi pesan testimoni (wajib diisi)
+            const message = testimoniMessage ? testimoniMessage.value.trim() : '';
+            if (!message || message.length < 10) {
+                alert('Mohon tuliskan testimoni Anda (minimal 10 karakter)! 💬');
+                testimoniMessage.focus();
+                return;
+            }
+
+            // Validasi emoji (wajib dipilih)
+            if (!selectedEmoji) {
+                alert('Mohon pilih emoji yang sesuai dengan pengalaman Anda! 😊');
                 return;
             }
 
             const tokenElement = document.querySelector('meta[name="csrf-token"]');
             if (!tokenElement) {
                 console.error('CSRF token not found');
+                alert('Terjadi kesalahan sistem. Silakan refresh halaman.');
                 return;
             }
 
@@ -1358,6 +1478,7 @@
             if (submitButton) {
                 submitButton.disabled = true;
                 submitButton.textContent = 'Mengirim...';
+                submitButton.classList.add('opacity-50');
             }
 
             fetch('/submitTestimoni', {
@@ -1369,30 +1490,36 @@
                     body: JSON.stringify({
                         rating: selectedRating,
                         emoji: selectedEmoji,
-                        name: testimoniName ? testimoniName.value.trim() : '',
-                        message: testimoniMessage ? testimoniMessage.value.trim() : '',
+                        name: name,
+                        message: message,
                         frame_id: frameId
                     })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
-                        alert('Terima kasih atas testimoni Anda! 🙏');
+                        alert('Terima kasih atas testimoni Anda! 🙏✨');
                         closeTestimoniModal();
                         resetTestimoniForm();
                     } else {
-                        alert('Gagal mengirim testimoni. Silakan coba lagi.');
+                        alert(data.message || 'Gagal mengirim testimoni. Silakan coba lagi.');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                    alert('Terjadi kesalahan saat mengirim testimoni. Silakan coba lagi. 🔄');
                 })
                 .finally(() => {
                     // Re-enable button
                     if (submitButton) {
                         submitButton.disabled = false;
                         submitButton.textContent = 'Kirim Testimoni';
+                        submitButton.classList.remove('opacity-50');
                     }
                 });
         }
@@ -1401,8 +1528,27 @@
         function resetTestimoniForm() {
             selectedRating = 0;
             selectedEmoji = '';
-            if (testimoniName) testimoniName.value = '';
-            if (testimoniMessage) testimoniMessage.value = '';
+
+            const nameInput = document.getElementById('testimoniName');
+            const messageInput = document.getElementById('testimoniMessage');
+            const messageCounter = document.getElementById('messageCounter');
+
+            if (nameInput) {
+                nameInput.value = '';
+                nameInput.classList.remove('error-input', 'valid-input');
+            }
+
+            if (messageInput) {
+                messageInput.value = '';
+                messageInput.classList.remove('error-input', 'valid-input');
+            }
+
+            if (messageCounter) {
+                messageCounter.textContent = '0/500';
+                messageCounter.style.color = '#6b7280';
+            }
+
+
 
             // Reset star display
             const stars = starRating?.querySelectorAll('.star');
@@ -1417,7 +1563,6 @@
             }
         }
 
-        // Setup testimoni event listeners
         function setupTestimoniEventListeners() {
             if (testimoniModalClose) {
                 testimoniModalClose.addEventListener('click', closeTestimoniModal);
@@ -1442,6 +1587,7 @@
 
             setupStarRating();
             setupEmojiSelector();
+            setupRealTimeValidation(); // Tambahkan ini
         }
 
 
@@ -1546,7 +1692,83 @@
             }
         }
 
+        function setupRealTimeValidation() {
+            const nameInput = document.getElementById('testimoniName');
+            const messageInput = document.getElementById('testimoniMessage');
+            const messageCounter = document.getElementById('messageCounter');
 
+            // Validasi nama real-time
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    const value = this.value.trim();
+                    if (value.length < 2) {
+                        this.classList.add('error-input');
+                        this.classList.remove('valid-input');
+                    } else {
+                        this.classList.add('valid-input');
+                        this.classList.remove('error-input');
+                    }
+                });
+
+                nameInput.addEventListener('blur', function() {
+                    const value = this.value.trim();
+                    if (value.length === 0) {
+                        this.classList.add('error-input');
+                        this.classList.remove('valid-input');
+                    }
+                });
+            }
+
+            // Validasi pesan dan counter real-time
+            if (messageInput && messageCounter) {
+                messageInput.addEventListener('input', function() {
+                    const value = this.value.trim();
+                    const length = value.length;
+
+                    // Update counter
+                    messageCounter.textContent = `${length}/500`;
+
+                    // Validasi panjang
+                    if (length < 10) {
+                        this.classList.add('error-input');
+                        this.classList.remove('valid-input');
+                        messageCounter.style.color = '#ef4444';
+                    } else if (length > 500) {
+                        this.classList.add('error-input');
+                        this.classList.remove('valid-input');
+                        messageCounter.style.color = '#ef4444';
+                    } else {
+                        this.classList.add('valid-input');
+                        this.classList.remove('error-input');
+                        messageCounter.style.color = '#10b981';
+                    }
+                });
+
+                messageInput.addEventListener('blur', function() {
+                    const value = this.value.trim();
+                    if (value.length === 0) {
+                        this.classList.add('error-input');
+                        this.classList.remove('valid-input');
+                    }
+                });
+            }
+        }
+
+        // Fungsi untuk menampilkan error pada elemen
+        function showValidationError(element, message) {
+            if (element) {
+                element.classList.add('error-input');
+                element.classList.remove('valid-input');
+
+                // Shake animation
+                element.style.animation = 'none';
+                element.offsetHeight; // Trigger reflow
+                element.style.animation = 'shake 0.5s ease-in-out';
+
+                // Focus pada elemen yang error
+                element.focus();
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', initialize);
     </script>

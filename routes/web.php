@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\FrameTempController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotoboothController;
-use App\Models\ImageFrame;
 
 // routes/web.php
 Route::get('/', [HomeController::class, 'index'])->name('home');
