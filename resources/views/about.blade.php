@@ -23,9 +23,9 @@
                         Cukup berdiri, pose, cekrek—langsung jadi kenangan digital. Karena tiap momen layak diabadikan!
                     </p>
                     <div class="mt-6">
-                        <a href="#contact"
+                        <a href="https://www.instagram.com/panoricam?utm_source=qr&igsh=MTJjeXUwcnFoeGlteA=="
                             class="inline-block bg-[#BF3131] hover:bg-[#F16767] text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
-                            Hubungi Kami
+                            Hubungi Kami 😒
                         </a>
                     </div>
                 </div>

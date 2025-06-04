@@ -74,3 +74,7 @@ Route::post('/save-photo', [PhotoboothController::class, 'savePhoto'])->name('sa
 Route::post('/submitTestimoni', [PhotoBoothController::class, 'submitTestimoni'])->name('testimoni.submit');
 Route::get('/api/testimonis', [HomeController::class, 'getTestimonis']);
 Route::get('/api/testimoni-stats', [HomeController::class, 'getTestimoniStats']);
+
+Route::fallback(function(){
+    return "halaman tidak ada";
+});
