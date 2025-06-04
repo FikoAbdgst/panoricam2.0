@@ -5,10 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Photobooth App' }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    @vite('resources/css/app.css')
+
+    <link rel="stylesheet" href="{{ secure_asset('build/assets/app-B6OTgYaa.css') }}">
+    <script src="{{ secure_asset('build/assets/app-T1DpEqax.js') }}" defer></script>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');

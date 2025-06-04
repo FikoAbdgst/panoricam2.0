@@ -10,4 +10,10 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: '0.0.0.0', // Penting untuk ngrok
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });
