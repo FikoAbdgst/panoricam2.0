@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\FrameController;
 use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\FrameTempController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PhotoboothController;
 
 // routes/web.php
@@ -56,6 +57,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/testimoni', [TestimoniController::class, 'index'])->name('testimoni.index');
     Route::patch('/testimoni/{id}/toggle', [TestimoniController::class, 'toggle'])->name('testimoni.toggle');
     Route::delete('/testimoni/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
+
+    Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions.index');
+    Route::post('/transactions/{id}/approve', [AdminController::class, 'approveTransaction'])->name('transactions.approve');
+    Route::post('/transactions/{id}/reject', [AdminController::class, 'rejectTransaction'])->name('transactions.reject');
 });
 
 Route::get('/maintenance', function () {
@@ -67,14 +72,21 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/frame', [FrameTempController::class, 'index'])->name('frametemp');
-// Rute photobooth
 Route::get('/booth', [PhotoboothController::class, 'index'])->name('booth');
 Route::post('/save-photo', [PhotoboothController::class, 'savePhoto'])->name('savePhoto');
+Route::post('/booth/reset-used', [PhotoboothController::class, 'resetUsedStatus']);
+
+
+
+
+// Payment routes
+Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
+
 
 Route::post('/submitTestimoni', [PhotoBoothController::class, 'submitTestimoni'])->name('testimoni.submit');
 Route::get('/api/testimonis', [HomeController::class, 'getTestimonis']);
 Route::get('/api/testimoni-stats', [HomeController::class, 'getTestimoniStats']);
 
-Route::fallback(function(){
+Route::fallback(function () {
     return "halaman tidak ada";
 });

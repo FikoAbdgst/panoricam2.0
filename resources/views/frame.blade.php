@@ -943,7 +943,7 @@
                                             </a>
                                         @else
                                             <button
-                                                onclick="showPremiumAlert('{{ number_format($frame->price, 0, ',', '.') }}')"
+                                                onclick="showPremiumModal({{ $frame->id }}, '{{ number_format($frame->price, 0, ',', '.') }}')"
                                                 class="mt-2 cursor-pointer inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 w-full transition-all duration-300 shadow-sm hover:shadow-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1064,6 +1064,82 @@
         </div>
     </div>
 
+    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Pembayaran Premium</h3>
+                <button onclick="closePaymentModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="paymentForm" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" id="frameId" name="frame_id">
+
+                <!-- Frame Info -->
+                <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                    <p class="text-sm text-gray-600">Frame Premium</p>
+                    <p class="font-bold text-lg" id="framePrice">Rp 0</p>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="mb-4">
+                    <h4 class="font-semibold mb-3">Metode Pembayaran:</h4>
+
+                    <!-- Bank Transfer -->
+                    <div class="mb-3 p-3 border rounded-lg">
+                        <h5 class="font-medium mb-2">Transfer Bank</h5>
+                        <div class="text-sm text-gray-600">
+                            <p><strong>Bank BCA:</strong> 1234567890</p>
+                            <p><strong>A.n:</strong> Photobooth App</p>
+                        </div>
+                    </div>
+
+                    <!-- QRIS -->
+                    <div class="mb-3 p-3 border rounded-lg">
+                        <h5 class="font-medium mb-2">QRIS</h5>
+                        <div class="flex justify-center">
+                            <div class="w-32 h-32 bg-gray-200 rounded flex items-center justify-center">
+                                <span class="text-gray-500 text-xs">QR Code</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 text-center mt-1">Scan QR Code untuk pembayaran</p>
+                    </div>
+                </div>
+
+                <!-- Email (Optional) -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Email (Opsional - untuk mengirim link akses)
+                    </label>
+                    <input type="email" name="email"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="email@example.com">
+                </div>
+
+                <!-- Payment Proof -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Bukti Pembayaran <span class="text-red-500">*</span>
+                    </label>
+                    <input type="file" name="payment_proof" accept="image/*" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p class="text-xs text-gray-500 mt-1">Upload screenshot/foto bukti transfer</p>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Submit Pembayaran
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Configure toastr options
         toastr.options = {
@@ -1080,22 +1156,71 @@
             "hideMethod": "fadeOut"
         };
 
-        function showPremiumAlert(price) {
-            toastr.warning(
-                `Fitur ini masih maintenance`,
-                'Fitur Premium', {
-                    "timeOut": "5000",
-                    "closeButton": true,
-                    "positionClass": "toast-top-center",
-                    "showMethod": "slideDown",
-                    "hideMethod": "slideUp"
-                }
-            );
-        }
-    </script>
 
-    <script>
+        let currentFrameId = null;
+        let currentFramePrice = null;
         let isFilterOpen = false;
+
+        function showPremiumModal(frameId, price) {
+            currentFrameId = frameId;
+            currentFramePrice = price;
+
+            document.getElementById('frameId').value = frameId;
+            document.getElementById('framePrice').textContent = 'Rp ' + price;
+            document.getElementById('paymentModal').classList.remove('hidden');
+            document.getElementById('paymentModal').classList.add('flex');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+            document.getElementById('paymentModal').classList.remove('flex');
+            document.getElementById('paymentForm').reset();
+        }
+
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+
+            // Disable submit button
+            submitButton.disabled = true;
+            submitButton.textContent = 'Memproses...';
+
+            try {
+                const response = await fetch('{{ route('payment.create') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Pembayaran berhasil disubmit! Menunggu konfirmasi admin. Order ID: ' + result
+                        .order_id);
+                    closePaymentModal();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan: ' + error.message);
+            } finally {
+                // Re-enable submit button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Pembayaran';
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePaymentModal();
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize toggle filter functionality

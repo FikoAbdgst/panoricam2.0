@@ -90,6 +90,7 @@
                 <div id="frameTemplate" class="w-full h-full relative bg-white rounded-lg shadow-lg">
                     @include($templatePath, ['frame' => $frame])
                 </div>
+                <p class="text-[10px] text-center font-bold mt-5">TEKAN FOTO UNTUK RETAKE FOTO</p>
                 <div class="flex flex-col justify-center items-center gap-4 mt-5">
                     <button id="resetButton"
                         class="bg-[#BF3131] text-white border border-transparent py-2 px-3 sm:py-2.5 sm:px-4 text-sm sm:text-base font-semibold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg w-full sm:w-auto">
@@ -647,6 +648,10 @@
         let isMirrored = true;
         let selectedCountdown = 3;
 
+        let hasDownloaded = false;
+        const orderId = new URLSearchParams(window.location.search).get('order_id');
+
+
         const originalCaptureButtonHTML = captureButton ? captureButton.innerHTML : '';
 
         console.log('Initial elements:', {
@@ -958,43 +963,45 @@
             });
         }
 
-        function savePhotos(finalImage) {
-            const tokenElement = document.querySelector('meta[name="csrf-token"]');
-            if (!tokenElement) {
-                console.error('CSRF token not found');
-                return;
-            }
+        async function savePhotos() {
+            const finalImageData = canvas.toDataURL('image/png');
 
-            const token = tokenElement.getAttribute('content');
+            // Get order_id from URL parameters if exists
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('order_id');
 
-            fetch('/savePhoto', {
+            const data = {
+                photos: getAllPhotoData(),
+                frame_id: frameId,
+                final_image: finalImageData,
+                order_id: orderId // Add order_id to the data
+            };
+
+            try {
+                const response = await fetch('/save-photo', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
                     },
-                    body: JSON.stringify({
-                        photos: getAllPhotoData(),
-                        frame_id: frameId,
-                        final_image: finalImage
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('Photos saved successfully');
-                        if (data.download_url) {
-                            photoStripImage = data.download_url;
-                        }
-                        console.log('Frame used count:', data.frame_info.used);
-                    } else {
-                        console.error('Error saving photos');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                    body: JSON.stringify(data)
                 });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log('Photo saved successfully');
+                    // Store the final image for download
+                    window.finalImage = finalImageData;
+                } else {
+                    console.error('Failed to save photo');
+                }
+            } catch (error) {
+                console.error('Error saving photo:', error);
+            }
         }
+
 
         function processUploadedPhoto(file, slotIndex) {
             console.log('Processing uploaded photo:', file ? file.name : 'none', 'Slot:', slotIndex);
@@ -1066,6 +1073,14 @@
             checkAllPhotosTaken();
         }
 
+        function closeModal() {
+            if (confirm("Apakah Anda ingin meninggalkan halaman ini dan kembali ke halaman awal?")) {
+                window.location.href = "{{ route('frametemp') }}";
+            } else {
+                modalContent.style.transform = 'translateY(0)';
+            }
+        }
+
         function setupEventListeners() {
             console.log('Setting up event listeners...');
             if (captureButton) {
@@ -1074,6 +1089,15 @@
                     const nextEmptySlot = findNextEmptySlot();
                     if (nextEmptySlot !== null) {
                         startCountdown(nextEmptySlot);
+                    }
+                });
+            }
+            if (modalClose) {
+                modalClose.addEventListener('click', () => {
+                    if (confirm(
+                            "Percobaan anda sudah habis. Apakah Anda ingin meninggalkan halaman ini dan kembali ke halaman awal?"
+                            )) {
+                        window.location.href = "{{ route('frametemp') }}";
                     }
                 });
             }
@@ -1180,6 +1204,57 @@
             if (modalShareButton) modalShareButton.addEventListener('click', sharePhotoStrip);
             if (modalGifButton) modalGifButton.addEventListener('click', createGifFromPhotos);
 
+            document.getElementById('modalDownloadButton').addEventListener('click', function() {
+                if (window.finalImage) {
+                    const link = document.createElement('a');
+                    link.download = 'photobooth-image.png';
+                    link.href = window.finalImage;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    hasDownloaded = true; // Mark as downloaded
+                }
+            });
+
+            // Simple reset function
+            async function resetUsedStatus() {
+                if (!orderId || hasDownloaded) return;
+
+                try {
+                    await fetch('/booth/reset-used', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            order_id: orderId
+                        })
+                    });
+                } catch (error) {
+                    console.error('Reset failed:', error);
+                }
+            }
+
+            // Multiple event listeners for better coverage
+            window.addEventListener('beforeunload', resetUsedStatus);
+            window.addEventListener('pagehide', resetUsedStatus);
+
+            // Optional: Reset after 30 seconds of inactivity
+            let inactivityTimer;
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    if (!hasDownloaded) resetUsedStatus();
+                }, 30000);
+            }
+
+            document.addEventListener('mousemove', resetInactivityTimer);
+            document.addEventListener('keypress', resetInactivityTimer);
+            resetInactivityTimer();
 
             window.addEventListener('click', (e) => {
                 if (modal && e.target === modal) {
