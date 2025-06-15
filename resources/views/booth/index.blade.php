@@ -1524,6 +1524,11 @@
                 testimoniName.focus();
                 return;
             }
+            if (name.length > 10) {
+                alert('Nama terlalu panjang (maksimal 10 karakter)! ✂️');
+                testimoniName.focus();
+                return;
+            }
 
             // Validasi pesan testimoni (wajib diisi)
             const message = testimoniMessage ? testimoniMessage.value.trim() : '';
@@ -1776,7 +1781,7 @@
             if (nameInput) {
                 nameInput.addEventListener('input', function() {
                     const value = this.value.trim();
-                    if (value.length < 2) {
+                    if (value.length < 2 || value.length > 10) {
                         this.classList.add('error-input');
                         this.classList.remove('valid-input');
                     } else {
