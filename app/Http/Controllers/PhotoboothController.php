@@ -65,8 +65,12 @@ class PhotoboothController extends Controller
             $templatePath = 'admin.frames.templates.default';
         }
 
-        // Pass frame data and download status to the view
-        return view('booth.index', compact('frame', 'templatePath', 'isDownloaded', 'orderId'));
+        return view('booth.index', compact('frame', 'templatePath', 'isDownloaded', 'orderId'))
+            ->with('frameInfo', [
+                'isPaid' => !$frame->isFree(),
+                'id' => $frame->id,
+                'name' => $frame->name
+            ]);
     }
 
     public function savePhoto(Request $request)

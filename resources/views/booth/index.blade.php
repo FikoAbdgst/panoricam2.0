@@ -20,7 +20,7 @@
         </svg>
     </a>
     <div class="w-full max-w-7xl py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center relative z-20">
-        <h1 class="mb-5 font-semibold text-gray-800 text-5xl  bg-transparent rounded-lg">
+        <h1 class="mb-5 font-semibold text-gray-800 text-5xl bg-transparent rounded-lg">
             <span class="text-red-600">C</span><span class="text-pink-300">A</span><span
                 class="text-green-400">P</span><span class="text-yellow-300">T</span><span
                 class="text-blue-300">U</span><span class="text-purple-400">R</span><span
@@ -30,7 +30,7 @@
                 class="text-pink-300">!</span>
         </h1>
 
-        <div class="flex flex-col md:flex-row gap-8 md:gap-20 items-start justify-center ">
+        <div class="flex flex-col md:flex-row gap-8 md:gap-20 items-start justify-center">
             <div class="w-full md:w-auto">
                 <div class="relative mx-auto" style="width: min(90vw, 660px); max-width: 660px; aspect-ratio: 4/3;">
                     <video id="video" autoplay
@@ -39,7 +39,7 @@
                         class="absolute top-0 left-0 w-full h-full flex justify-center items-center text-8xl font-bold text-white pointer-events-none"
                         style="text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);"></div>
                 </div>
-                <div class=" flex justify-center items-center gap-4 mt-5">
+                <div class="flex justify-center items-center gap-4 mt-5 flex-wrap">
                     <select id="filterSelect"
                         class="py-2 px-3 sm:py-2.5 sm:px-4 rounded-xl bg-white text-sm sm:text-base font-medium cursor-pointer border-2 border-[#BF3131] transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:text-white w-auto">
                         <option value="none">No Filter</option>
@@ -53,6 +53,12 @@
                         class="bg-[#BF3131] text-white border border-transparent py-2 px-3 sm:py-2.5 sm:px-4 text-sm sm:text-base font-semibold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg w-auto">
                         Mirror: Off
                     </button>
+
+                    <button id="cameraToggle"
+                        class="block md:hidden bg-[#BF3131] text-white border border-transparent py-2 px-3 sm:py-2.5 sm:px-4 text-sm sm:text-base font-semibold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg w-auto">
+                        Switch to Rear
+                    </button>
+
                     <select id="countdownSelect"
                         class="py-2 px-3 sm:py-2.5 sm:px-4 rounded-xl bg-white text-sm sm:text-base font-medium cursor-pointer border-2 border-[#BF3131] transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:text-white w-auto">
                         <option value="3">3 Seconds</option>
@@ -64,7 +70,7 @@
                 <div class="w-full flex flex-wrap justify-center items-center gap-4 mt-5">
                     <button id="captureButton"
                         class="bg-[#BF3131] flex gap-2 text-white border border-transparent py-3 px-6 text-base font-semibold rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F16767] hover:scale-105 shadow-sm hover:shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 "
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5"
                             fill="currentColor">
                             <path
                                 d="M149.1 64.8L138.7 96 64 96C28.7 96 0 124.7 0 160L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-256c0-35.3-28.7-64-64-64l-74.7 0L362.9 64.8C356.4 45.2 338.1 32 317.4 32L194.6 32c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
@@ -177,7 +183,6 @@
             <h2 class="text-2xl mb-4 text-gray-800 font-bold text-center">Bagaimana pengalaman Anda?</h2>
             <p class="text-gray-600 text-center mb-6">Berikan rating dan testimoni untuk membantu kami berkembang!</p>
 
-            <!-- Rating Bintang -->
             <div class="star-rating" id="starRating">
                 <span class="star" data-rating="1">★</span>
                 <span class="star" data-rating="2">★</span>
@@ -186,7 +191,6 @@
                 <span class="star" data-rating="5">★</span>
             </div>
 
-            <!-- Emoji Selector -->
             <div class="emoji-selector" id="emojiSelector">
                 <span class="emoji-option" data-emoji="😊">😊</span>
                 <span class="emoji-option" data-emoji="😍">😍</span>
@@ -195,7 +199,6 @@
                 <span class="emoji-option" data-emoji="🥰">🥰</span>
             </div>
 
-            <!-- Form Input dengan validasi -->
             <div class="w-full">
                 <input type="text" id="testimoniName" placeholder="Nama Anda *" required
                     class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none transition-colors duration-200"
@@ -205,13 +208,11 @@
                     rows="4" required minlength="10" maxlength="500"
                     class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:border-[#BF3131] focus:outline-none resize-none transition-colors duration-200"></textarea>
 
-                <!-- Counter untuk textarea -->
                 <div class="text-right text-xs text-gray-500 -mt-3 mb-4">
                     <span id="messageCounter">0/500</span>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex gap-3 mt-4 justify-center w-full">
                 <button id="skipTestimoni"
                     class="bg-gray-500 text-white border-none py-2.5 px-5 text-sm font-medium rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-600 hover:scale-105 shadow-sm hover:shadow-lg">
@@ -224,7 +225,6 @@
             </div>
         </div>
     </div>
-
 
     <input type="hidden" id="frameId" value="{{ $frame->id }}">
 
@@ -253,7 +253,6 @@
             }
         }
 
-        /* CSS untuk drag-to-close pada mobile */
         .modal-dragging {
             transition: transform 0.1s ease-out !important;
         }
@@ -264,7 +263,6 @@
             transition: transform 0.3s ease-out, opacity 0.3s ease-out !important;
         }
 
-        /* Mobile styles untuk modal */
         @media (max-width: 768px) {
             #modalContent {
                 width: 100%;
@@ -293,19 +291,18 @@
             }
         }
 
-        /* Desktop styles */
         @media (min-width: 769px) {
             #modalContent {
                 animation: modalFadeIn 0.4s;
             }
         }
 
-        /* Responsive adjustments for buttons and selects */
         @media (max-width: 640px) {
 
             #filterSelect,
             #countdownSelect,
             #mirrorToggle,
+            #cameraToggle,
             #resetButton,
             #finishButton {
                 font-size: 0.875rem;
@@ -320,6 +317,7 @@
             #filterSelect,
             #countdownSelect,
             #mirrorToggle,
+            #cameraToggle,
             #resetButton,
             #finishButton {
                 min-width: 120px;
@@ -333,18 +331,6 @@
         @media (min-width: 640px) {
             .w-full.sm\:w-auto {
                 width: auto;
-            }
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
             }
         }
 
@@ -390,7 +376,7 @@
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 5px 10px;
+            padding: 西北角px 10px;
             border-radius: 5px;
             font-size: 12px;
             z-index: 20;
@@ -499,18 +485,12 @@
             backdrop-filter: blur(5px);
         }
 
-
-
-        /* Tambahkan CSS ini ke dalam tag <style> atau file CSS Anda */
-
-        /* Styling untuk input yang error */
         .error-input {
             border-color: #ef4444 !important;
             box-shadow: 0 0 0 1px #ef4444 !important;
             animation: shake 0.5s ease-in-out;
         }
 
-        /* Animasi shake untuk input error */
         @keyframes shake {
 
             0%,
@@ -527,13 +507,11 @@
             }
         }
 
-        /* Styling untuk input yang valid */
         .valid-input {
             border-color: #10b981 !important;
             box-shadow: 0 0 0 1px #10b981 !important;
         }
 
-        /* Styling untuk emoji dan star yang wajib dipilih */
         .required-selection {
             position: relative;
         }
@@ -544,7 +522,6 @@
             font-weight: bold;
         }
 
-        /* Update styling untuk star rating */
         .star-rating {
             display: flex;
             gap: 5px;
@@ -566,7 +543,6 @@
             transform: scale(1.1);
         }
 
-        /* Update styling untuk emoji selector */
         .emoji-selector {
             display: flex;
             gap: 10px;
@@ -593,6 +569,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
+        window.frameInfo = @json($frameInfo ?? []);
+        window.orderId = '{{ $orderId ?? '' }}';
         let photoSlots = document.querySelectorAll('.photo-slot img');
         let video = document.getElementById('video');
         let captureButton = document.getElementById('captureButton');
@@ -647,10 +625,11 @@
 
         let isMirrored = true;
         let selectedCountdown = 3;
+        let currentFacingMode = 'user';
+        let videoStream = null;
 
         let hasDownloaded = false;
         const orderId = new URLSearchParams(window.location.search).get('order_id');
-
 
         const originalCaptureButtonHTML = captureButton ? captureButton.innerHTML : '';
 
@@ -666,24 +645,52 @@
             slotSelectButtons: slotSelectButtons.length
         });
 
-        function initializeWebcam() {
+        function initializeWebcam(facingMode = 'user') {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+
             navigator.mediaDevices.getUserMedia({
                     video: {
                         aspectRatio: 4 / 3,
-                        facingMode: 'user'
+                        facingMode: facingMode
                     }
                 })
                 .then(stream => {
                     video.srcObject = stream;
+                    videoStream = stream;
+                    currentFacingMode = facingMode;
+                    updateCameraToggleButton();
                 })
                 .catch(err => {
                     console.error("Error accessing webcam: " + err);
                     alert(
-                        "Failed to access webcam. Please ensure your camera is connected and permissions are granted."
+                        "Failed to access the requested camera. Ensure your camera is connected and permissions are granted."
                     );
+                    if (facingMode === 'environment') {
+                        alert("Rear camera unavailable. Switching to front camera.");
+                        initializeWebcam('user');
+                    }
                 });
         }
 
+        function updateCameraToggleButton() {
+            const cameraToggle = document.getElementById('cameraToggle');
+            if (cameraToggle) {
+                cameraToggle.textContent = currentFacingMode === 'user' ? 'Switch to Rear' : 'Switch to Front';
+            }
+        }
+
+        function setupCameraToggle() {
+            const cameraToggle = document.getElementById('cameraToggle');
+            if (cameraToggle) {
+                cameraToggle.addEventListener('click', () => {
+                    const newFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+                    initializeWebcam(newFacingMode);
+                });
+            }
+        }
 
         function setupFilterChange() {
             if (filterSelect) {
@@ -706,7 +713,7 @@
             ctx.filter = getComputedStyle(video).filter;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             ctx.restore();
-            const dataUrl = canvas.toDataURL('image/png', 1.0); // Use maximum quality
+            const dataUrl = canvas.toDataURL('image/png', 1.0);
 
             if (photoSlots[currentPhotoIndex]) {
                 photoSlots[currentPhotoIndex].src = dataUrl;
@@ -738,14 +745,12 @@
                 }
             }
 
-            // Update capture button state
             if (captureButton) {
                 captureButton.disabled = photoCount >= 3;
                 captureButton.classList.toggle('opacity-50', photoCount >= 3);
                 captureButton.classList.toggle('cursor-not-allowed', photoCount >= 3);
             }
 
-            // Update finish button state
             if (finishButton) {
                 finishButton.disabled = photoCount < 3;
                 finishButton.classList.toggle('opacity-50', photoCount < 3);
@@ -817,7 +822,7 @@
             retakeButtons.forEach(button => {
                 if (button) {
                     button.setAttribute('data-has-photo', 'false');
-                    button.parentElement.setAttribute('data-has-photo', 'false');
+                    bun.parentElement.setAttribute('data-has-photo', 'false');
                 }
             });
 
@@ -841,22 +846,20 @@
                 return;
             }
 
-            // Set desired HD resolution (e.g., 1080p width)
-            const targetWidth = 1080; // Adjust for desired HD width
-            const scaleFactor = targetWidth / frameContainer.offsetWidth; // Calculate scale based on container width
+            const targetWidth = 1080;
+            const scaleFactor = targetWidth / frameContainer.offsetWidth;
 
             html2canvas(frameContainer, {
-                scale: scaleFactor, // Increase resolution by scaling
-                useCORS: true, // Ensure images load correctly if cross-origin
-                logging: false // Disable logging for performance
+                scale: scaleFactor,
+                useCORS: true,
+                logging: false
             }).then(canvas => {
-                photoStripImage = canvas.toDataURL('image/png', 1.0); // Use maximum quality
+                photoStripImage = canvas.toDataURL('image/png', 1.0);
                 const a = document.createElement('a');
                 a.href = photoStripImage;
                 a.download = 'photo-strip-hd.png';
                 a.click();
 
-                // Show testimonial modal if not already shown
                 if (!hasShownTestimoniModal) {
                     setTimeout(() => {
                         showTestimoniModal();
@@ -868,7 +871,6 @@
             });
         }
 
-        // Update fungsi sharePhotoStrip
         function sharePhotoStrip() {
             if (navigator.share && photoStripImage) {
                 if (photoStripImage.startsWith('http')) {
@@ -879,7 +881,6 @@
                         })
                         .then(() => {
                             console.log('Shared successfully');
-                            // Tampilkan modal testimoni hanya jika belum pernah ditampilkan
                             if (!hasShownTestimoniModal) {
                                 setTimeout(() => {
                                     showTestimoniModal();
@@ -904,7 +905,6 @@
                                 })
                                 .then(() => {
                                     console.log('Shared successfully');
-                                    // Tampilkan modal testimoni hanya jika belum pernah ditampilkan
                                     if (!hasShownTestimoniModal) {
                                         setTimeout(() => {
                                             showTestimoniModal();
@@ -929,8 +929,7 @@
                 return;
             }
 
-            // Set desired HD resolution
-            const targetWidth = 1080; // Adjust for desired HD width
+            const targetWidth = 1080;
             const scaleFactor = targetWidth / frameContainer.offsetWidth;
 
             html2canvas(frameContainer, {
@@ -966,7 +965,6 @@
         async function savePhotos() {
             const finalImageData = canvas.toDataURL('image/png');
 
-            // Get order_id from URL parameters if exists
             const urlParams = new URLSearchParams(window.location.search);
             const orderId = urlParams.get('order_id');
 
@@ -974,7 +972,7 @@
                 photos: getAllPhotoData(),
                 frame_id: frameId,
                 final_image: finalImageData,
-                order_id: orderId // Add order_id to the data
+                order_id: orderId
             };
 
             try {
@@ -992,7 +990,6 @@
 
                 if (result.success) {
                     console.log('Photo saved successfully');
-                    // Store the final image for download
                     window.finalImage = finalImageData;
                 } else {
                     console.error('Failed to save photo');
@@ -1001,7 +998,6 @@
                 console.error('Error saving photo:', error);
             }
         }
-
 
         function processUploadedPhoto(file, slotIndex) {
             console.log('Processing uploaded photo:', file ? file.name : 'none', 'Slot:', slotIndex);
@@ -1021,7 +1017,6 @@
                 img.onload = function() {
                     const uploadCanvas = document.createElement('canvas');
                     const uploadCtx = uploadCanvas.getContext('2d');
-                    // Use original image dimensions for maximum quality
                     uploadCanvas.width = img.width;
                     uploadCanvas.height = img.height;
                     uploadCtx.filter = filterSelect ? filterSelect.value : 'none';
@@ -1074,10 +1069,23 @@
         }
 
         function closeModal() {
-            if (confirm("Apakah Anda ingin meninggalkan halaman ini dan kembali ke halaman awal?")) {
-                window.location.href = "{{ route('frametemp') }}";
+            const isPaidFrame = orderId && orderId.trim() !== '';
+            if (isPaidFrame) {
+                const userConfirmed = confirm(
+                    "Percobaan anda sudah habis. Apakah Anda ingin meninggalkan halaman ini dan kembali ke halaman awal?"
+                );
+                if (userConfirmed) {
+                    window.location.href = "{{ route('frametemp') }}";
+                }
             } else {
-                modalContent.style.transform = 'translateY(0)';
+                if (modal) {
+                    modalContent.classList.add('modal-closing');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        modalContent.classList.remove('modal-closing');
+                        modalContent.style.transform = 'translateY(0)';
+                    }, 300);
+                }
             }
         }
 
@@ -1092,14 +1100,9 @@
                     }
                 });
             }
+
             if (modalClose) {
-                modalClose.addEventListener('click', () => {
-                    if (confirm(
-                            "Percobaan anda sudah habis. Apakah Anda ingin meninggalkan halaman ini dan kembali ke halaman awal?"
-                            )) {
-                        window.location.href = "{{ route('frametemp') }}";
-                    }
-                });
+                modalClose.addEventListener('click', closeModal);
             }
 
             if (uploadButton && fileInput) {
@@ -1193,12 +1196,6 @@
                 finishButton.addEventListener('click', openPreviewModal);
             }
 
-            if (modalClose) {
-                modalClose.addEventListener('click', () => {
-                    if (modal) modal.style.display = 'none';
-                });
-            }
-
             if (resetButton) resetButton.addEventListener('click', resetPhotos);
             if (modalDownloadButton) modalDownloadButton.addEventListener('click', downloadPhotoStrip);
             if (modalShareButton) modalShareButton.addEventListener('click', sharePhotoStrip);
@@ -1213,11 +1210,10 @@
                     link.click();
                     document.body.removeChild(link);
 
-                    hasDownloaded = true; // Mark as downloaded
+                    hasDownloaded = true;
                 }
             });
 
-            // Simple reset function
             async function resetUsedStatus() {
                 if (!orderId || hasDownloaded) return;
 
@@ -1238,11 +1234,9 @@
                 }
             }
 
-            // Multiple event listeners for better coverage
             window.addEventListener('beforeunload', resetUsedStatus);
             window.addEventListener('pagehide', resetUsedStatus);
 
-            // Optional: Reset after 30 seconds of inactivity
             let inactivityTimer;
 
             function resetInactivityTimer() {
@@ -1258,7 +1252,24 @@
 
             window.addEventListener('click', (e) => {
                 if (modal && e.target === modal) {
-                    modal.style.display = 'none';
+                    const isPaidFrame = orderId && orderId.trim() !== '';
+                    if (isPaidFrame) {
+                        const userConfirmed = confirm(
+                            "Percobaan anda sudah habis. Apakah Anda ingin meninggalkan halaman ini dan kembali ke halaman awal?"
+                        );
+                        if (userConfirmed) {
+                            window.location.href = "{{ route('frametemp') }}";
+                        }
+                    } else {
+                        if (modal) {
+                            modalContent.classList.add('modal-closing');
+                            setTimeout(() => {
+                                modal.style.display = 'none';
+                                modalContent.classList.remove('modal-closing');
+                                modalContent.style.transform = 'translateY(0)';
+                            }, 300);
+                        }
+                    }
                 }
                 if (uploadModal && e.target === uploadModal) {
                     uploadModal.style.display = 'none';
@@ -1268,10 +1279,8 @@
                 }
                 if (gifLoadingModal && e.target === gifLoadingModal) {
                     // Prevent closing while processing
-                    // gifLoadingModal.style.display = 'none';
                 }
             });
-
         }
 
         function debugPhotoSlots() {
@@ -1306,17 +1315,15 @@
             retakeButtons = document.querySelectorAll('.retake-button');
             slotSelectButtons = document.querySelectorAll('.slot-select-button');
 
-            // Tambahkan ini untuk inisialisasi elemen GIF
             modalGifButton = document.getElementById('modalGifButton');
             gifLoadingModal = document.getElementById('gifLoadingModal');
             gifProgressBar = document.getElementById('gifProgressBar');
             gifProgressText = document.getElementById('gifProgressText');
 
-
-
             initializeWebcam();
             setupFilterChange();
             setupMirrorToggle();
+            setupCameraToggle();
             setupCountdownSelect();
             setupEventListeners();
             setupTestimoniEventListeners();
@@ -1344,6 +1351,7 @@
                 });
             }
         }
+
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('previewModal');
             const modalContent = document.getElementById('modalContent');
@@ -1411,32 +1419,11 @@
                     modalContent.style.transform = 'translateY(0)';
                 }
             }
-
-            function closeModal() {
-                modalContent.classList.add('modal-closing');
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    modalContent.classList.remove('modal-closing');
-                    modalContent.style.transform = 'translateY(0)';
-                }, 300);
-            }
-
-            const closeButton = modal.querySelector('.modal-close');
-            if (closeButton) {
-                closeButton.addEventListener('click', closeModal);
-            }
-
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
         });
 
         function setupStarRating() {
             const starRatingContainer = document.getElementById('starRating');
             if (starRatingContainer) {
-                // Tambahkan label required jika belum ada
                 if (!starRatingContainer.previousElementSibling?.classList?.contains('rating-label')) {
                     const label = document.createElement('div');
                     label.className = 'rating-label text-center text-gray-700 font-medium mb-2';
@@ -1449,7 +1436,6 @@
                     star.addEventListener('click', () => {
                         selectedRating = index + 1;
                         updateStarDisplay();
-                        // Hapus error state jika ada
                         starRatingContainer.classList.remove('error-selection');
                     });
                 });
@@ -1470,23 +1456,18 @@
         function setupEmojiSelector() {
             const emojiSelectorContainer = document.getElementById('emojiSelector');
             if (emojiSelectorContainer) {
-                // Tambahkan label required jika belum ada
                 if (!emojiSelectorContainer.previousElementSibling?.classList?.contains('emoji-label')) {
                     const label = document.createElement('div');
                     label.className = 'emoji-label text-center text-gray-700 font-medium mb-2';
                     label.innerHTML = 'Pilih Emoji <span style="color: #ef4444;">*</span>';
                     emojiSelectorContainer.parentNode.insertBefore(label, emojiSelectorContainer);
                 }
-
                 const emojis = emojiSelectorContainer.querySelectorAll('.emoji-option');
                 emojis.forEach(emoji => {
                     emoji.addEventListener('click', () => {
-                        // Remove selected class from all
                         emojis.forEach(e => e.classList.remove('selected'));
-                        // Add selected class to clicked emoji
                         emoji.classList.add('selected');
                         selectedEmoji = emoji.getAttribute('data-emoji');
-                        // Hapus error state jika ada
                         emojiSelectorContainer.classList.remove('error-selection');
                     });
                 });
@@ -1494,30 +1475,26 @@
         }
 
         function showTestimoniModal() {
-            if (hasShownTestimoniModal) return; // Jangan tampilkan jika sudah pernah ditampilkan
+            if (hasShownTestimoniModal) return;
 
             if (testimoniModal) {
                 testimoniModal.style.display = 'flex';
-                hasShownTestimoniModal = true; // Tandai bahwa modal sudah ditampilkan
+                hasShownTestimoniModal = true;
             }
         }
 
-        // Close testimoni modal
         function closeTestimoniModal() {
             if (testimoniModal) {
                 testimoniModal.style.display = 'none';
             }
         }
 
-        // Submit testimoni
         function submitTestimoniData() {
-            // Validasi rating
             if (selectedRating === 0) {
                 alert('Mohon berikan rating terlebih dahulu! ⭐');
                 return;
             }
 
-            // Validasi nama (wajib diisi)
             const name = testimoniName ? testimoniName.value.trim() : '';
             if (!name || name.length < 2) {
                 alert('Mohon masukkan nama Anda (minimal 2 karakter)! 👤');
@@ -1530,7 +1507,6 @@
                 return;
             }
 
-            // Validasi pesan testimoni (wajib diisi)
             const message = testimoniMessage ? testimoniMessage.value.trim() : '';
             if (!message || message.length < 10) {
                 alert('Mohon tuliskan testimoni Anda (minimal 10 karakter)! 💬');
@@ -1538,7 +1514,6 @@
                 return;
             }
 
-            // Validasi emoji (wajib dipilih)
             if (!selectedEmoji) {
                 alert('Mohon pilih emoji yang sesuai dengan pengalaman Anda! 😊');
                 return;
@@ -1554,7 +1529,6 @@
             const token = tokenElement.getAttribute('content');
             const submitButton = document.getElementById('submitTestimoni');
 
-            // Disable button dan ubah text
             if (submitButton) {
                 submitButton.disabled = true;
                 submitButton.textContent = 'Mengirim...';
@@ -1595,16 +1569,15 @@
                     alert('Terjadi kesalahan saat mengirim testimoni. Silakan coba lagi. 🔄');
                 })
                 .finally(() => {
-                    // Re-enable button
                     if (submitButton) {
                         submitButton.disabled = false;
                         submitButton.textContent = 'Kirim Testimoni';
                         submitButton.classList.remove('opacity-50');
                     }
                 });
+
         }
 
-        // Reset testimoni form
         function resetTestimoniForm() {
             selectedRating = 0;
             selectedEmoji = '';
@@ -1628,15 +1601,11 @@
                 messageCounter.style.color = '#6b7280';
             }
 
-
-
-            // Reset star display
             const stars = starRating?.querySelectorAll('.star');
             if (stars) {
                 stars.forEach(star => star.classList.remove('active'));
             }
 
-            // Reset emoji selection
             const emojis = emojiSelector?.querySelectorAll('.emoji-option');
             if (emojis) {
                 emojis.forEach(emoji => emoji.classList.remove('selected'));
@@ -1656,7 +1625,6 @@
                 submitTestimoni.addEventListener('click', submitTestimoniData);
             }
 
-            // Close modal when clicking outside
             if (testimoniModal) {
                 testimoniModal.addEventListener('click', (e) => {
                     if (e.target === testimoniModal) {
@@ -1667,9 +1635,8 @@
 
             setupStarRating();
             setupEmojiSelector();
-            setupRealTimeValidation(); // Tambahkan ini
+            setupRealTimeValidation();
         }
-
 
         function createGifFromPhotos() {
             const photos = getAllPhotoData();
@@ -1679,19 +1646,17 @@
                 return;
             }
 
-            // Show loading modal
             if (gifLoadingModal) {
                 gifLoadingModal.style.display = 'flex';
             }
 
             updateGifProgress(0, 'Initializing GIF creation...');
 
-            // Create GIF with gif.js
             const gif = new GIF({
                 workers: 2,
-                quality: 5, // Lower number = higher quality
-                width: 1080, // Set HD width
-                height: 810, // Maintain 4:3 aspect ratio
+                quality: 5,
+                width: 1080,
+                height: 810,
                 workerScript: '/js/gif.worker.js'
             });
 
@@ -1728,8 +1693,8 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 1080; // HD width
-                    canvas.height = 810; // Maintain aspect ratio
+                    canvas.width = 1080;
+                    canvas.height = 810;
                     const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
                     const x = (canvas.width - img.width * scale) / 2;
                     const y = (canvas.height - img.height * scale) / 2;
@@ -1755,7 +1720,6 @@
             });
         }
 
-        // Update GIF progress
         function updateGifProgress(percentage, text) {
             if (gifProgressBar) {
                 gifProgressBar.style.width = percentage + '%';
@@ -1765,7 +1729,6 @@
             }
         }
 
-        // Hide GIF loading modal
         function hideGifLoading() {
             if (gifLoadingModal) {
                 gifLoadingModal.style.display = 'none';
@@ -1777,7 +1740,6 @@
             const messageInput = document.getElementById('testimoniMessage');
             const messageCounter = document.getElementById('messageCounter');
 
-            // Validasi nama real-time
             if (nameInput) {
                 nameInput.addEventListener('input', function() {
                     const value = this.value.trim();
@@ -1799,16 +1761,13 @@
                 });
             }
 
-            // Validasi pesan dan counter real-time
             if (messageInput && messageCounter) {
                 messageInput.addEventListener('input', function() {
                     const value = this.value.trim();
                     const length = value.length;
 
-                    // Update counter
                     messageCounter.textContent = `${length}/500`;
 
-                    // Validasi panjang
                     if (length < 10) {
                         this.classList.add('error-input');
                         this.classList.remove('valid-input');
@@ -1834,18 +1793,15 @@
             }
         }
 
-        // Fungsi untuk menampilkan error pada elemen
         function showValidationError(element, message) {
             if (element) {
                 element.classList.add('error-input');
                 element.classList.remove('valid-input');
 
-                // Shake animation
                 element.style.animation = 'none';
-                element.offsetHeight; // Trigger reflow
+                element.offsetHeight;
                 element.style.animation = 'shake 0.5s ease-in-out';
 
-                // Focus pada elemen yang error
                 element.focus();
             }
         }

@@ -11,7 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <link rel="stylesheet" href="{{ secure_asset('build/assets/app-B6OTgYaa.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('build/assets/app-CyYmZxyG.css') }}">
     <script src="{{ secure_asset('build/assets/app-T1DpEqax.js') }}" defer></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
