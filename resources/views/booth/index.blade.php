@@ -347,7 +347,20 @@
             position: absolute;
             overflow: hidden;
             width: 150px;
+            /* Display size, adjust as needed */
             height: 150px;
+            /* Display size, adjust as needed */
+        }
+
+        .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            image-rendering: -webkit-optimize-contrast;
+            /* Improve rendering quality */
+            image-rendering: crisp-edges;
+            /* Ensure sharp edges */
         }
 
         .photo-slot {
@@ -366,6 +379,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* Memastikan foto tidak stretch, hanya crop */
+            object-position: center;
+            /* Crop dari tengah */
         }
 
         .photo-slot-container[data-has-photo="true"]:hover .photo-slot::before {
@@ -376,7 +392,7 @@
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 西北角px 10px;
+            padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
             z-index: 20;
@@ -406,7 +422,8 @@
         }
 
         .photo-slot img:not([src]),
-        .photo-slot img[src=""] {
+        .photo-slot img[src=""],
+        .photo-slot img[src*="undefined"] {
             display: none;
         }
 
@@ -442,6 +459,11 @@
 
         .frame-container {
             align-self: center;
+        }
+
+        .frame-container .photo-slot img {
+            object-fit: cover;
+            object-position: center;
         }
 
         @media (max-width: 767px) {
@@ -564,6 +586,39 @@
             opacity: 1;
             transform: scale(1.2);
             background-color: rgba(191, 49, 49, 0.1);
+        }
+
+        #modalPhotostrip {
+            width: 160px;
+            /* Fixed width as per design */
+            height: auto;
+            /* Allow height to adjust */
+            overflow: hidden;
+            /* Prevent overflow */
+            position: relative;
+        }
+
+        #modalPhotostrip img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Crop to fit, no stretching */
+            object-position: center;
+            /* Center the crop */
+            display: block;
+            /* Remove inline-block spacing */
+        }
+
+        @media (max-width: 768px) {
+            .photo-slot-container {
+                width: 120px;
+                height: 120px;
+            }
+
+            .photo-slot img {
+                object-fit: cover;
+                object-position: center;
+            }
         }
     </style>
 
@@ -706,32 +761,50 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.save();
+
             if (isMirrored) {
                 ctx.translate(canvas.width, 0);
                 ctx.scale(-1, 1);
             }
+
             ctx.filter = getComputedStyle(video).filter;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             ctx.restore();
-            const dataUrl = canvas.toDataURL('image/png', 1.0);
 
-            if (photoSlots[currentPhotoIndex]) {
-                photoSlots[currentPhotoIndex].src = dataUrl;
-                photoSlots[currentPhotoIndex].style.display = 'block';
-                photoSlots[currentPhotoIndex].style.width = '100%';
-                photoSlots[currentPhotoIndex].style.height = '100%';
-                photoSlots[currentPhotoIndex].style.objectFit = 'cover';
-                if (retakeButtons[currentPhotoIndex]) {
-                    retakeButtons[currentPhotoIndex].setAttribute('data-has-photo', 'true');
-                    retakeButtons[currentPhotoIndex].parentElement.setAttribute('data-has-photo', 'true');
+            // Create cropped canvas
+            const croppedCanvas = document.createElement('canvas');
+            const croppedCtx = croppedCanvas.getContext('2d');
+            const targetSize = 150; // Match photo-slot-container size
+            croppedCanvas.width = targetSize;
+            croppedCanvas.height = targetSize;
+
+            const tempImg = new Image();
+            tempImg.onload = function() {
+                cropPhotoToFit(croppedCanvas, croppedCtx, tempImg, targetSize, targetSize);
+
+                const dataUrl = croppedCanvas.toDataURL('image/png', 1.0);
+
+                if (photoSlots[currentPhotoIndex]) {
+                    photoSlots[currentPhotoIndex].src = dataUrl;
+                    photoSlots[currentPhotoIndex].style.display = 'block';
+                    photoSlots[currentPhotoIndex].style.width = '100%';
+                    photoSlots[currentPhotoIndex].style.height = '100%';
+                    photoSlots[currentPhotoIndex].style.objectFit = 'cover';
+                    photoSlots[currentPhotoIndex].style.objectPosition = 'center';
+                    if (retakeButtons[currentPhotoIndex]) {
+                        retakeButtons[currentPhotoIndex].setAttribute('data-has-photo', 'true');
+                        retakeButtons[currentPhotoIndex].parentElement.setAttribute('data-has-photo', 'true');
+                    }
                 }
-            }
 
-            if (captureButton) {
-                captureButton.innerHTML = originalCaptureButtonHTML;
-            }
-            capturing = false;
-            checkAllPhotosTaken();
+                if (captureButton) {
+                    captureButton.innerHTML = originalCaptureButtonHTML;
+                }
+                capturing = false;
+                checkAllPhotosTaken();
+            };
+
+            tempImg.src = canvas.toDataURL('image/png', 1.0);
         }
 
         function checkAllPhotosTaken() {
@@ -846,13 +919,30 @@
                 return;
             }
 
-            const targetWidth = 1080;
+            const targetWidth = 1080; // HD resolution
+            const targetHeight = (frameContainer.offsetHeight / frameContainer.offsetWidth) * targetWidth;
             const scaleFactor = targetWidth / frameContainer.offsetWidth;
+
+            // Ensure photo slots use HD images
+            const photoSlots = frameContainer.querySelectorAll('.photo-slot img');
+            photoSlots.forEach(img => {
+                if (img.src && img.src.length > 10) {
+                    img.style.objectFit = 'cover';
+                    img.style.objectPosition = 'center';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                }
+            });
 
             html2canvas(frameContainer, {
                 scale: scaleFactor,
+                width: frameContainer.offsetWidth,
+                height: frameContainer.offsetHeight,
                 useCORS: true,
-                logging: false
+                logging: false,
+                allowTaint: true,
+                backgroundColor: '#FEF3E2',
+                imageTimeout: 0 // Prevent timeout issues with HD images
             }).then(canvas => {
                 photoStripImage = canvas.toDataURL('image/png', 1.0);
                 const a = document.createElement('a');
@@ -866,7 +956,7 @@
                     }, 1000);
                 }
             }).catch(error => {
-                console.error('Error generating photo strip:', error);
+                console.error('Error generating HD photo strip:', error);
                 alert('Failed to generate HD photo strip. Try again.');
             });
         }
@@ -930,12 +1020,29 @@
             }
 
             const targetWidth = 1080;
+            const targetHeight = (frameContainer.offsetHeight / frameContainer.offsetWidth) *
+                targetWidth; // Maintain frame aspect ratio
             const scaleFactor = targetWidth / frameContainer.offsetWidth;
+
+            // Ensure photo slots use correct object-fit
+            const photoSlots = frameContainer.querySelectorAll('.photo-slot img');
+            photoSlots.forEach(img => {
+                if (img.src && img.src.length > 10) {
+                    img.style.objectFit = 'cover';
+                    img.style.objectPosition = 'center';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                }
+            });
 
             html2canvas(frameContainer, {
                 scale: scaleFactor,
+                width: frameContainer.offsetWidth,
+                height: frameContainer.offsetHeight,
                 useCORS: true,
-                logging: false
+                logging: false,
+                allowTaint: true,
+                backgroundColor: '#FEF3E2'
             }).then(canvas => {
                 const imageData = canvas.toDataURL('image/png', 1.0);
                 savePhotos(imageData);
@@ -945,6 +1052,8 @@
                     const img = document.createElement('img');
                     img.src = imageData;
                     img.style.width = '100%';
+                    img.style.height = 'auto';
+                    img.style.objectFit = 'contain';
                     modalPhotostrip.appendChild(img);
                     photoStripImage = imageData;
 
@@ -1008,7 +1117,7 @@
             }
             if (slotIndex === null || slotIndex < 0 || slotIndex >= photoSlots.length) {
                 console.error('Invalid slot index:', slotIndex);
-                return;
+                return false;
             }
 
             const reader = new FileReader();
@@ -1017,10 +1126,18 @@
                 img.onload = function() {
                     const uploadCanvas = document.createElement('canvas');
                     const uploadCtx = uploadCanvas.getContext('2d');
-                    uploadCanvas.width = img.width;
-                    uploadCanvas.height = img.height;
+                    const targetSize = 1080; // HD resolution (adjust as needed)
+
+                    uploadCanvas.width = targetSize;
+                    uploadCanvas.height = targetSize;
+
+                    // Apply filter if selected
                     uploadCtx.filter = filterSelect ? filterSelect.value : 'none';
-                    uploadCtx.drawImage(img, 0, 0, img.width, img.height);
+
+                    // Crop or scale to fit while preserving aspect ratio
+                    cropPhotoToFit(uploadCanvas, uploadCtx, img, targetSize, targetSize);
+
+                    // Generate HD image with high quality
                     const dataUrl = uploadCanvas.toDataURL('image/png', 1.0);
 
                     const targetSlot = photoSlots[slotIndex];
@@ -1030,7 +1147,8 @@
                         targetSlot.style.width = '100%';
                         targetSlot.style.height = '100%';
                         targetSlot.style.objectFit = 'cover';
-                        console.log('Photo set to slot', slotIndex);
+                        targetSlot.style.objectPosition = 'center';
+                        console.log('HD photo set to slot', slotIndex);
 
                         if (retakeButtons[slotIndex]) {
                             retakeButtons[slotIndex].setAttribute('data-has-photo', 'true');
@@ -1043,11 +1161,13 @@
                 };
                 img.onerror = function() {
                     console.error('Failed to load image');
+                    alert('Failed to load the uploaded image. Please try another image.');
                 };
                 img.src = e.target.result;
             };
             reader.onerror = function() {
                 console.error('Failed to read file');
+                alert('Failed to read the uploaded file. Please try again.');
             };
             reader.readAsDataURL(file);
         }
@@ -1297,8 +1417,8 @@
                         height: getComputedStyle(slot).height
                     },
                     parentClasses: slot.parentElement ? slot.parentElement.className : 'no parent',
-                    hasPhoto: retakeButtons[index] ? retakeButtons[index].getAttribute('data-has-photo') :
-                        'no button'
+                    hasPhoto: retakeButtons[index] ? retakeButtons[index].getAttribute(
+                        'data-has-photo') : 'no button'
                 });
             });
         }
@@ -1650,25 +1770,30 @@
                 gifLoadingModal.style.display = 'flex';
             }
 
-            updateGifProgress(0, 'Initializing GIF creation...');
+            updateGitProgress(0, 'Initializing GIF creation...');
+
+            const frameContainer = document.querySelector('.frame-container');
+            const targetWidth = 1080;
+            const targetHeight = (frameContainer.offsetHeight / frameContainer.offsetWidth) *
+                targetWidth; // Match frame aspect ratio
 
             const gif = new GIF({
                 workers: 2,
                 quality: 5,
-                width: 1080,
-                height: 810,
+                width: targetWidth,
+                height: targetHeight,
                 workerScript: '/js/gif.worker.js'
             });
 
             gif.on('progress', function(p) {
                 const percentage = Math.round(p * 100);
-                updateGifProgress(percentage,
+                updateGitProgress(percentage,
                     `Processing frame ${Math.ceil(p * photos.length)} of ${photos.length}...`);
             });
 
             gif.on('finished', function(blob) {
-                generatedGifBlob = blob;
-                hideGifLoading();
+                generatedGitBlob = blob;
+                hideGitLoading();
 
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -1693,26 +1818,24 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 1080;
-                    canvas.height = 810;
-                    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-                    const x = (canvas.width - img.width * scale) / 2;
-                    const y = (canvas.height - img.height * scale) / 2;
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
 
                     ctx.fillStyle = '#FEF3E2';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+                    cropPhotoToFit(canvas, ctx, img, targetWidth, targetHeight);
 
                     gif.addFrame(canvas, {
                         delay: 1000
                     });
 
                     processedCount++;
-                    updateGifProgress((processedCount / photos.length) * 50,
+                    updateGitProgress((processedCount / photos.length) * 50,
                         `Loading photo ${processedCount} of ${photos.length}...`);
 
                     if (processedCount === photos.length) {
-                        updateGifProgress(50, 'Starting GIF compilation...');
+                        updateGitProgress(50, 'Starting GIF compilation...');
                         gif.render();
                     }
                 };
@@ -1804,6 +1927,28 @@
 
                 element.focus();
             }
+        }
+
+        function cropPhotoToFit(canvas, ctx, img, targetWidth, targetHeight) {
+            const targetAspect = targetWidth / targetHeight;
+            const imgAspect = img.width / img.height;
+
+            let sourceX = 0,
+                sourceY = 0,
+                sourceWidth = img.width,
+                sourceHeight = img.height;
+
+            if (imgAspect > targetAspect) {
+                // Image is wider than target, crop left and right
+                sourceWidth = img.height * targetAspect;
+                sourceX = (img.width - sourceWidth) / 2;
+            } else {
+                // Image is taller than target, crop top and bottom
+                sourceHeight = img.width / targetAspect;
+                sourceY = (img.height - sourceHeight) / 2;
+            }
+
+            ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, targetWidth, targetHeight);
         }
 
         document.addEventListener('DOMContentLoaded', initialize);
