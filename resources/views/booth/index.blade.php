@@ -1052,8 +1052,8 @@
                     const img = document.createElement('img');
                     img.src = imageData;
                     img.style.width = '100%';
-                    img.style.height = 'auto';
-                    img.style.objectFit = 'contain';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
                     modalPhotostrip.appendChild(img);
                     photoStripImage = imageData;
 
